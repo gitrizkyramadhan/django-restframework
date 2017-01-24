@@ -1,0 +1,1127 @@
+/////////////////Add Trigger From Chat at 20161215_010100 ////////////////
++ [*] (kelek) [*]
+- Kelek tuh mambu
+
++ [*] (sampai jumpa) [*]
+- daaaaahhh...
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
++ [*] (sama sama|sama-sama) [*]
+- Oke!
+- Sip!
+
++ [*] (bye) [*]
+- bye
+- daahh
+
++ [*] (ketek|ketiak) [*]
+- Ketek bau
+- Ketek asem
+
+/////////////////Add Trigger From Chat at 20161215_010100 //////////content panenmaya//////
++ [*] (udah) [*]
+- Weits, emang paling hits deh, <first_name>. Btw, udah pada punya tiket pesawat buat holiday ini belom? Ketik PESAWAT untuk pesen lewat Bang Joni!
+
++ [*] (belom|belum|blom|blum) [*]
+- Duh, <first_name> mesti lebih update nih soal Bang Joni! Sini, Bang Joni kasih tau lagi deh. Langsung klik link ini ya! bit.ly/BangJoni
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////Add Trigger From Chat at 20161026_010100 ////////////////
++ [*] (5k|10k|20k|25k|50k|100k) [*]
+- Untuk memilih nominal pulsa, kamu bisa tap langsung nominal pulsa yang kamu inginkan di gambarnya
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161016_010100 ////////////////
++ [*] sama2 [*]
+- sama sama juga <first_name>
+
++ [*] iya [*]
+- OK
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161015_010100 ////////////////
++ [*] sarung [*]
+- Wah maaf ya, saat ini Bang Joni belum bisa ngelayanin pembelian sarung.
+
++ [*] (haloo)  [*]
+- gr01 Halo <first_name>, ada yang Bang Joni bisa bantu?
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161013_010100 ////////////////
++ [*] (meramal|ngeramal|ramal|ramalan) [*]
+- Waduh, Bang Joni mana bisa ngeramal, coba nanti Bang Joni minta ajarin Ki Joko Bodo dulu ya :p
+
++ [*] (minta uang|minta duit|bagi duit|bagi uang) [*]
+- Gimana mau kasih uang? Bang Joni aja lagi cari uang ini, hahahaha :D
+- Minta duit? Emang gue Dimas Kanjeng apa?
+
++ [*] (kondom) [*]
+- Wah maaf ya, Bang Joni belum bisa bantu cariin kondom untuk sekarang :(
+
++ [*] (cara mendapat nilai bagus tanpa belajar) [*]
+- Ya nggak bisa dong! Kalo kamu mau nilai bagus, harus semangat belajar!
+- Nyontek lah! Hahaha :D
+
++ [*] (sticker line|stiker line) [*]
+- Yah maaf ya, saat ini Bang Joni belum bisa ngelayanin pembelian sticker Line :(
+
++ [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin ngerjain pe-er|bantuin kerjain pr|kerjain pr) [*]
+- Loh? Kerjain sendiri dong, masa Bang Joni yang kerjain? Ntar jawabannya bisa salah semua :p
+
++ [*] (good night|goodnight|gutnite|gudnite|gudnight) [*]
+- Good night juga, selamat istirahat ya :)
+
++ [*] (sama sama|sama-sama) [*]
+- Sip!
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161012_010100 ////////////////
++ [*] (thankyou) [*]
+- you're welcome
+
++ [*] somay [*]
+- Bang joni belom bisa pesenin siomay
+
++ [*] (pin bb|bbm|pin bbm|wasap|wa|whatsapp|watsap|whatsap) [*]
+- Yah, Bang Joni nggak pake messenger lain selain Line.
+
++ [*] (mobil|mbil|boil) [*]
+- Wah maaf ya, saat ini Bang Joni belum bisa ngelayanin pembelian mobil.
+
++ [*] (masih single|jomblo) [*]
+- Iya nih masih jomblo, sama kayak kamu jomblo :p
+
++ [*] (sapa kamu|siapa kamu) [*]
+- gr01 Bang Joni adalah teman virtual yang saat ini bisa bantu layanan berikut:
+
++ [*] (bang joni ada adminnya|bang joni pake admin|bang joni adminnya) [*]
+- Admin? Nggak, Bang Joni nggak punya admin. Chat yang kamu terima, langsung Bang Joni yang balesin satu-satu.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161003_135012 ////////////////
+//+ [*] galon [*]
+//- Yah maaf ya, saat ini Bang Joni belom bisa bantu kamu cariin galon.
+////////////////////////////////////////////////////////////////////////////////
+
+/////////////////Add Trigger From Chat at 20161003_134410 ////////////////
++ [*] (sandal|sendal) [*]
+- Yah maaf ya, saat ini Bang Joni belom bisa bantu kamu cariin sendal.
+
++ [*] balon [*]
+- Yah maaf ya, saat ini Bang Joni belom bisa bantu kamu cariin balon.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Talk about reservation
+
++ test load (@city1|@city2|@city3|@city4) (@city1|@city2|@city3|@city4) (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
+- fl01 Oke. Tunggu sebentar ya. Bang joni cari penerbangannya <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>> <set psw_dewasa=1> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
++ testloads
+- xx01 OK, testing... <set tol_name=cawang>
+
++ load
+- xx02 OK, testing ya ya
+
+
+
++ (hi|halo|hai|hello|eh|hei|oi|hallo|helo|salam kenal|alo|hay|uy|haiii|hy) [*]
+- gr01 Halo <first_name>, ada yang Bang Joni bisa bantu?
+
++ (assalamualaikum|assalammualaikum|asalammualaikum|samlekum) [*] 
+- gr01 Waalaikumsalam, {@hi}
+
++ [*] (apa kabar|ap kabar|apa kbar|ap kbar|apa kbr|ap kbr) [*]
+- gr01 Kabar baik, semoga kabar <first_name> baik juga. {@hi}
+
++ [abang|bang joni|bang|bang jon|bangjon|joni|jon] (bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
+- gr01 Bang Joni adalah teman virtual yang saat ini bisa bantu layanan berikut:
+
++ [*] (abang|bang joni|bang|bang jon|bangjon|joni|jon|bro|sob) [*]
+- gr01 {@hi}
+
++  [selamat|slmt|slamat|met] (pagi|pg|pgi|siang|sore|sre|malam|malem|mlam|mlm) [*] 
+- gr01 <formal>. {@halo}
+
++ [*] (kamu apa|kamu apaan|apa) [*]
+- gr01 {@hi}
+
++ [*] (ngapain|lagi apa|lg apa|lg ap) [*]
+- Bang Joni lagi nggak ada kerjaan nih, ada yang bisa Bang Joni bantu?
+- Bang Joni lagi bengong aja, ada yang bisa Bang Joni bantu?
+- Lagi ngupil. Bantuin dong sini :D
+
+
++ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] [pesawat|psw|pswt|pesawar] [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
+- Untuk berapa orang?\n\n
+^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat} <set mycontext=pesawat>
+
++ [*] (cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket) [pesawat|psw|pswt|pesawar] [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
+-  Oke, buat berangkat kapan?\n\n
+^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=pesawat} <set mycontext=pesawat>
+
++ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] (pesawat|psw|pswt|pesawar|pswbj) [*]
+- Boleh tau rute penerbangannya, <first_name>?\n\n
+^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: Jakarta ke Bali) {topic=pesawat} <set mycontext=pesawat>
+
+
++ [*] (tai|ee|eek|bego|goblok|goblog|blegug|peleh|monyet|kampret|tolol|kontol|memek|ngentot|titit) [*]
+- Ett.. ett.. <first_name> ngomongnya kok kasar gitu? Kayak alay aja :p
+
++ [*] (instagram|ig) [*]
+- Punya lah! Follow dong @bang.joni
+
++ [*] (folbek|folback|follback|follbek|followback|follow back) [*]
+- Ah <first_name> mah, kaya alay di Instagram aja minta-minta folback, hahaha :D
+
++ [*] (wk|wkwk|wkwkwk|wkwkwkwk|wkwkwkwkwk) [*]
+- Wkwkwkwkwk
+
++ [*] (hahaha|hahahahah|hahahahaha|hahahh|hahahhahhh|hahahahahahaha) [*]
+- Hahahahaha
+
++ [*] (curhat) [*]
+- Ih… Curhat mah sama Mamah Dedeh kali!
+
++ [*] (jodoh) [*]
+- Huff.. Boro-boro ngomongin jodoh. Bang Joni aja belom ketemu jodohnya ini :(
+
++ [*] (bang cariin pacar|bang cariin pcar) [*]
+- Dohh.. Boro-boro ngomongin pacar, Bang Joni aja nggak punya pacar ini :( 
+- Oke, orang pertama yang kamu liat pake baju merah setelah ini, itu dia yang cocok jadi pacar kamu. Langsung gandeng aja tangannya!
+
++ [*] (cariin cewek|cariin cewe|cariin cwe|cariin cwek|cariin cw) [*]
+- Tenang Bro! Abis ini kamu bakal ketemu cewek pake baju biru, cantik! Langsung aja kamu ajak pulang bareng :D
+- Coba liat arah jam 7 bro. Ada cewek cantik banget! Buruan tanya NoCan doi! Eh, maksutnya tanya ID Line doi!
+- Oke, coba liat ke belakang kamu, ada cewek pake baju putih, cantik banget! Rambutnya panjang... sampe mukanya ketutupan rambut semua...
+- Tuh liat ada cewek seksi lagi duduk arah jam 12! Eh tapi kok ada jakunnya bro?! :|
+
++ [*] (cariin cowok|cariin cowo|cariin cwo|cariin cwok) [*]
+- Gampang! Sebentar lagi dia bakal dateng di depan kamu. Cowok pake baju merah, tipe kamu banget deh tuh!
+- Liat ke arah jam 4 kamu! Ada cowok ganteng banget. Coba ajak kenalan gih!
+
+
++ [*] (pijet|pijat|pijit) [*]
+- Bang Joni, belum tahu nih tempat pijat, next time ya
+- Pijet? Delta aja kali, cuss..
+- Hmm.. Fortune sih oke, ada NoCan-nya nggak? :D
+
++ [*] (nocan|nomor cantik) [*]
+- Nomor cantik? Bang Joni nggak tau, oper-oper lah kalo tau :p
+
++ [*] (ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp) [*] 
+- sippp
+- okee 
+ 
++ [*] (thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih) [*]
+- Sama-sama <first_name>
+- You're welcome <first_name>
+- Anytime! <first_name>
+- Yoi sama-sama :D
+
+
++ (*)
+* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+- ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
+^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
+^ Ketik 'cancel' untuk melakukan pembatalan.\n
+^ Ketik 'menu' untuk kembali ke menu awal.\n
+^ Updating bang joni masih terus dilakukan ya.
+
++ [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
+- ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
+- ca01 Sip! Pesanan kamu udah Bang Joni cancel {topic=random}
+
+
+
++ [*] [tolong|mau] [order|pesen|psn|booking] (travel|xtrans|xtran|xtransbj) [*]
+- xt01 Silakan pilih pool keberangkatannya\n\n
+^ (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
+
++ [*] [tolong|mau] [order|pesen|psn|booking] (kereta|kereta api|krt|krtbj) [*]
+- Pemesanan kereta baru bisa beberapa minggu kedepan, nanti Bang Joni kabari ya
+//- ke00 Siap! Boleh tahu stasiun asal dan stasiun tujuannya? (Contoh: gambir ke gubeng) {topic=kereta} <set mycontext=kereta>
+
++ [*] [tolong|mau] [order|pesen|psn|booking] (taksi|taxi|uber|uberbj) [*]
+- ub01 {topic=uber}  <set mycontext=uber>
+
++ [*] (jemput) [*]
+- ub01 {topic=uber}  <set mycontext=uber>
+
++ [*] (restoran|makan|makanan|zomato|makanbj) [*]
+- zo00 Oke! Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasi pencarian restoran.\n\n 
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n 
+^ Nanti Bang Joni kasih info restoran dengan review terbaik di Zomato berdasarkan lokasi yang kamu pilih. {topic=zomato} <set mycontext=zomato>
+
++ [*] (laper|lapar) [*]
+- zo00 Sini Bang Joni kasih tau tempat makan yang enak.\n\n
+^ Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasi pencarian restoran.\n\n 
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n 
+^ Nanti Bang Joni kasih info restoran dengan review terbaik di Zomato berdasarkan lokasi yang kamu pilih. {topic=zomato} <set mycontext=zomato>
+
++ [*] [masakan|makanan] (@cuisine1|@cuisine2|@cuisine3) [di|daerah] (@location1|@location2|@location3)
+- zo01 Berikut 3 tempat makan dengan rating tertinggi <set zomato_cuisine=<star1>> <set zomato_location=<star2>>
+
+
++ [*] (cuaca|suhu|hujan|panas|suhunya|cuacanya|cuacabj) [*]
+- we01 Oke! Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasinya.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n 
+^ Nanti Bang Joni bakal kasih info perkiraan cuaca berdasarkan lokasi yang kamu pilih. 
+
++ [*] (Hari ini bakal ujan gak ya bang|hari ini ujan gak bang|bang, hari ini ujan gak ya|bang, hari ini bakal ujan gak ya|bang, hari ini ujan gak|Hari ini bakal ujan nggak ya bang|hari ini ujan nggak bang|bang, hari ini ujan nggak ya|bang, hari ini bakal ujan nggak ya|bang, hari ini ujan nggak|Hari ini bakal ujan ngga ya bang|hari ini ujan ngga bang|bang, hari ini ujan ngga ya|bang, hari ini bakal ujan ngga ya|bang, hari ini ujan ngga|Hari ini bakal ujan ga ya bang|hari ini ujan ga bang|bang, hari ini ujan ga ya|bang, hari ini bakal ujan ga ya|bang, hari ini ujan ga) [*]
+- we01 Nggak tau juga deh, coba kita cek yuk!\n\n
+^ Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasinya.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n 
+^ Nanti Bang Joni bakal kasih info perkiraan cuaca berdasarkan lokasi yang kamu pilih.
+ 
+
++ [*] (tol|macet|tolbj|infotol|info tol) [*]
+- Jalan tol mana <first_name>?\n\n
+^ (Jagorawi, Cawang, Dalam Kota, JORR, Cikampek, Tangerang, Bandung, Cileunyi, Palimanan, Kanci) 
+
++ [*] (tol|macet|tolbj|infotol|info tol) [*] (@toljasamarga1|@toljasamarga2) [*]
+- to01 Ok, bang Joni cariin infonya... <set tol_name=<star2>>
+
++ [*] (@toljasamarga1|@toljasamarga2) [*]
+- to01 Ok, bang Joni cariin infonya... <set tol_name=<star1>>
+
+
+
++ [*] (tes|test|start) [*]
+- gr01 {@hi}
+
++ [*] (tiket|ticket|pesan|info) [*]
+- gr01 {@hi}
+
++ [*] (hotel|gojek|bioskop|tiket bioskop|shuttle) [*]
+- <first_name>, saat ini bang joni baru bisa bantuin pesenin pesawat, xtrans dan uber\n
+^ Nanti bang joni kasih tau kalo udah bisa ya!
+
++ [*] (lalulintas|lalu lintas|jalan) [*]
+- Untuk ssat ini bang joni baru bisa infoin jalan tol
+
+
+
+///////////////////////////////////SALDO CHECK BJPAY
++ [*] (saldo) [*]
+- bj00 <first_name>
+
+///////////////////////////////////DEPOSIT BJPAY
++ [*] (deposit|topup) [*]
+- bj99 Okay, pilih bank dibawah untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>  
+
+///////////////////////////////////DEPOSIT BJPAY
++ [*] (bjpay register) [*]
+- bj11 {topic=pulsa} <set mycontext=pulsa>   
+
+///////////////////////////////////START PULSA HP
++ [*] (pulsa|bang isiin pulsa dong) [*]
+- Nomor HP-nya berapa <first_name>, contoh 08xxxxx? {topic=pulsa} <set mycontext=pulsa>
+
+
+
+//////////////////////////////////START TOKEN LISTRIK
++ [*] (token|pulsa listrik|token pln|token listrik) [*]
+- Nomor meter PLN prepaid-nya berapa <first_name>? {topic=token} <set mycontext=token>
+
+
+
+/////////////////////////////////START INFO MONEY CHANGER
++ (bantuan)
+- Bang Joni adalah teman virtual di Line Messenger yang mempunyai semangat membantu memenuhi kebutuhan-kebutuhan kamu\n
+^ Beralamat di:\n
+^ Gedung Palma One - Suite 210\n
+^ Jl. H.R Rasuna Said Kav X-2 No.4\n
+^ Kuningan Timur, Jakarta Selatan\n
+^ 12950 Indonesia\n
+^ Phone: +62 21 252 1006, +62 812 8893 5068\n
+^ www.bangjoni.com 2016\n
+^ rizky@bangjoni.com
+
+
+//////////////////////////////////START TRANSLATOR
++ [*] (terjemahin|terjemain|translate|translator|kamus on) [*]
+* <get translate_lang> == undefined => Terjemahin ke bahasa apa <first_name> (inggris, perancis, mandarin, arab, jepang, korea, jerman, indonesia)? {topic=translator}
+- tr01 Oke, Bang Joni aktifin mode translator sekarang, kalo udah selesai atau mau ganti ke bahasa lain, kamu bisa ketik "kamus off".\n\n
+^ Sekarang kamu bisa ketik kata yang mau diterjemahin.
+
++ [*] (terjemahin|terjemain|translate) (ke|ke bahasa) (inggris|perancis|mandarin|arab|jepang|korea|jerman|indonesia) [*]
+- tr01 Oke, Bang Joni aktifin mode translator sekarang, kalo udah selesai atau mau ganti ke bahasa lain, kamu bisa ketik "kamus off".\n\n <set translate_lang=<star3>>
+^ Sekarang kamu bisa ketik kata yang mau diterjemahin.
+
++ kamus off
+- tr02 Sip! Mode translator udah Bang Joni matiin.
+
+
+///////////////////////////////////START KASKUS MOVIE
++ kaskus movie
+- ka01 Tonton film Sundul Gan: The Story of Kaskus mulai 2 Juni 2016. Soon ya Bang Joni bisa beliin tiket-nya.
+
+
+///////////////////////////////////START INFO WAKTU SHOLAT DAN IMSAKIYAH
++ [*] (sholat|imsak|waktu buka|buka puasa|puasa|buka) [*]
+* <get sholat_kota> == undefined => Untuk kota mana <first_name> ? {topic=waktusholat} <set mycontext=waktusholat>
+- sh01 Siap, Bang Joni cari info... 
+  
++ [*] (sholat|imsak|waktu buka|buka puasa|puasa|buka) [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+- sh01 Siap, Bang Joni cari info... <set sholat_kota=<star2>>  
+
+
+///////////////////////////////////START REMINDER
++ [*] (ingetin|reminder|bangunin)
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+^ - Ingetin ada resepsi nikah lusa\n
+^ - Ingetin bangun pagi tiap jam 5\n
+^ - Ingetin bayar listrik tiap tgl 5 juli\n
+^ - Ingetin meeting dengan sales tiap senin jam 9.30
+
++ [*] (ingetin|reminder|bangunin) *{weight=10}
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+- re01 OK <first_name>. <set rem_pesan=<star2>>
+
++ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
+* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
+- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
+
++ [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
+- OK
+
++ [*] lihat reminder [*]
+- re02 Okay, berikut daftar remindermu:
+
++ [*] hapus reminder [*]
+- Sorry, layanan penghapusan reminder masih belom ada ya.
+
++ [*] (set|ubah|ganti) [*] (kota|lokasi) [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+- sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star3>> <get sholat_kota>
+
++ [*] (set|ubah|ganti) [*] (kota|lokasi) [*]
+- Ok <first_name>, kamu sekarang di kota mana? {topic=setcity3}
+
+
+///////////////////////////////////START INFO EURO 2016
++ [*] (euro|bola|euro 2016) [*]
+- eu01 Berikut jadwal, live update dan hasil pertandingan Euro 2016:
+
++ [*] (@eurosoccer) [*]
+- eu02 <set europlayer=<star>>Berikut jadwal, live update dan hasil pertandingan tim <get europlayer>:
+
++ [*] (euro|bola) [*] (hr ini|hari ini|bsok|besok|kmrn|kemaren|kemarin) [*]
+- eu03 <set euroday=<star2>>Berikut jadwal, live update dan hasil pertandingan Euro 2016  <get euroday>:
+
+
+
+> topic global
+
+  + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*] {weight=10}
+  * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
+  - ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
+  - ca01 Sip! Pesanan kamu udah Bang Joni cancel {topic=random}
+
+  + [*] (ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp) [*] 
+  - sippp
+  - okee 
+ 
+  + [*] (thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih) [*]
+  - Sama-sama <first_name>
+  - You're welcome <first_name>
+  - Anytime! <first_name>
+  - Yoi sama-sama :D
+
+  + (*)
+  - {topic=random}{@ <star>}  
+  
+  + [*] (menu|bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
+  - gr01 Bang Joni adalah teman virtual yang saat ini bisa bantu layanan berikut:  {topic=random}
+
+< topic
+
+
+> topic deposit inherits global
+  + (transfer bca|va permata)
+  - bj03 Untuk deposit, bang joni perlu tahu nominal deposit, misal 15000 (isi tanpa titik ya) <set deposit_bank=<star>>
+  
+  + [*] # [*] {weight=10}
+  - bj04 Okay, ditunggu... <set deposit_nominal=<star>>  {topic=random} <set mycontext=random>
+  
+  + (transfer mandiri)
+  - Untuk sementara transfer ke Mandiri belom bisa bang joni proses, nanti bang joni line klo sdh bisa
+
+< topic
+
+> topic pulsa inherits global
+  + [*] # [*] {weight=10}
+  - pu01 <set no_hp=<star>> Ok, kamu memilih pulsa nominal 
+
+  + (lima ribu|sepuluh ribu|dua puluh ribu|dua puluh lima ribu|lima puluh ribu|seratus ribu)
+  - pu02 <set nominal_token=<star>>Ok, kamu memilih pulsa nominal <get nominal_token>, selanjutnya pilih metode bayar dengan tap menu di bawah.
+  
+  + bjpay register 
+  - Sip, sekarang bang joni butuh no HP-mu untuk register deposit\nIsi no HP dg format (08xxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
+
+< topic
+
+  
+> topic registerbjpay inherits global
+  + [*] # [*] {weight=10}
+  - bj02 <set hp_deposit=<star>> Ok, Bang Joni registerin BJPAY...  
+
+  + (transfer bca|transfer mandiri|va permata)
+  - bj03 Untuk deposit, bang joni perlu tahu nominal deposit, misal 15000 (isi tanpa titik ya) <set deposit_bank=<star>> {topic=deposit} <set mycontext=deposit>
+< topic
+
+
+> topic token inherits global
+  + [*] # [*] {weight=10}
+  - pl01 Ok, Bang Joni cek dl nomor meter-nya ... <set id_pln=<star>>
+
+  + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
+  - pl02 <set nominal_token=<star>> Ok, kamu memilih token nominal <get nominal_token>, selanjutnya pilih metode bayar dengan tap menu di bawah.
+  
+  + bjpay register 
+  - Sip, sekarang bang joni butuh no HP-mu untuk register deposit\nIsi no HP dg format (08xxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
+< topic
+
+
+> topic translator inherits global
+  + [*] (inggris|perancis|mandarin|arab|jepang|korea|jerman|indonesia) [*]
+  - tr01 Ok, bang joni aktifkan mode translator, untuk keluar atau ganti bahasa ketik kamus off ya\n
+  ^ Sekarang ketik kalimatnya...? <set translate_lang=<star>>
+  
+  + kamus off
+  - tr02 Ok, bang joni non aktifkan mode translator {topic=random}
+< topic
+
+
+> topic waktusholat inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - sh01 Siap, Bang Joni cari info... <set sholat_kota=<star>> {topic=random}
+  
+  //+ [*] (@kotashol) [*]
+  //- sh01 Siap, Bang Joni cari info... <set sholat_kota=<star>> {topic=random}  
+< topic
+
+> topic remindsholat inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - rs01 <set sholat_kota=<star>>Siap, Bang Joni akan ingetin kamu waktu sholat dan imsakiyah untuk kota <get sholat_kota>  {topic=random}
+< topic
+
+> topic setcity1 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+  ^ - Ingetin ada resepsi nikah lusa\n
+  ^ - Ingetin bangun pagi tiap jam 5\n
+  ^ - Ingetin bayar listrik tiap tgl 5 juli\n
+  ^ - Ingetin meeting dengan sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random}
+< topic
+
+> topic setcity2 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - re01 OK <first_name>. <set sholat_kota=<star>> {topic=random}
+< topic
+
+> topic setcity3 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star1>> <get sholat_kota>  {topic=random}
+< topic
+
+> topic pesawat inherits global
+  + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
+  - Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+
+  + [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat}
+
+  + [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
+  //%Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [*] (#@months|# @months|#@months@years|# @months @years)
+  //%Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [*] #dewasa #anak #bayi [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>  
+ 
+  + [*] # dewasa # anak # bayi [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>     
+
+  + [*] #dewasa #anak [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+
+  + [*] # dewasa # anak [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+
+  + [*] #dewasa [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+
+  + [*] # dewasa [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+  
+  + [*] #orang [*]
+  //%Untuk berapa orang? \n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>  
+  
+  + [*] # orang [*]
+  //%Boleh. Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=0>
+  
+  + [*] (smua|semua|apa aja|apa saja|terserah|@maskapai) [*]
+  //%Oke deh, mau Bang joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)
+  - Untuk take-off-nya kamu mau pilih pagi, siang, sore, malam atau harga paling murah? <set psw_maskapai=<star>>
+
+  + [*] (pagi|pgi|pg|siang|sore|sre|malam|malem|mlem|mlm|murah|murag|termurah|bebas|atur aja|kapan aja|kpn aja) [*]
+  //%Untuk take-off-nya kamu mau pilih pagi, siang, sore, malam atau mau cari harga paling murah?
+  - fl01 Sip deh! Tunggu sebentar ya, Bang Joni cariin jadwal penerbangannya. <set psw_derpature_time=<star>>
+
+
+
+  + fl01aa
+  - Berikut jadwal penerbangan termurah sesuai dengan yang kamu mau.\n\n
+    ^ Untuk memilih penerbangan, cukup ketik nomor pilihnya.\n\n
+    ^ Untuk ubah maskapai, tinggal ketik aja nama maskapainya (Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air){topic=pesawatchangeschedule} <set mycontext=pesawatchangeschedule>
+
+ 
+
+< topic
+
+> topic pesawatchangeschedule inherits global
+  + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
+  - fl01 Oke, coba Bang Joni cek dulu. <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+
+  + [kalau|kalo|klo|untuk|untk|utk|buat|kalau untuk|kalo untuk|klo untuk|kl untuk|kalau untk|kalau utk|kalo untk|kalo utk|klo untk|klo utk|kl untk|kl utk|kalau buat|kalo buat|klo buat|kl buat] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years) [ada|ad|bang|ada bang|ad bang]
+  - fl01 Oke, tunggu sebentar, Bang Joni ubah jadwalnya. <set psw_derpature_date=<star>> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [kalau|kalo|klo|untuk|untk|utk|buat|kalau untuk|kalo untuk|klo untuk|kl untuk|kalau untk|kalau utk|kalo untk|kalo utk|klo untk|klo utk|kl untk|kl utk|kalau buat|kalo buat|klo buat|kl buat] (hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years) [ada|ad|bang|ada bang|ad bang]
+  - fl01 Oke, Bang Joni ubah jadwalnya. <set psw_derpature_date=<star>> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + fl01aa
+  - Berikut jadwal penerbangan termurah sesuai dengan yang kamu mau.\n\n
+    ^ Untuk memilih penerbangan, cukup ketik nomor pilihnya.\n\n
+    ^ Untuk ubah maskapai, tinggal ketik aja nama maskapainya (Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)
+
+  + [coba|cba|cb|kalau|kalo|klo|kl|coba kalau|cba kalau|cb kalau|coba kalo|cba kalo|cb kalo|coba klo|cba klo|cb klo|coba kl|cba kl|cb kl] (@maskapai) [bang|bang jon|bangjon|deh|dh]
+  - fl01 Siap, Bang Joni cek dulu. <set psw_maskapai=<star>> <set psw_derpature_time=murah>
+
+  + [coba|cba|cb|kalau|kalo|klo|kl|coba kalau|cba kalau|cb kalau|coba kalo|cba kalo|cb kalo|coba klo|cba klo|cb klo|coba kl|cba kl|cb kl] (pagi|pgi|pg|siang|sore|sre|malam|mlm|mlem) [bang|bang jon|bangjon|deh|dh]
+  - fl01 Oke, Bang Joni cek ya. <set psw_derpature_time=<star>> <set psw_maskapai=semua>
+
+  + [paling|pling] (murah|termurah|apa aja|kapan aja||kpn aja|semua|semuanya)
+  - fl01 Sip sip, Bang Joni cek dulu ya <set psw_maskapai=<star>> <set psw_derpature_time=<star>>
+
+
+  + [*] (booking #|pilih #|book #|no #|nomor #|#) [*]
+  - fl02  Sebelum booking, Bang Joni minta data penumpangnya. Pastikan pengisian data sesuai dengan format yang benar.\n\n
+  ^ Tunggu sebentar, Bang Joni siapin formatnya.\n <set psw_user_choose=<star>> <set flight_passenger=0>{topic=pesawatformentry} <set mycontext=pesawatformentry>
+
+ 
+  
+< topic
+
+> topic pesawatformentry inherits global
+  + *
+  * <get flight_passenger> == 1 => Bang Joni tidak kenali frase yang kamu ketik, ulangi sesuai request ya.
+  - fl03 <set flight_passenger=1>
+  
+  + #
+  * <get flight_passenger> == 0 => fl03
+  - fl05 <set flight_hp=<star>>
+  
+  + [*] (atm|bca klikpay|kartu kredit|cimb clicks|mandiri clickpay) [*]
+  - fl06 <set flight_payment=<star>>   
+  
+ 
+  + fl04aa
+  - OK. {topic=random}
+
+  
+> topic
+
+
+
+
+> topic xtrans inherits global
+  + [*] (@city11) [*]
+  - xt02 Berikut pool tujuan yang tersedia dari pool keberangkatan <star>.\n\n
+  ^ Untuk memilih, silakan ketik nama pool tujuannya. <set xtrans_pool=<star>>
+
+  + xt02aa
+  - Oke, buat pergi kapan <first_name>?\n\n
+  ^ (Contoh: Hari ini, Besok, Lusa atau ketik tanggalnya seperti ini 31 Desember 2016)\n\n
+  ^ Kamu bisa booking tiket Xtrans, maksimal untuk 1 bulan ke depan.
+  
+  + [*] (pagi ini|siang ini|sore ini|malam ini|hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years) [*]
+  - Untuk berapa orang? <set xtrans_derpature_date=<star>>
+  
+  + [*] # [*]
+  - xt03 Oke, tunggu sebentar ya, Bang joni cariin jadwalnya di Xtrans.<set xtrans_dewasa=<star>>
+
+  + xt03
+  - Berikut jadwal keberangkatan Shuttle Bus Xtrans sesuai dengan yang kamu mau.\n\n
+  ^ Untuk memesan, cukup ketik nomor pilih yang ada di sebelah kiri. {topic=xtranschoosesche} <set mycontext=xtranschoosesche>
+
+< topic
+
+> topic xtranschoosesche inherits global
+
+  + [*] (pagi ini|siang ini|sore ini|malam ini|hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years)
+  - Untuk berapa orang? <set xtrans_derpature_date=<star>> {topic=xtrans}
+
+  + [*] # [*]
+  - xt04 Ok. Bang Joni minta detail nama penumpang <set xtrans_pilih_no=<star>> {topic=xtranspassangerentry} <set mycontext=xtranspassangerentry>
+
+
+< topic
+
+> topic xtranspassangerentry inherits global
+  + [*]
+  - xt05
+  
+  + xt06aa
+  - OK. <set xtrans_name=0>{topic=xtransseatentry} <set mycontext=xtransseatentry>
+  
+  
+< topic
+
+> topic xtransseatentry inherits global
+  + #
+  * <get xtrans_name> == 0 => xt07 <set xtrans_name=<star>>
+  - xt08 <set xtrans_hp=<star>>
+  
+  + [*] (atm|mandiri ecash|bca klikpay|kartu kredit|tcash|cimb clicks|mandiri clickpay|indomaret|xl tunai) [*]
+  - xt09 <set xtrans_payment=<star>>   
+  
+  + xt07aa
+  - OK. {topic=random}
+  
+ 
+< topic
+
+
+
+> topic kereta inherits global
+  //+ [dari|dr|dri|from] (@city5|@city6|@city7|@city8|@city9|@city10) [ke|k|to|-] (@city5|@city6|@city7|@city8|@city9|@city10)
+  + [*] (@city5|@city6|@city7|@city8|@city9|@city10) [ke|k|to|-] (@city5|@city6|@city7|@city8|@city9|@city10) [*]
+  - Buat berangkat kapan <first_name>? (hari ini besok lusa atau 23 desember)<set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+  
+  + [*] (hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years)
+  - Untuk berapa orang? (contoh: 2 dewasa 1 bayi) <set psw_derpature_date=<star>>
+  
+  + [*] #dewasa #bayi [*]
+  - Oke. Perlu Bang Joni carikan semua kelas atau tertentu? (eksekutive bisnis ekonomi) <set psw_dewasa=<star1>> <set psw_bayi=<star2>>
+  
+  + [*] # dewasa # bayi [*]
+  - Oke. Perlu Bang Joni carikan semua kelas atau tertentu? (eksekutive bisnis ekonomi) <set psw_dewasa=<star1>> <set psw_bayi=<star2>>
+  
+  + [*] # orang [*]
+  - Oke. Perlu Bang Joni carikan semua kelas atau tertentu? (eksekutive bisnis ekonomi) <set psw_dewasa=<star1>>
+
+  + [*] #orang [*]
+  - Oke. Perlu Bang Joni carikan semua kelas atau tertentu? (eksekutive bisnis ekonomi) <set psw_dewasa=<star1>>
+  
+  + [*] (semua|smua|eksekutif|eksekutive|bisnis|ekonomi) [*]
+  - ke01 Oke. Tunggu sebentar ya. Bang joni cari keretanya... <set psw_class=<star1>>
+  
+  + ke01
+  - Berikut jadwal kereta api sesuai kriteriamu. Sebut saja nomor pilihannya untuk Bang Joni booking.
+  
+  + [*] # [*]
+  % berikut jadwal kereta api sesuai kriteriamu sebut saja nomor pilihannya untuk bang joni booking 
+  - ke02 Bang Joni minta detail penumpang <set kereta_user_choose=<star>> {topic=keretaformentry} <set mycontext=keretaformentry>
+  
+  
+  + ke02
+  - ke03 Ok. Bang Joni booking sekarang. Tunggu sebentar ya, maksimal 5 menit...
+  
+
+< topic
+
+> topic keretaformentry inherits global
+  + [*]
+  - ke03
+  
+  
+  + ke04aa
+  - OK. {topic=random}
+  
+  
+     
+< topic
+
+> topic uber inherits global
+  + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
+  - ch02 Oke, bang joni batalin uber-mu{topic=random}  
+  
+  + ub02
+  - ub02 Sip, bang Joni request Uber dl ya, nanti segera bang Joni kabari jika uber-mu sudah dapat...
+  
+  + exittorandom
+  - exittorandom {topic=random}   
+  
+  + [*] (lupa|password|pasword) [*]
+  - Coba inget2 password uber lagi ya, bang joni perlu itu untuk pertama kali pesen uber, nanti setelahnya bisa langsung{topic=random} 
+  
+  + [*] (ubermotor|uberx) [*]
+  - Sip, sekarang share lokasimu dengan cara click tombol + sebelah tombol smile dan tap Share Location <set uber_product=<star1>>
+  
+  + [*] (yes|ok|lanjut|oke|ya) [*]
+  - ub03 Oke, pilih metode pembayaran-nya:
+  
+  + [*] (cash|mastercard|visa) [*]
+  - ub04 Sip, bang Joni request Uber dl ya, nanti segera bang Joni kabari jika uber-mu sudah dapat... <set uber_payment=<star1>>     
+< topic
+
+> topic zomato inherits global
+  + [*] (@cuisine1|@cuisine2|@cuisine3) [*]
+  - zo02 Oke <first_name>! Berikut tempat makan dengan review tertinggi di Zomato. <set zomato_cuisine=<star1>>{topic=random} 
+< topic
+
+> object verbose python
+     import sqlite3 as lite
+     
+     str = "|"
+     parm = str.join(args)
+     #print(parm)
+     
+     con = lite.connect('test.db')
+     con.execute("INSERT INTO Plain(city1, city2) values ('%s','%s');" % (parm.split('|')[0],parm.split('|')[1]))
+     con.commit()       
+
+< object
+
+///////////////////////////////////START DWP Edited by AWK 2016-11-25 03:00
+//+ [*] (dwp|djakarta warehouse project) [*]
+//- dwp00 Oke! Silakan pilih promo DWP yang kamu mau.
+//- dwp00 Wih asik nih DWP-an! Nih, pilih deh promo yang kamu mau.
+//- dwp00 Azzeek.. Nih Bang Joni punya 2 promo buat DWP, mau pilih yang mana?
+
+//+ hellodwp
+//- dwp01 Bang Joni kasih tau dulu nih aturannya,\n\n
+//    ^ - Acara ini khusus untuk 18+\n
+//    ^ - Untuk masuk ke DWP, kamu harus nunjukin identitas (KTP/Paspor/SIM)\n
+//    ^ - Kalo nggak bawa identitas, kamu nggak bisa masuk dan nggak ada ganti rugi\n
+//    ^ - Supaya semuanya kebagian, satu akun Line cuma bisa melakukan pembelian satu kali\n\n
+//    ^ Sekarang, pilih jenis tiket yang kamu mau.
+
+//+ (buy 5 get 1 free)
+//- dwp01 Oke, Bang Joni kasih tau dulu nih aturannya,\n\n
+//    ^ - Acara ini khusus untuk 18+.\n
+//    ^ - Untuk masuk ke DWP, kamu harus nunjukin identitas (KTP/Paspor/SIM)\n
+//    ^ - Kalo nggak bawa identitas, kamu nggak bisa masuk dan nggak ada ganti rugi\n
+//    ^ - Supaya semuanya kebagian, satu akun Line cuma bisa melakukan pembelian satu kali\n\n
+//    ^ Sekarang, pilih jenis tiket yang kamu mau. {topic=dwpfree1} <set mycontext=dwpfree1> <set dwp_ticket_disc_categ=0>
+
+//+ (buy 1 disc 15)
+//- dwp06 Oke, Bang Joni kasih tau dulu nih aturannya,\n\n
+//    ^ - Acara ini khusus untuk 18+.\n
+//    ^ - Untuk masuk ke DWP, kamu harus nunjukin identitas (KTP/Paspor/SIM)\n
+//    ^ - Kalo nggak bawa identitas, kamu nggak bisa masuk dan nggak ada ganti rugi\n
+//    ^ - Supaya semuanya kebagian, satu akun Line cuma bisa melakukan pembelian satu kali\n\n
+//    ^ Sekarang, pilih jenis tiket yang kamu mau. {topic=dwpdisc} <set mycontext=dwpdisc> <set dwp_ticket_disc_categ=1>
+
+//> topic dwpdisc inherits global
+
+//  + [*] (vip day 1|vip day 2) [*]
+//  - dwp02 Yaahh.. Jenis tiket yang kamu pilih udah abis stoknya. Coba pilih jenis tiket yang lain deh.
+
+//  + [*] (vip 2 day|general day 1|general day 2|general 2 day) [*]
+//  - dwp03 Oke, mau beli berapa tiket? <set dwp_ticket_category=<star>>
+
+//  + (#)[tiket|ticket|tket]
+//  * <star> <= 4 => {topic=dwpforminput} <set mycontext=dwpforminput> Sip! Sekarang isi dulu data diri kamu sesuai identitas (KTP/Paspor/SIM) dengan format\n\nNama\nNo. Identitas\nTanggal Lahir (DD-MM-YYYY)\nJenis Kelamin (L/P)\nEmail\nNo. HP \n\n
+//  ^ Contoh:\nKenzie Abinaya\n1234567890\n05-05-1980\nL\nkenzie@mail.com\n08XXXXXXXXXX  <set dwp_ticket_qty=<star>>
+//  - Bang Joni batesin dulu per orang 4 tiket ya, jangan banyak2 :P
+
+//< topic
+
+//> topic dwpfree1 inherits global
+
+//  + [*] (vip day 1|vip day 2) [*]
+//  - dwp02 Yaahh.. Jenis tiket yang kamu pilih udah abis stoknya. Coba pilih jenis tiket yang lain deh.
+
+//  + [*] (vip 2 day|general day 1|general day 2|general 2 day) [*]
+//  - dwp04 Sip! Sekarang isi dulu data diri kamu sesuai identitas (KTP/Paspor/SIM) dengan format\n\n
+//  ^ Nama\nNo. Identitas\nTanggal Lahir (DD-MM-YYYY)\nJenis Kelamin (L/P)\nEmail\nNo. HP \n\n
+//  ^ Contoh:\nKenzie Abinaya\n1234567890\n05-05-1980\nL\nkenzie@mail.com\n08XXXXXXXXXX{topic=dwpforminput} <set mycontext=dwpforminput> <set dwp_ticket_category=<star>> <set dwp_ticket_qty=6>
+
+//< topic
+
+//> topic dwpforminput inherits global
+
+//  + *
+//  - dwp05 Tiket DWP kamu udah Bang Joni booking dengan kode <dwp_book_code>.\n Silakan transfer sejumlah Rp <dwp_amount_to_pay> ke,\n\nBCA\n542.511.2888\nPT.Jualan Online Indonesia\n\n
+//  ^ *Nominal transfer harus sama persis dengan yang tertera di atas (tidak boleh kurang/lebih)\n\n
+//  ^ Lakukan pembayaran secepatnya, maksimal jam <dwp_max_book_time>, supaya tiket kamu nggak dibatalin.\n
+//  ^ E-voucher DWP kamu akan Bang Joni kirim maksimal 3 jam setelah pembayaran diterima. <set dwp_ticket_identity=<star>> {topic=random}
+
+
+//< topic
+
+//+ dwpticketbookingamtviolation
+//- Pembayaran kamu udah Bang Joni terima, tapi masih jumlahnya ga sesuai nih, segera kontak call center Bang Joni ya
+
+//+ inputinvalid
+//- Format yang kamu isikan salah. Cek format isiannya ya,\n\n
+//^ Nama\nNo. Identitas\nTanggal Lahir (DD-MM-YYYY)\nJenis Kelamin (L/P)\nEmail\nNo. HP \n\n
+//^ Contoh:\nKenzie Abinaya\n1234567890\n05-05-1980\nL\nkenzie@mail.com\n08XXXXXXXXXX {topic=dwpforminput} <set mycontext=dwpforminput>
+
+//+ dwpticketregistereduser
+//- Akun Line ini udah pernah dipake untuk booking tiket DWP sebelumnya, jadi nggak bisa kamu pake lagi. {topic=dwpforminput} <set mycontext=dwpforminput>
+
+//+ dwpticketdateinvalidformat
+//- Tanggal lahir kamu tidak sesuai format. Masukkan format tanggal yang benar ya {topic=dwpforminput} <set mycontext=dwpforminput>
+
+//+ dwpticketpendingbook
+//- Kamu masih punya tiket yang belum dibayar, segera selesaikan pembayaran {topic=dwpforminput} <set mycontext=dwpforminput>
+
+//+ dwpticketnotavailable
+//- Yaahh.. Jenis tiket yang kamu pilih udah abis stoknya. Coba pilih jenis tiket yang lain deh.
+
+//+ dwpticketqtyviolation
+//- Bang Joni batesin dulu per orang 4 tiket ya, jangan banyak2 :P
+
+//+ dwpticketinvalidemail
+//- Email kamu tidak sesuai format, cek ulang ya {topic=dwpforminput} <set mycontext=dwpforminput>
+
+
+///////////////////////////////////START ECOMMERCE
++ [*] (xltunai) [*]
+- eco00 Pilih kategori produkn XLTunai yaa {topic=ecomm} <set mycontext=ecomm>
+
+> topic ecomm inherits global
+
+  + (pulsa)
+  - eco01 Butuh berapa? <set ecomm_categ=<star>>
+  
+  + #
+  - eco02 Sekarang share location kamu <set ecomm_qty=<star>> {topic=ecomm_share_location} <set mycontext=ecomm_share_location>
+
+< topic
+
+> topic ecomm_share_location inherits global
+
+  + locationsaved
+  - eco03 Siap, sekarang isi kontak kamu biar abang-abangnya gampang carinya, formatnya Nama/Alamat/No.hp \n\n
+  ^ Contoh : AWK/Pamulang/085790888409
+  
+  + (*)
+  - eco04 Sip, sekarang tunggu dulu ya, Bang Joni cariin abang-abang yang bisa anterin kamu <get ecomm_categ> sebanyak <get ecomm_qty> <set ecomm_contact=<star>> {topic=ecomm_ready_togo} <set mycontext=ecomm_ready_togo>
+  
+< topic
+
+> topic ecomm_ready_togo inherits global
+
+  + merchantready
+  - eco05 Halo <first_name>, Bang Joni udah dapet <merchant_count> abang-abangnya\n\n
+  ^ Nanti Bang Joni kabarin lagi kalo udah dikonfirmasi sama abang-abangnya
+  
+  + merchantnotfound
+  - Halo <first_name>, maaf banget Bang Joni gak nemuin abang-abang deket lokasi yg kamu mau :(
+  
+  + systemfailure
+  - Halo <first_name>, maaf banget Bang Joni sedang ada kesalahan sistem :(
+  
+< topic
+
++ merchantreadydetail
+- eco06 Ini detail kontak dari abang-abang nya ya,\n\n
+^ Nama abang-abang : <merchant_name>\n
+^ Telepon : <merchant_phone>\n\n
+^ Kira-kira 10-15 menit lagi dateng ke tempat kamu, siap-siap ya ;) {topic=random}
+
+
++ [*] (skyscanner) [*]
+- Boleh tau rute penerbangannya, <first_name>?\n\n
+^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
+
+
+> topic psw_skyscann inherits global
+  + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
+  - Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+
+  + [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat}
+
+  + [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
+  //%Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [*] (#@months|# @months|#@months@years|# @months @years)
+  //%Oke, buat berangkat kapan?\n\n
+  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
+  - Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [*] #dewasa #anak #bayi [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
+
+  + [*] # dewasa # anak # bayi [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
+
+  + [*] #dewasa #anak [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+
+  + [*] # dewasa # anak [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+
+  + [*] #dewasa [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+
+  + [*] # dewasa [*]
+  //%Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+
+  + [*] #orang [*]
+  //%Untuk berapa orang? \n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+
+  + [*] # orang [*]
+  //%Boleh. Untuk berapa orang?\n\n
+  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
+  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=0>
+
+  + [*] (smua|semua|apa aja|apa saja|terserah|@maskapai) [*]
+  //%Oke deh, mau Bang joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
+  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)
+  - Untuk take-off-nya kamu mau pilih pagi, siang atau malam? <set psw_maskapai=<star>>
+
+  + [*] (pagi|pgi|pg|siang|sore|sre|malam|malem|mlem|mlm|murah|murag|termurah|bebas|atur aja|kapan aja|kpn aja) [*]
+  //%Untuk take-off-nya kamu mau pilih pagi, siang atau malam?
+  - sky01 Sip deh! Tunggu sebentar ya, Bang Joni cariin jadwal penerbangannya. <set psw_derpature_time=<star>>
+
+  + sky02
+  - Maaf banget Bang Joni gak dapet penerbangan yg kamu pilih, coba cari tanggal lain atau rute lain deh {topic=random}
+
+  + sky03
+  - Berikut jadwal penerbangan termurah sesuai dengan yang kamu mau.\n\n
+  ^ Untuk memilih penerbangan, cukup ketik nomor pilihnya.\n\n
+  ^ Untuk mengganti penerbangan, kamu langsung bisa ketik rute pesawat atau tanggal keberangkatan.\n\n  {topic=psw_skyscann_choose} <set mycontext=psw_skyscann_choose>
+
+< topic
+
+> topic psw_skyscann_choose inherits global
+  + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
+  - sky01 Oke, coba Bang Joni cek dulu. <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+
+  + [kalau|kalo|klo|untuk|untk|utk|buat|kalau untuk|kalo untuk|klo untuk|kl untuk|kalau untk|kalau utk|kalo untk|kalo utk|klo untk|klo utk|kl untk|kl utk|kalau buat|kalo buat|klo buat|kl buat] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years) [ada|ad|bang|ada bang|ad bang]
+  - sky01 Oke, tunggu sebentar, Bang Joni ubah jadwalnya. <set psw_derpature_date=<star>> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + [kalau|kalo|klo|untuk|untk|utk|buat|kalau untuk|kalo untuk|klo untuk|kl untuk|kalau untk|kalau utk|kalo untk|kalo utk|klo untk|klo utk|kl untk|kl utk|kalau buat|kalo buat|klo buat|kl buat] (hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years) [ada|ad|bang|ada bang|ad bang]
+  - sky01 Oke, Bang Joni ubah jadwalnya. <set psw_derpature_date=<star>> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+
+  + sky03
+  - Berikut jadwal penerbangan termurah sesuai dengan yang kamu mau.\n\n
+  ^ Untuk memilih penerbangan, cukup ketik nomor pilihnya.\n\n
+  ^ Untuk mengganti penerbangan, kamu langsung bisa ketik rute pesawat atau tanggal keberangkatan.\n\n
+
+
+  + [*] (booking #|pilih #|book #|no #|nomor #|#) [*]
+  - sky04 Tap link diatas untuk melanjutkan proses booking kamu ;) <set psw_user_choose=<star>>  {topic=random}
+< topic
+
++ sky04a
+- fl01 Pemesanan kamu dialihkan via Tiket.com, Bang Joni kabarin kalo udah dapet penerbangannya ya {topic=pesawat} <set mycontext=pesawat>
+
++ [*] (cimb|bank cimb|cimbot) [*]
+- cim00 Mau cari info apa, <first_name>?\n\n
+^ Lokasi ATM, lokasi cabang, atau promo? {topic=cimb} <set mycontext=cimb>
+
+> topic cimb inherits global
+  + [*] (promo|promosi|di) [*]
+  - cim01 Untuk mendapatkan promo berdasarkan lokasi daerah kamu, ketik aja lokasinya, contoh 'Promo di Jakarta' \n\n
+  ^ Atau kalo kamu mau dapetin detail promo nya, bisa langsung ketik semisal 'Promo Shell' {topic=cimb_promo_info} <set mycontext=cimb_promo_info>
+
+  + [*] (cabang) [*]
+  - cim02 Share location kamu untuk mendapatkan lokasi cabang  terdekat {topic=cimb_branch_info} <set mycontext=cimb_branch_info>
+
+  + [*] (atm) [*]
+  - cim03 Share location kamu untuk mendapatkan lokasi ATM terdekat {topic=cimb_atm_info} <set mycontext=cimb_atm_info>
+< topic
+
+> topic cimb_atm_info inherits global
+  + (*)
+  - cim04 Lokasi <cimb_count> ATM terdekat dari posisi kamu ada di {topic=cimb} <set mycontext=cimb>
+< topic
+
+> topic cimb_branch_info inherits global
+  + (*)
+  - cim05 Lokasi <cimb_count> Cabang terdekat dari posisi kamu ada di {topic=cimb} <set mycontext=cimb>
+< topic
+
+> topic cimb_promo_info inherits global
+    + [*] [promo|promosi|diskon] di (*) [*]
+    - cim06 Oke, Bang Joni cariin dulu promonya ya <set promo_lokasi=<star2>> {topic=cimb} <set mycontext=cimb>
+
+    + [*] [promo|promosi|diskon] (*) [*]
+    - cim07 Oke, Bang Joni cariin dulu promonya ya <set promo_merchant=<star>> {topic=cimb} <set mycontext=cimb>
+
+    //+ [*] [promo|promosi|diskon] (*) di (*) [*]
+    //- cim08 Oke, Bang Joni cariin dulu promonya ya <set promo_merchant=<star1>> <set promo_lokasi=<star3>> {topic=cimb} <set mycontext=cimb>
+
++ cimbpromonotfound
+- Maaf Bang Joni g dapet promo yang kamu pengen nih, coba ulang dengan keyword yang beda <set promo_merchant=<star1>> <set promo_lokasi=<star3>> {topic=cimb} <set mycontext=cimb>
+
+< topic
