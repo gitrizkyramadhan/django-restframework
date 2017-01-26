@@ -46,7 +46,7 @@ if __name__==  "__main__":
     def bangjoni():
         content = request.get_json()
         print content
-        #doworker.delay(content)
+        doworker.delay(content)
         return "OK"
 
     #@app.route('/line1512', methods=['POST'])
