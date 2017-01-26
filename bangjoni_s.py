@@ -19,7 +19,7 @@ gevent.monkey.patch_all()
 
 if __name__==  "__main__":
     print "Line bang joni bot personal assistant is online"
-	
+
     app = Flask(__name__)
 
     #import logging
@@ -28,43 +28,43 @@ if __name__==  "__main__":
 
     #app.logger.setLevel(log.ERROR)	
     #app.debug = True
-    
+
     @app.route('/celery', methods=['GET'])
     def home():
         print "Hello from Client..."
-        return "Hello World!"	
+        return "Hello World!"
 
-        
-    @app.route('/loadtest', methods=['GET'])        
+
+    @app.route('/loadtest', methods=['GET'])
     def loadtest():
         #app.logger.warning('A warning message is sent.')
         doloadtest.delay()
         #print "Load Test..."
-        return "OK"		
-		
+        return "OK"
+
     @app.route('/line1512v2', methods=['POST'])
     def bangjoni():
         content = request.get_json()
         print content
         #doworker.delay(content)
         return "OK"
-		
+
     #@app.route('/line1512', methods=['POST'])
     #def bangjoniprod():
     #    content = request.get_json()
     #    #print content
     #    doworker.delay(content)
     #    return "OK"		
-		
+
     @app.route('/uber_token', methods=['GET'])
     def uber_token():
-        state = request.args.get('state') 
-        code = request.args.get('code') 
+        state = request.args.get('state')
+        code = request.args.get('code')
         print ""
         print "================================NEW UBER TOKEN REQUEST============================================="
         print state, code
         #g = uber_authorization(state, code)		
-        uber_authorization.delay(state, code)		
+        uber_authorization.delay(state, code)
         #if g == "Y":
         #return redirect('https://line.me/R/ch/1475301685', code=302)	
         # return redirect('https://line.me/R/ch/1483177568', code=302)
@@ -85,7 +85,7 @@ if __name__==  "__main__":
         meta_resource_id = ""
         meta_resource_type = ""
         meta_status = ""
-        resource_href = ""   
+        resource_href = ""
         if 'event_id' in content:
             event_id = str(content["event_id"])
         if 'event_time' in content:
@@ -108,7 +108,7 @@ if __name__==  "__main__":
 
     @app.route('/uber_surge', methods=['GET'])
     def uber_surge():
-        surge_confirmation_id = request.args.get('surge_confirmation_id') 
+        surge_confirmation_id = request.args.get('surge_confirmation_id')
         print ""
         print "================================SURGE UBER NOTIF REQUEST======================================="
         print "surge_confirmation_id:", surge_confirmation_id
@@ -117,22 +117,22 @@ if __name__==  "__main__":
 
     @app.route('/callback_bangjoni', methods=['POST'])
     def jatis_callback():
-        trxid = request.form.get('trxid')	
-        merchant_name = request.form.get('merchant_name')	
-        merchant_code = request.form.get('merchant_code')	
-        payment_channel = request.form.get('payment_channel')	
-        trxstatus = request.form.get('trxstatus')	
-        chart_table = request.form.get('chart_table')	
-        total_tagihan = request.form.get('total_tagihan')	
-        total_pembayaran = request.form.get('total_pembayaran')	
-        trxtime = request.form.get('trxtime')	
-        content = request.form		
+        trxid = request.form.get('trxid')
+        merchant_name = request.form.get('merchant_name')
+        merchant_code = request.form.get('merchant_code')
+        payment_channel = request.form.get('payment_channel')
+        trxstatus = request.form.get('trxstatus')
+        chart_table = request.form.get('chart_table')
+        total_tagihan = request.form.get('total_tagihan')
+        total_pembayaran = request.form.get('total_pembayaran')
+        trxtime = request.form.get('trxtime')
+        content = request.form
         print ""
         print "================================JATIS CALLBACK================================================="
         print "JATIS_CALLBACK:",trxid,merchant_name,merchant_code,payment_channel,trxstatus,chart_table,total_tagihan,total_pembayaran,trxtime
-        print ">>>",content		
+        print ">>>",content
         push_billers_jatis.delay(trxid, trxstatus, chart_table, payment_channel, trxtime)
-        return "OK"				
+        return "OK"
 
     @app.route('/cloudmailin', methods=['POST'])
     def cloudmailin():
@@ -140,15 +140,15 @@ if __name__==  "__main__":
         #print content
         print "================================CLOUDMAILIN REQUEST============================================="
         docloudmailin.delay(content)
-        return "OK"		
-		
+        return "OK"
+
     @app.route('/agent_resp', methods=['POST'])
     def agentresp():
         content = request.get_json()
         #print content
         print "================================AGENT RESPONSE================================================="
         doagentresp.delay(content)
-        return "OK"			
+        return "OK"
 
 
     # ---------- DWP MODULE START ----------
@@ -193,14 +193,14 @@ if __name__==  "__main__":
 
     @app.route('/deposit', methods=['GET'])
     def bjpaydeposit():
-        trx_id = request.args.get('trx_id') 
+        trx_id = request.args.get('trx_id')
         print ""
         print "================================CYRUS DEPOSIT REQUEST============================================="
         print trx_id
         depositNotification.delay(trx_id)
-        return "OK"		
+        return "OK"
 
 
-	
-    print "starting gevent wsgi..."   
+
+    print "starting gevent wsgi..."
     pywsgi.WSGIServer(('', 8001), app).serve_forever()

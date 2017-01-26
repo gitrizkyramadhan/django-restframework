@@ -9,3 +9,4 @@ MYSQL_DB=bangjoni
 WEB_HOOK=https://www.bangjoni.com:4000
 EMAIL_NOTIF=e6ef27452cb778eb8351@cloudmailin.net
 COMMERCE_BASE_URL=http://localhost/merchantcommerce/
+TOKEN_LINE=dXJKKzVQJoVdyIUfTs4+VPLoWMI9Rry3wTQo0/ASFyFN4czuAvMeMIML5hTHyeTdcfwzA163oT9a4HkcmkomJwCI6Xn0Rlv/2bmd3numlH2UMIbrhzGQPseZKwlaGsogN63BMSQtnSApRPOInKzG9H6Nfd2Y6SKCxBWg7Cr7O3c=
