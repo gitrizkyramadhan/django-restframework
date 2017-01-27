@@ -4,6 +4,7 @@ from celery import Celery
 import time
 import sys
 from decimal import Decimal
+import traceback
 
 from IMAPPush import Idler, idlerInit
 from nlp_rivescript import Nlp
@@ -52,7 +53,7 @@ import logging
 import pickle
 
 import hashlib
-from operator import xor
+from operator import xor, concat
 
 # ---------- DWP MODULE START ----------
 from ticket_dwp import DWP
@@ -3104,22 +3105,30 @@ def doworker(req):
     opType = ""
 
     try:
-        contentType = content["result"][0]["content"]["contentType"]
-        msisdn = str(content["result"][0]["content"]["from"])
-        if contentType == 1:
-            ask = str(content["result"][0]["content"]["text"])
-        if contentType == 7:
-            longitude = content["result"][0]["content"]["location"]["longitude"]
-            latitude = content["result"][0]["content"]["location"]["latitude"]
-            address = content["result"][0]["content"]["location"]["address"]
-        if contentType == 8:
-            sticker = content["result"][0]["content"]["contentMetadata"]["STKTXT"]
-            stickerid = content["result"][0]["content"]["contentMetadata"]["STKID"]
-            print "--->STICKER", sticker, stickerid
-            sendMessageT2(msisdn, "Makasih sticker-nya..", 0)
-        if contentType == 2:
-            print "--->IMAGE"
-            sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
+        if content["events"][0]["type"] == "message":
+            contentType = content["events"][0]["message"]["type"]
+            msisdn = str(content["events"][0]["source"]["userId"])
+            if contentType == "text":
+                ask = str(content["events"][0]["message"]["text"])
+            elif contentType == "location":
+                longitude = content["events"][0]["message"]["longitude"]
+                latitude = content["events"][0]["message"]["latitude"]
+                address = content["events"][0]["message"]["address"]
+            elif contentType == "sticker":
+                sticker = content["events"][0]["message"]["packageId"]
+                stickerid = content["events"][0]["message"]["stickerId"]
+                print "--->STICKER", sticker, stickerid
+                sendMessageT2(msisdn, "Makasih sticker-nya..", 0)
+            elif contentType == "image":
+                print "--->IMAGE"
+                sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
+            else:
+                print "--->"+contentType.capitalize()
+                sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
+        else:
+            opType = content["events"][0]["type"]
+            msisdn = str(content["events"][0]["source"]["userId"])
+            print "-->", opType, msisdn
     except:
         opType = content["result"][0]["content"]["opType"]
         msisdn = str(content["result"][0]["content"]["params"][0])
@@ -3128,29 +3137,34 @@ def doworker(req):
 
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
 
-    if contentType == 1 or contentType == 7: # request text location
-        print "Incoming>>>", logDtm, first_name, msisdn, ask, longitude, latitude, username
+    if content["events"][0]["type"] == "message":
+        if contentType == "text" or contentType == "location": # request text location
+            print "Incoming>>>", logDtm, first_name, msisdn, ask, longitude, latitude, username
 
-        incomingClient = lineNlp.redisconn.get("status/%s" % (msisdn))
-        if incomingClient is None:
-            lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-            incomingClient = "0"
+            incomingClient = lineNlp.redisconn.get("status/%s" % (msisdn))
+            if incomingClient is None:
+                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+                incomingClient = "0"
 
-            #if incomingClient == "0":
-            #lineNlp.redisconn.set("status/%s" % (msisdn), 1)
-        if longitude != "":
-            ask = "[LOC]" + str(latitude) + ";" + str(longitude)
-            print ">>>>>>>", longitude, ask
-        displayname = get_line_username(msisdn)
-        #try:
-        onMessage(str(msisdn), ask, displayname)
-        #lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-        #    except Exception, e:
-        #        print "ERROR HAPPEN!!!"
-        #        print str(e)
-        #lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-        #lineNlp.redisconn.delete("rs-users/%s" % (msisdn))
-    elif opType == 4 or opType == 8: # request add friend and unblock
+                #if incomingClient == "0":
+                #lineNlp.redisconn.set("status/%s" % (msisdn), 1)
+            if longitude != "":
+                ask = "[LOC]" + str(latitude) + ";" + str(longitude)
+                print ">>>>>>>", longitude, ask
+            displayname = get_line_username(msisdn)
+            try:
+                onMessage(str(msisdn), ask, displayname)
+                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+            except Exception as e:
+                # print e
+                traceback.print_exc()
+                print "ERROR HAPPEN!!!"
+                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+                lineNlp.redisconn.delete("rs-users/%s" % (msisdn))
+
+                failureAns = lineNlp.doNlp("bjsysfail", msisdn, first_name)
+                sendMessageT2(msisdn, failureAns, 0)
+    elif content["events"][0]["type"] == "follow" or content["events"][0]["type"] == "unfollow": # request add friend and unblock
         displayname = get_line_username(msisdn)
         reply = "Halo " + displayname + ", terima kasih telah add Bang Joni sebagai teman.\n\nBang Joni adalah teman virtual kamu yang bisa diandalkan kapan aja dan di mana aja.\nSekarang Bang Joni bisa bantu kamu pesen tiket pesawat, travel xtrans, uber, isi pulsa, isi token pln, infoin jalan tol dan cuaca, terjemahkan bahasa.\n\n"
         reply = reply + "Untuk memulai ketik aja \"Halo bang\"\n\nOh iya, pake penulisan yang benar ya, jangan terlalu banyak singkatan, biar Bang Joni nggak bingung."
