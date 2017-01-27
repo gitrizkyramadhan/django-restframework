@@ -77,23 +77,23 @@ class Nlp:
 
     def reply(self, msisdn, mesg):
         params = {'msisdn': msisdn, 'ask': mesg}
-        resp = requests.post('http://localhost:3002/reply', data=json.dumps(params), headers=self.headers)
+        resp = requests.post('http://localhost:3001/reply', data=json.dumps(params), headers=self.headers)
         return resp.text
 
 
     def updateNlp(self, rule):
         print "added rule: ", rule
         params = {'trigger': rule}
-        resp = requests.post('http://localhost:3002/trigger', data=json.dumps(params), headers=self.headers)
+        resp = requests.post('http://localhost:3001/trigger', data=json.dumps(params), headers=self.headers)
         print "RICESCRIPT RULE ADDED BY AGENT"
 
     def set_uservar(self, msisdn, param, value):
         params = {'msisdn': msisdn, 'param': param, 'value': value}
-        resp = requests.post('http://localhost:3002/setvar', data=json.dumps(params), headers=self.headers)
+        resp = requests.post('http://localhost:3001/setvar', data=json.dumps(params), headers=self.headers)
 
     def get_uservar(self, msisdn, param):
         params = {'msisdn': msisdn, 'param': param}
-        resp = requests.post('http://localhost:3002/getvar', data=json.dumps(params), headers=self.headers)
+        resp = requests.post('http://localhost:3001/getvar', data=json.dumps(params), headers=self.headers)
         return resp.text
 
 
