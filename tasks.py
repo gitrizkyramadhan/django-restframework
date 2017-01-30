@@ -248,7 +248,7 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
     if keyboard == "bjpayregister":
         # linebot.send_rich_message_bjpay_register_text(msisdn, link_url,"Rich Message", message.strip())
         linebot.send_imagemap(msisdn, 'bjpay_register')
-        linebot.send_text_message(msisdn, message.strip())
+        # linebot.send_text_message(msisdn, message.strip())
     if keyboard == "bjpaydeposit":
         # linebot.send_rich_message_bjpay_deposit_text(msisdn, link_url,"Rich Message", message.strip())
         linebot.send_imagemap(msisdn, 'bjpay_register')

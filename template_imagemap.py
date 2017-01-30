@@ -87,7 +87,7 @@ imagemaps = [
                 ]
             )
     },{
-        "id":"pulsa",
+        "id":"bjpay_register",
         "payload": ImagemapSendMessage(
             base_url='https://www.bangjoni.com/line_images/bjpay_deposit',
                 alt_text='Rich Menu BJPay Deposit',
