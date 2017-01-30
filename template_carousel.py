@@ -121,7 +121,7 @@ carousels = [{
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    thumbnail_image_url='http://bangjoni.com/v2/carousel/greetings/travel.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel.png',
                     title='Transportasi & Travel',
                     text='blah',
                     actions=[
@@ -141,7 +141,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='http://bangjoni.com/v2/carousel/greetings/bjpay.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay.png',
                     title='BJPay',
                     text='blah',
                     actions=[
@@ -161,7 +161,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='http://bangjoni.com/v2/carousel/greetings/pulsa.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa.png',
                     title='Pulsa',
                     text='blah',
                     actions=[
@@ -181,7 +181,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='http://bangjoni.com/v2/carousel/greetings/info.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/info.png',
                     title='Info',
                     text='blah',
                     actions=[
@@ -201,7 +201,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='http://bangjoni.com/v2/carousel/greetings/other.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other.png',
                     title='Others',
                     text='blah',
                     actions=[
