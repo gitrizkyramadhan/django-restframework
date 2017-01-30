@@ -210,4 +210,5 @@ class Bot(object):
 
     def send_composed_carousel(self, user_ids, alt_text, columns):
         payload = template_carousel.composeCarousel(alt_text, columns)
+        user_ids = user_ids.split(",")
         self.__send_multicast(user_ids, payload)

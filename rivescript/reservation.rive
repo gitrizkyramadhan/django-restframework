@@ -484,7 +484,7 @@
 	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
 
 	+ flightresult123
-	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah.
+	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah buat tanggal <dep_date>.
 < topic
 
 > topic psw_skyscann_choose inherits global

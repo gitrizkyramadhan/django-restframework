@@ -586,14 +586,15 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 actions.append({'type':'uri', 'label':'Beli', 'uri':sky_resp_obj['deepLink']})
                 actions.append({'type': 'message', 'label': 'Ubah tanggal', 'text': "ubah tanggal"})
                 actions.append({'type': 'message', 'label': 'Ubah waktu', 'text': "ubah waktu perjalanan"})
-                column['thumbnail_image_url'] = 'thumbnail'
-                column['title'] = 'Rp '+sky_resp_obj['price']
-                column['text'] = sky_resp_obj['flightNumbers']['carriers']
+                column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+                column['title'] = 'Rp '+str(sky_resp_obj['price'])
+                column['text'] = sky_resp_obj['origin']+'-'+sky_resp_obj['destination']+', Perjalanan dengan '+sky_resp_obj['flightNumbers']['carrierCommonName']
                 column['actions'] = actions
                 columns.append(column)
 
             linebot.send_composed_carousel(msisdn, "Skyscanner result",columns)
             answer = lineNlp.doNlp("flightresult123", msisdn, first_name)
+            answer = answer.replace('<dep_date>',str(sky_resp_obj[0]['departureTime'])[:10])
             linebot.send_text_message(msisdn, answer)
 
             for item in skyResp:

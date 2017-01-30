@@ -25,7 +25,7 @@ carousels = [{
                             text='uber'
                         ),
                         URITemplateAction(
-                            label='',
+                            label=' ',
                             uri='http://example.com/1'
                         )
                     ]
@@ -305,5 +305,5 @@ def composeCarousel(alt_text, columns):
                 actions.append(URITemplateAction(label=action['label'], uri=action['uri']))
         col = CarouselColumn(thumbnail_image_url=column['thumbnail_image_url'], title=column['title'], text=column['text'], actions=actions)
         carousel_columns.append(col)
-    template = TemplateSendMessage(alt_text=alt_text, template=CarouselColumn(columns=carousel_columns))
+    template = TemplateSendMessage(alt_text=alt_text, template=CarouselTemplate(columns=carousel_columns))
     return template
