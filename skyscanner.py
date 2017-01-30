@@ -91,7 +91,7 @@ class SkyscannerSDK():
             itenary['price'] = itenaryTemp['PricingOptions'][0]['Price']
             itenary['deepLink'] = itenaryTemp['PricingOptions'][0]['DeeplinkUrl']
             for leg in legs:
-                if leg['Id'] == itenary['inboundLegId']:
+                if leg['Id'] == itenary['outboundLegId']:
                     itenary['arrivalTime'] = leg['Arrival']
                     itenary['departureTime'] = leg['Departure']
                     itenary['stops'] = len(leg['Stops'])
