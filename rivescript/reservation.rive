@@ -451,11 +451,11 @@
 
 	+ [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months@years|## @months @years|##@months|# @months|#@months@years|# @months @years|##@months|## @months)
 	- Buat berapa orang tuh?\n\n
-	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>>
+	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>> <set psw_return_date=-1>
 
 	+ [*] (hari ini|besok|lusa|##@bulan|## @bulan|##@bulan@years|## @bulan @years|##*@bulan*@years|##@bulan@years) [*]
     - Buat berapa orang tuh?\n\n
-    ^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>>
+    ^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>> <set psw_return_date=-1>
 < topic
 
 > topic passenger_count inherits global
