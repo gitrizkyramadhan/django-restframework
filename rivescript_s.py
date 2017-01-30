@@ -22,7 +22,8 @@ gevent.monkey.patch_all()
 
 
 rs = RiveScript(session_manager=RedisSessionStorage(),)
-rs.load_directory("/home/bambangs/line3/rivescript/")
+# rs.load_directory("/home/bambangs/line3/rivescript/")
+rs.load_directory("/home/bambangs/line3v2/rivescript/")
 rs.sort_replies()
 
 redisconn = redis.StrictRedis()
