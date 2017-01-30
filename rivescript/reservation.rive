@@ -21,6 +21,13 @@
 - Boleh tau rute penerbangannya, <first_name>?\n\n
 ^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
 
++ (*)
+* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+- ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
+^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
+^ Ketik 'cancel' untuk melakukan pembatalan.\n
+^ Ketik 'menu' untuk kembali ke menu awal.\n
+^ Updating bang joni masih terus dilakukan ya.
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
 > topic psw_skyscann inherits global

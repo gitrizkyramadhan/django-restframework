@@ -16,17 +16,16 @@ carousels = [{
                     title='Transportasi & Travel',
                     text='blah',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback1',
-                            text='postback text1',
-                            data='action=buy&itemid=1'
+                        MessageTemplateAction(
+                            label='Pesawat',
+                            text='pesawat'
                         ),
                         MessageTemplateAction(
-                            label='message1',
-                            text='message text1'
+                            label='Uber',
+                            text='uber'
                         ),
                         URITemplateAction(
-                            label='uri1',
+                            label='',
                             uri='http://example.com/1'
                         )
                     ]

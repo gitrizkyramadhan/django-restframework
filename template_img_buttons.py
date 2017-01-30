@@ -30,3 +30,15 @@ imgbuttons = [{
         )
     )
 }]
+
+def compose_link_message(alt_text, thumbnail_url, title, description, label, uri):
+    return TemplateSendMessage(
+        alt_text=alt_text,
+        template=ButtonsTemplate(
+            thumbnail_image_url=thumbnail_url,
+            title=title,
+            text=description,
+            actions=[
+                URITemplateAction(label=label, uri=uri)
+            ]
+        ))

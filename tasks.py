@@ -214,7 +214,10 @@ def sendMessageTX(msisdn, message, keyboard):
 
 def sendPhotoTX(msisdn, file_path, caption, keyboard):
     print "---------->", file_path.split('/')[6]
-    linebot.send_images(msisdn,"http://128.199.88.72/line_images/%s" % (file_path.split('/')[6]), "http://128.199.88.72/line_images/%s" % (file_path.split('/')[6]))
+    file_path = file_path.split('/')[6]
+    img_url = "http://128.199.88.72/line_images/%s" % (file_path)
+    # linebot.send_images(msisdn,"http://128.199.88.72/line_images/%s" % (file_path), "http://128.199.88.72/line_images/%s" % (file_path.split('/')[6]))
+    linebot.send_image_message(msisdn, img_url)
 
 def sendMessageT2(msisdn, message, keyboard = 0):
     sendMessageTX(msisdn, message, keyboard)
@@ -223,7 +226,9 @@ def sendPhotoT2(msisdn, file_path, caption = "", keyboard = 0):
     sendPhotoTX(msisdn, file_path, caption, keyboard)
 
 def sendPhotoCaptionT2(msisdn, link_url, previewImageUrl, message):
-    linebot.send_images_text(msisdn, link_url, previewImageUrl, message.strip())
+    # linebot.send_images_text(msisdn, link_url, previewImageUrl, message.strip())
+    linebot.send_image_message(msisdn, link_url)
+    linebot.send_text_message(msisdn, message)
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     save_last10chat(logDtm, msisdn, message.strip(), 'BJ')
 
@@ -247,7 +252,8 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
 
 def sendLinkMessageT2(msisdn, message1, message2, message3, link_url, previewImageUrl):
     # print "-x-x-x-x-x-x-", message1, message2, message3, link_url
-    linebot.send_link_message(msisdn, message1.strip(), message2, message3, link_url, previewImageUrl)
+    # linebot.send_link_message(msisdn, message1.strip(), message2, message3, link_url, previewImageUrl)
+    linebot.send_link_message(msisdn, previewImageUrl, message1, message2, message3, link_url)
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     save_last10chat(logDtm, msisdn, message1.strip(), 'BJ')
 

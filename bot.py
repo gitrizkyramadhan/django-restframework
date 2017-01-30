@@ -164,6 +164,10 @@ class Bot(object):
         else:
             raise Exception('Invalid image button ID!')
 
+    def send_link_message(self, user_ids, alt_text, thumbnail_url, title, description, label, uri):
+        payload = template_img_buttons.compose_link_message(alt_text, thumbnail_url, title, description, label, uri)
+        self.__send_multicast(user_ids, payload)
+
     def send_confirmation(self, user_ids, confirm_id):
         """
         Send confirmation message to specific one or more user ID.
