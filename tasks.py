@@ -594,9 +594,10 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
 
             linebot.send_composed_carousel(msisdn, "Skyscanner result",columns)
             answer = lineNlp.doNlp("flightresult123", msisdn, first_name)
-            answer = answer.replace('<dep_date>',str(sky_resp_obj[0]['departureTime'])[:10])
+            answer = answer.replace('<dep_date>',str(skyResp[0]['departureTime'])[:10])
             linebot.send_text_message(msisdn, answer)
 
+            tempId = 0
             for item in skyResp:
                 tempId = tempId + 1
                 sql = "insert into searching_airlines values('" + msisdn + "','" + departureDate + "','" + str(tempId) + "','" + item['outboundLegId'] + "','" + item['flightNumbers']['carriers'] + '-' + item['flightNumbers']['carrierCommonName'] + "','" + item['agentName'] + "','" + item['departureTime'][len(item['departureTime']) - 8:len(item['arrivalTime']) - 3].replace(":", "") + "','" + item['arrivalTime'][len(item['arrivalTime']) - 8:len(item['arrivalTime']) - 3] + "','" + item['deepLink'] + "')"
