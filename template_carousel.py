@@ -13,8 +13,8 @@ carousels = [{
             columns=[
                 CarouselColumn(
                     thumbnail_image_url='https://example.com/item1.jpg',
-                    title='this is menu1',
-                    text='description1',
+                    title='Transportasi & Travel',
+                    text='blah',
                     actions=[
                         PostbackTemplateAction(
                             label='postback1',
@@ -33,8 +33,8 @@ carousels = [{
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://example.com/item2.jpg',
-                    title='this is menu2',
-                    text='description2',
+                    title='BJPay',
+                    text='blah',
                     actions=[
                         PostbackTemplateAction(
                             label='postback2',
@@ -50,6 +50,66 @@ carousels = [{
                             uri='http://example.com/2'
                         )
                     ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Pulsa',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback3',
+                            text='postback text3',
+                            data='action=buy&itemid=3'
+                        ),
+                        MessageTemplateAction(
+                            label='message3',
+                            text='message text3'
+                        ),
+                        URITemplateAction(
+                            label='uri3',
+                            uri='http://example.com/2'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Info',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback4',
+                            text='postback text4',
+                            data='action=buy&itemid=4'
+                        ),
+                        MessageTemplateAction(
+                            label='message4',
+                            text='message text4'
+                        ),
+                        URITemplateAction(
+                            label='uri4',
+                            uri='http://example.com/2'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Others',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback5',
+                            text='postback text5',
+                            data='action=buy&itemid=2'
+                        ),
+                        MessageTemplateAction(
+                            label='message5',
+                            text='message text5'
+                        ),
+                        URITemplateAction(
+                            label='uri5',
+                            uri='http://example.com/2'
+                        )
+                    ]
                 )
             ]
         )
@@ -62,8 +122,8 @@ carousels = [{
             columns=[
                 CarouselColumn(
                     thumbnail_image_url='https://example.com/item1.jpg',
-                    title='this is menu1',
-                    text='description1',
+                    title='Transportasi & Travel',
+                    text='blah',
                     actions=[
                         PostbackTemplateAction(
                             label='postback1',
@@ -82,8 +142,8 @@ carousels = [{
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://example.com/item2.jpg',
-                    title='this is menu2',
-                    text='description2',
+                    title='BJPay',
+                    text='blah',
                     actions=[
                         PostbackTemplateAction(
                             label='postback2',
@@ -96,6 +156,66 @@ carousels = [{
                         ),
                         URITemplateAction(
                             label='uri2',
+                            uri='http://example.com/2'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Pulsa',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback3',
+                            text='postback text3',
+                            data='action=buy&itemid=3'
+                        ),
+                        MessageTemplateAction(
+                            label='message3',
+                            text='message text3'
+                        ),
+                        URITemplateAction(
+                            label='uri3',
+                            uri='http://example.com/2'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Info',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback4',
+                            text='postback text4',
+                            data='action=buy&itemid=4'
+                        ),
+                        MessageTemplateAction(
+                            label='message4',
+                            text='message text4'
+                        ),
+                        URITemplateAction(
+                            label='uri4',
+                            uri='http://example.com/2'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item2.jpg',
+                    title='Others',
+                    text='blah',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback5',
+                            text='postback text5',
+                            data='action=buy&itemid=2'
+                        ),
+                        MessageTemplateAction(
+                            label='message5',
+                            text='message text5'
+                        ),
+                        URITemplateAction(
+                            label='uri5',
                             uri='http://example.com/2'
                         )
                     ]
