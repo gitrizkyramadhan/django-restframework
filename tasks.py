@@ -234,11 +234,17 @@ def sendPhotoCaptionT2(msisdn, link_url, previewImageUrl, message):
 
 def sendRichCaptionT2(msisdn, link_url, message, keyboard):
     if keyboard == "tiketux":
-        linebot.send_rich_message_payment_tiketux_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_payment_tiketux_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'payment_tiketux')
+        linebot.send_text_message(msisdn, message.strip())
     if keyboard == "tiketdotcom":
-        linebot.send_rich_message_payment_tiketdotcom_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_payment_tiketdotcom_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'payment_tiketdotcom')
+        linebot.send_text_message(msisdn, message.strip())
     if keyboard == "tokenpln":
-        linebot.send_rich_message_token_pln_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_token_pln_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'payment_token')
+        linebot.send_text_message(msisdn, message.strip())
     if keyboard == "pulsahp":
         # linebot.send_rich_message_pulsa_hp_text(msisdn, link_url,"Rich Message", message.strip())
         linebot.send_imagemap(msisdn, 'pulsa')
@@ -894,7 +900,9 @@ def onMessage(msisdn, ask, first_name):
         linebot.send_text_message(msisdn, answer[4:])
         linebot.send_carousel(msisdn, 'greetings')
     if answer[:4] == "gr02":
-        linebot.send_carousel(msisdn, 'greetings')
+        linebot.send_carousel(msisdn, 'transport_other')
+    if answer[:4] == "gr03":
+        linebot.send_carousel(msisdn, 'info_other')
     #################################################
 
     ####################BJPAY CEK SALDO####################

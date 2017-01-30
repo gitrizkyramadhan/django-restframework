@@ -54,13 +54,71 @@
 ^ Ketik 'menu' untuk kembali ke menu awal.\n
 ^ Updating bang joni masih terus dilakukan ya.
 
+///////////////////////////////////START REMINDER
++ [*] (ingetin|reminder|bangunin)
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+^ - Ingetin ada resepsi nikah lusa\n
+^ - Ingetin bangun pagi tiap jam 5\n
+^ - Ingetin bayar listrik tiap tgl 5 juli\n
+^ - Ingetin meeting dengan sales tiap senin jam 9.30
+
++ [*] (ingetin|reminder|bangunin) *{weight=10}
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+- re01 OK <first_name>. <set rem_pesan=<star2>>
+
++ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
+* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
+- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
+
++ [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
+- OK
+
++ [*] lihat reminder [*]
+- re02 Okay, berikut daftar remindermu:
+
++ [*] hapus reminder [*]
+- Sorry, layanan penghapusan reminder masih belom ada ya.
+
++ [*] (set|ubah|ganti) [*] (kota|lokasi) [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+- sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star3>> <get sholat_kota>
+
++ [*] (set|ubah|ganti) [*] (kota|lokasi) [*]
+- Ok <first_name>, kamu sekarang di kota mana? {topic=setcity3}
+
+/////////////////////////////////START INFO BANTUAN
++ (bantuan)
+- Bang Joni adalah teman virtual di Line Messenger yang mempunyai semangat membantu memenuhi kebutuhan-kebutuhan kamu\n
+^ Beralamat di:\n
+^ Gedung Palma One - Suite 210\n
+^ Jl. H.R Rasuna Said Kav X-2 No.4\n
+^ Kuningan Timur, Jakarta Selatan\n
+^ 12950 Indonesia\n
+^ Phone: +62 21 252 1006, +62 812 8893 5068\n
+^ www.bangjoni.com 2016\n
+^ rizky@bangjoni.com
+
+//////////////////////////////////START TRANSLATOR
++ [*] (terjemahin|terjemain|translate|translator|kamus on) [*]
+* <get translate_lang> == undefined => Terjemahin ke bahasa apa <first_name> (inggris, perancis, mandarin, arab, jepang, korea, jerman, indonesia)? {topic=translator}
+- tr01 Oke, Bang Joni aktifin mode translator sekarang, kalo udah selesai atau mau ganti ke bahasa lain, kamu bisa ketik "kamus off".\n\n
+^ Sekarang kamu bisa ketik kata yang mau diterjemahin.
+
++ [*] (terjemahin|terjemain|translate) (ke|ke bahasa) (inggris|perancis|mandarin|arab|jepang|korea|jerman|indonesia) [*]
+- tr01 Oke, Bang Joni aktifin mode translator sekarang, kalo udah selesai atau mau ganti ke bahasa lain, kamu bisa ketik "kamus off".\n\n <set translate_lang=<star3>>
+^ Sekarang kamu bisa ketik kata yang mau diterjemahin.
+
++ kamus off
+- tr02 Sip! Mode translator udah Bang Joni matiin.
+
+
 ///////////////////////////////////SALDO CHECK BJPAY
 + [*] (saldo|balance) [*]
 - bj00 <first_name>
 
 ///////////////////////////////////DEPOSIT BJPAY
 + [*] (deposit|topup|top up|isi bjpay) [*]
-- bj99 Okay, pilih bank dibawah untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>
+- bj99 Okay, pilih bank di atas untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>
 
 ///////////////////////////////////DEPOSIT BJPAY
 + [*] (bjpay register) [*]
@@ -88,6 +146,21 @@
 - Boleh tau rute penerbangannya, <first_name>?\n\n
 ^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
 
+> topic deposit inherits global
+  + (va permata|transfer bca)
+  - bj03 Mau deposit berapa? misal 27000 (isi tanpa titik ya, dan pastikan minimal sesuai dg harga pulsa yg kamu pilih) <set deposit_bank=<star>>
+
+  + [*] # [*] {weight=10}
+  - bj04 Okay, ditunggu... <set deposit_nominal=<star>>  {topic=random} <set mycontext=random>
+
+  + (transfer mandiri)
+  - Untuk sementara transfer ke Mandiri belom bisa bang joni proses, pakai VA Permata atau BCA dl ya
+
+  //+ (transfer bca)
+  //- Untuk sementara transfer ke BCA belom bisa bang joni proses, pakai VA Permata atau BCA dl ya
+
+< topic
+
 > topic pulsa inherits global
   + [*] # [*] {weight=10}
   - pu01 <set no_hp=<star>> Ok, kamu memilih pulsa nominal
@@ -96,7 +169,7 @@
   - pu02 <set nominal_token=<star>>Ok, kamu memilih pulsa nominal <get nominal_token>\n
   ^ Eh, ada yang baru nih! BJPay, metode pembayaran terbaru dari Bang Joni yang saat ini bisa kamu pake untuk beli pulsa dan token pln\n
   ^ Tinggal isi saldonya, kapan aja dan di mana aja kamu bisa beli pulsa di Bang Joni!\n\n
-  ^ Untuk daftar BJPay, tap gambar di bawah ini
+  ^ Untuk daftar BJPay, tap gambar di atas
 
   + bjpay register
   - Sip, sekarang masukan no HP-mu untuk register BJPAY\nIsi no HP dg format 08xxxxx (contoh: 08xxxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
@@ -122,11 +195,190 @@
   - pl01 Ok, Bang Joni cek dl nomor meter-nya ... <set id_pln=<star>>
 
   + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
-  - pl02 <set nominal_token=<star>> Ok, kamu memilih token nominal <get nominal_token>, selanjutnya pilih metode bayar dengan tap menu di bawah.
+  - pl02 <set nominal_token=<star>> Ok, kamu memilih token nominal <get nominal_token>, selanjutnya pilih metode bayar dengan tap menu di atas.
 
   + bjpay register
   - Nah gitu dong! Sekarang ketik nomor HP yang mau kamu daftarin BJPay dengan format (08xxxxxxxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
 < topic
+
+> topic translator inherits global
+  + [*] (inggris|perancis|mandarin|arab|jepang|korea|jerman|indonesia) [*]
+  - tr01 Ok, bang joni aktifkan mode translator, untuk keluar atau ganti bahasa ketik kamus off ya\n
+  ^ Sekarang ketik kalimatnya...? <set translate_lang=<star>>
+
+  + kamus off
+  - tr02 Ok, bang joni non aktifkan mode translator {topic=random}
+< topic
+
+
+> topic waktusholat inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - sh01 Siap, Bang Joni cari info... <set sholat_kota=<star>> {topic=random}
+
+  //+ [*] (@kotashol) [*]
+  //- sh01 Siap, Bang Joni cari info... <set sholat_kota=<star>> {topic=random}
+< topic
+
+> topic remindsholat inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - rs01 <set sholat_kota=<star>>Siap, Bang Joni akan ingetin kamu waktu sholat dan imsakiyah untuk kota <get sholat_kota>  {topic=random}
+< topic
+
+> topic setcity1 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+  ^ - Ingetin ada resepsi nikah lusa\n
+  ^ - Ingetin bangun pagi tiap jam 5\n
+  ^ - Ingetin bayar listrik tiap tgl 5 juli\n
+  ^ - Ingetin meeting dengan sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random}
+< topic
+
+> topic setcity2 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - re01 OK <first_name>. <set sholat_kota=<star>> {topic=random}
+< topic
+
+> topic setcity3 inherits global
+  + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
+  - sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star1>> <get sholat_kota>  {topic=random}
+< topic
+
+///////////////////////////////////START XTRANS
++ [*] [tolong|mau] [order|pesen|psn|booking] (travel|xtrans|xtran|xtransbj) [*]
+- xt01 Saat ini lagi ada diskon 30000 loh! Harga tiket kamu otomatis terpotong saat pembayaran.\n\n
+^ Silakan pilih pool keberangkatannya\n
+^ (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
+
+> topic xtrans inherits global
+  + [*] (@city11) [*]
+  - xt02 Berikut pool tujuan yang tersedia dari pool keberangkatan <star>.\n\n
+  ^ Untuk memilih, silakan ketik nama pool tujuannya. <set xtrans_pool=<star>>
+
+  + xt02aa
+  - Oke, buat pergi kapan <first_name>?\n\n
+  ^ (Contoh: Hari ini, Besok, Lusa atau ketik tanggalnya seperti ini 31 Desember 2016)\n\n
+  ^ Kamu bisa booking tiket Xtrans, maksimal untuk 1 bulan ke depan.
+
+  + [*] (pagi ini|siang ini|sore ini|malam ini|hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years) [*]
+  - Untuk berapa orang? <set xtrans_derpature_date=<star>>
+
+  + [*] # [*]
+  - xt03 Oke, tunggu sebentar ya, Bang joni cariin jadwalnya di Xtrans.<set xtrans_dewasa=<star>>
+
+  + xt03
+  - Berikut jadwal keberangkatan Shuttle Bus Xtrans sesuai dengan yang kamu mau.\n\n
+  ^ Untuk memesan, cukup ketik nomor pilih yang ada di sebelah kiri. {topic=xtranschoosesche} <set mycontext=xtranschoosesche>
+
+< topic
+
+> topic xtranschoosesche inherits global
+
+  + [*] (pagi ini|siang ini|sore ini|malam ini|hari ini|hr ini|bsok|besok|bsk|lusa|#@months|# @months|#@months@years|# @months @years)
+  - Untuk berapa orang? <set xtrans_derpature_date=<star>> {topic=xtrans}
+
+  + [*] # [*]
+  - xt04 Ok. Bang Joni minta detail nama penumpang <set xtrans_pilih_no=<star>> {topic=xtranspassangerentry} <set mycontext=xtranspassangerentry>
+
+
+< topic
+
+> topic xtranspassangerentry inherits global
+  + [*]
+  - xt05
+
+  + xt06aa
+  - OK. <set xtrans_name=0>{topic=xtransseatentry} <set mycontext=xtransseatentry>
+
+
+< topic
+
+> topic xtransseatentry inherits global
+  + #
+  * <get xtrans_name> == 0 => xt07 <set xtrans_name=<star>>
+  - xt08 <set xtrans_hp=<star>>
+
+  + [*] (atm|mandiri ecash|bca klikpay|kartu kredit|tcash|cimb clicks|mandiri clickpay|indomaret|xl tunai) [*]
+  - xt09 <set xtrans_payment=<star>>
+
+  + xt07aa
+  - OK. {topic=random}
+
+
+< topic
+
+///////////////////////////////////START UBER
++ [*] [tolong|mau] [order|pesen|psn|booking] (taksi|taxi|uber|uberbj) [*]
+- ub01 {topic=uber}  <set mycontext=uber>
+
++ [*] (jemput) [*]
+- ub01 {topic=uber}  <set mycontext=uber>
+
+> topic uber inherits global
+  + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
+  - ch02 Oke, bang joni batalin uber-mu{topic=random}
+
+  + ub02
+  - ub02 Sip, bang Joni request Uber dl ya, nanti segera bang Joni kabari jika uber-mu sudah dapat...
+
+  + exittorandom
+  - exittorandom {topic=random}
+
+  + [*] (lupa|password|pasword) [*]
+  - Coba inget2 password uber lagi ya, bang joni perlu itu untuk pertama kali pesen uber, nanti setelahnya bisa langsung{topic=random}
+
+  + [*] (ubermotor|uberx|uber x|ubermobil|uber mobil|uber motor) [*]
+  - Sip, sekarang share lokasimu dengan cara click tombol + sebelah tombol smile dan tap Share Location <set uber_product=<star1>>
+
+  + [*] (yes|ok|lanjut|oke|ya) [*]
+  - ub03 Oke, pilih metode pembayaran-nya:
+
+  + [*] (cash|mastercard|visa) [*]
+  - ub04 Sip, bang Joni request Uber dl ya, nanti segera bang Joni kabari jika uber-mu sudah dapat... <set uber_payment=<star1>>
+< topic
+
+///////////////////////////////////START ZOMATO
++ [*] (restoran|makan|makanan|zomato|makanbj) [*]
+- zo00 Oke! Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasi pencarian restoran.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n
+^ Nanti Bang Joni kasih info restoran dengan review terbaik di Zomato berdasarkan lokasi yang kamu pilih. {topic=zomato} <set mycontext=zomato>
+
++ [*] (laper|lapar) [*]
+- zo00 Sini Bang Joni kasih tau tempat makan yang enak.\n\n
+^ Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasi pencarian restoran.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n
+^ Nanti Bang Joni kasih info restoran dengan review terbaik di Zomato berdasarkan lokasi yang kamu pilih. {topic=zomato} <set mycontext=zomato>
+
++ [*] [masakan|makanan] (@cuisine1|@cuisine2|@cuisine3) [di|daerah] (@location1|@location2|@location3)
+- zo01 Berikut 3 tempat makan dengan rating tertinggi <set zomato_cuisine=<star1>> <set zomato_location=<star2>>
+
+> topic zomato inherits global
+  + [*] (@cuisine1|@cuisine2|@cuisine3) [*]
+  - zo02 Oke <first_name>! Berikut tempat makan dengan review tertinggi di Zomato. <set zomato_cuisine=<star1>>{topic=random}
+< topic
+
+///////////////////////////////////START CUACA
++ [*] (cuaca|suhu|hujan|panas|suhunya|cuacanya|cuacabj) [*]
+- we01 Oke! Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasinya.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n
+^ Nanti Bang Joni bakal kasih info perkiraan cuaca berdasarkan lokasi yang kamu pilih.
+
++ [*] (Hari ini bakal ujan gak ya bang|hari ini ujan gak bang|bang, hari ini ujan gak ya|bang, hari ini bakal ujan gak ya|bang, hari ini ujan gak|Hari ini bakal ujan nggak ya bang|hari ini ujan nggak bang|bang, hari ini ujan nggak ya|bang, hari ini bakal ujan nggak ya|bang, hari ini ujan nggak|Hari ini bakal ujan ngga ya bang|hari ini ujan ngga bang|bang, hari ini ujan ngga ya|bang, hari ini bakal ujan ngga ya|bang, hari ini ujan ngga|Hari ini bakal ujan ga ya bang|hari ini ujan ga bang|bang, hari ini ujan ga ya|bang, hari ini bakal ujan ga ya|bang, hari ini ujan ga) [*]
+- we01 Nggak tau juga deh, coba kita cek yuk!\n\n
+^ Gunakan fitur share location (tombol + sebelah tombol smile) untuk menentukan lokasinya.\n\n
+^ Kamu bisa share lokasi kamu saat ini, atau bisa juga share lokasi lain yang kamu mau.\n\n
+^ Nanti Bang Joni bakal kasih info perkiraan cuaca berdasarkan lokasi yang kamu pilih.
+
+///////////////////////////////////START INFO TOL
++ [*] (tol|macet|tolbj|infotol|info tol) [*]
+- Jalan tol mana <first_name>?\n\n
+^ (Jagorawi, Cawang, Dalam Kota, JORR, Cikampek, Tangerang, Bandung, Cileunyi, Palimanan, Kanci)
+
++ [*] (tol|macet|tolbj|infotol|info tol) [*] (@toljasamarga1|@toljasamarga2) [*]
+- to01 Ok, bang Joni cariin infonya... <set tol_name=<star2>>
+
++ [*] (@toljasamarga1|@toljasamarga2) [*]
+- to01 Ok, bang Joni cariin infonya... <set tol_name=<star1>>
+
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
 > topic psw_skyscann inherits global
@@ -286,5 +538,8 @@
 - Aduh Bang Joni lagi meriang nih, chatmu gak bisa diproses sama Bang Joni skrg
 - Bentar Bang Joni lagi ke warung, ini yg bales mamanya Bang Joni, tunggu ya sampe Bang Joni balik lagi :D
 
-+ [*] transportasi [*]
++ [*] transportasi lainnya [*]
 - gr02 Pilih jenis transportasi
+
++ [*] info lainnya [*]
+- gr03 Pilih informasi lainnya

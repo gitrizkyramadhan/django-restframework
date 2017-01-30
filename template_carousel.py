@@ -116,66 +116,63 @@ carousels = [{
 },{
 "id" : "greetings",
     "payload" : TemplateSendMessage(
-        alt_text='Carousel template',
+        alt_text='Greetings',
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel.png',
                     title='Transportasi & Travel',
-                    text='blah',
+                    text='buat yg suka travelling',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback1',
-                            text='postback text1',
-                            data='action=buy&itemid=1'
+                        MessageTemplateAction(
+                            label='Pesawat',
+                            text='pesawat'
                         ),
                         MessageTemplateAction(
-                            label='message1',
-                            text='message text1'
+                            label='Xtrans',
+                            text='xtrans'
                         ),
-                        URITemplateAction(
-                            label='uri1',
-                            uri='http://example.com/1'
+                        MessageTemplateAction(
+                            label='Lainnya',
+                            text='transportasi lainnya'
                         )
                     ]
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay.png',
                     title='BJPay',
-                    text='blah',
+                    text='carousel buat BJPAY',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback2',
-                            text='postback text2',
-                            data='action=buy&itemid=2'
+                        MessageTemplateAction(
+                            label='Top Up',
+                            text='top up bjpay'
                         ),
                         MessageTemplateAction(
-                            label='message2',
-                            text='message text2'
+                            label='Registrasi',
+                            text='byjpay register'
                         ),
-                        URITemplateAction(
-                            label='uri2',
-                            uri='http://example.com/2'
+                        MessageTemplateAction(
+                            label='Cek Saldo',
+                            text='saldo'
                         )
                     ]
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa.png',
                     title='Pulsa',
-                    text='blah',
+                    text='deskripsi pulsa',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback3',
-                            text='postback text3',
-                            data='action=buy&itemid=3'
+                        MessageTemplateAction(
+                            label='Pulsa',
+                            text='pulsa'
                         ),
                         MessageTemplateAction(
-                            label='message3',
-                            text='message text3'
+                            label='Token Listrik',
+                            text='token'
                         ),
-                        URITemplateAction(
-                            label='uri3',
-                            uri='http://example.com/2'
+                        MessageTemplateAction(
+                            label='Kuota Data',
+                            text='pulsa data'
                         )
                     ]
                 ),
@@ -184,18 +181,17 @@ carousels = [{
                     title='Info',
                     text='blah',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback4',
-                            text='postback text4',
-                            data='action=buy&itemid=4'
+                        MessageTemplateAction(
+                            label='Cuaca',
+                            text='cuaca'
                         ),
                         MessageTemplateAction(
-                            label='message4',
-                            text='message text4'
+                            label='Tol',
+                            text='tol'
                         ),
-                        URITemplateAction(
-                            label='uri4',
-                            uri='http://example.com/2'
+                        MessageTemplateAction(
+                            label='Lainnya',
+                            text='info lainnya'
                         )
                     ]
                 ),
@@ -204,18 +200,83 @@ carousels = [{
                     title='Others',
                     text='blah',
                     actions=[
-                        PostbackTemplateAction(
-                            label='postback5',
-                            text='postback text5',
-                            data='action=buy&itemid=2'
+                        MessageTemplateAction(
+                            label='Matahari Mall',
+                            text='matahari mall'
                         ),
                         MessageTemplateAction(
-                            label='message5',
-                            text='message text5'
+                            label='Lovidovi',
+                            text='lovidovi'
                         ),
-                        URITemplateAction(
-                            label='uri5',
-                            uri='http://example.com/2'
+                        MessageTemplateAction(
+                            label='Polka',
+                            text='polka'
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+},{
+    "id" : "transport_other",
+    "payload" : TemplateSendMessage(
+        alt_text='Other transportation',
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item1.jpg',
+                    title='Kereta',
+                    text='tut...tut..tuuutt..',
+                    actions=[
+                        MessageTemplateAction(
+                            label='Pesan',
+                            text='pesan'
+                        ),
+                        MessageTemplateAction(
+                            label='Cek Booking',
+                            text='cek booking'
+                        )
+                    ]
+                )
+            ]
+        )
+    )
+},{
+    "id" : "info_other",
+    "payload" : TemplateSendMessage(
+        alt_text='Other transportation',
+        template=CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item1.jpg',
+                    title='Translator',
+                    text='Monsieur?',
+                    actions=[
+                        MessageTemplateAction(
+                            label='Mulai',
+                            text='translator'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item1.jpg',
+                    title='Zomato',
+                    text='Nyam..',
+                    actions=[
+                        MessageTemplateAction(
+                            label='Cari',
+                            text='zomato'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item1.jpg',
+                    title='Reminder',
+                    text='Mau diingetin?',
+                    actions=[
+                        MessageTemplateAction(
+                            label='Mau!',
+                            text='ingetin'
                         )
                     ]
                 )

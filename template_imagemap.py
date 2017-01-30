@@ -113,5 +113,176 @@ imagemaps = [
                     )
                 ]
             )
+    },{
+        "id":"payment_tiketux",
+        "payload": ImagemapSendMessage(
+            base_url='https://www.bangjoni.com/line_images/payment_tiketux1',
+                alt_text='Rich Menu Payment Tiketux',
+                base_size=BaseSize(height=701, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='atm',
+                        area=ImagemapArea(
+                            x=0, y=0, width=347, height=232
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='kartu kredit',
+                        area=ImagemapArea(
+                            x=347, y=0, width=692, height=232
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='cimb clicks',
+                        area=ImagemapArea(
+                            x=692, y=0, width=1040, height=232
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='mandiri ecash',
+                        area=ImagemapArea(
+                            x=0, y=232, width=347, height=463
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='mandiri clickpay',
+                        area=ImagemapArea(
+                            x=347, y=232, width=692, height=463
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='bca klikpay',
+                        area=ImagemapArea(
+                            x=692, y=232, width=1040, height=463
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='tcash',
+                        area=ImagemapArea(
+                            x=0, y=463, width=347, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='xl tunai',
+                        area=ImagemapArea(
+                            x=347, y=463, width=692, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='indomaret',
+                        area=ImagemapArea(
+                            x=692, y=463, width=1040, height=701
+                        )
+                    )
+                ]
+            )
+    },{
+        "id":"payment_tiketdotcom",
+        "payload": ImagemapSendMessage(
+            base_url='https://www.bangjoni.com/line_images/payment_tiketux1',
+                alt_text='Rich Menu Payment Tiketdotcom',
+                base_size=BaseSize(height=701, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='atm',
+                        area=ImagemapArea(
+                            x=0, y=0, width=346, height=230
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='kartu kredit',
+                        area=ImagemapArea(
+                            x=346, y=0, width=692, height=230
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='cimb clicks',
+                        area=ImagemapArea(
+                            x=692, y=0, width=1040, height=230
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='mandiri ecash',
+                        area=ImagemapArea(
+                            x=0, y=230, width=346, height=466
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='mandiri clickpay',
+                        area=ImagemapArea(
+                            x=346, y=230, width=692, height=466
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='bca klikpay',
+                        area=ImagemapArea(
+                            x=692, y=230, width=1040, height=466
+                        )
+                    )
+                ]
+            )
+    },{
+        "id":"payment_token",
+        "payload": ImagemapSendMessage(
+            base_url='https://www.bangjoni.com/line_images/payment_tiketux1',
+                alt_text='Rich Menu Payment Token PLN',
+                base_size=BaseSize(height=701, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='dua puluh',
+                        area=ImagemapArea(
+                            x=0, y=0, width=345, height=235
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='lima puluh',
+                        area=ImagemapArea(
+                            x=345, y=0, width=692, height=235
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='seratus',
+                        area=ImagemapArea(
+                            x=692, y=0, width=1040, height=235
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='dua ratus',
+                        area=ImagemapArea(
+                            x=0, y=235, width=345, height=467
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='lima ratus',
+                        area=ImagemapArea(
+                            x=345, y=235, width=692, height=467
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='sejuta',
+                        area=ImagemapArea(
+                            x=692, y=235, width=1040, height=467
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='lima juta',
+                        area=ImagemapArea(
+                            x=0, y=467, width=345, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='sepuluh juta',
+                        area=ImagemapArea(
+                            x=345, y=467, width=692, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='lima puluh juta',
+                        area=ImagemapArea(
+                            x=692, y=467, width=1040, height=701
+                        )
+                    )
+                ]
+            )
     }
 ]
