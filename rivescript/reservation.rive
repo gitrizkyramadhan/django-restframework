@@ -1,20 +1,29 @@
 ! BJ = V2
 ! array halo = hi|halo|hai|hello|eh|hei|oi|hallo|helo|alo|hay|uy|haiii|hy|haloo
 ! array assalamualaikum = assalamualaikum|asalamualaikum|salamualaikum|samlekum|asalammualaikum
-! array salam kenal = slam kenal|slm kenal|lam kenal|salm kenal|salam knal|salam knl|salken|lam nal|sal ken|salam kenal|salamkenal
+! array salamkenal = slam kenal|slm kenal|lam kenal|salm kenal|salam knal|salam knl|salken|lam nal|sal ken|salam kenal|salamkenal
 ! array pesawat = pesawat|psw|pswt|pesawar|psawat|pswat|pesawt
 ! array city1 = ambon|bajawa|balikpapan|bpp|banda aceh|aceh|bandung|bdg|banjarmasin|banyuwangi|batam|baubau|bengkulu|berau|biak|bima|buli|buol|denpasar|dps|bali|ende|fakfak|gorontalo|gunungsitoli|jakarta|cengkareng|jkt|halim perdanakusuma|halim|halimperdanakusuma|jambi|jayapura|kaimana|kendari|kotabaru|kupang|labuanbajo|labuha|lampung|lhokseumawe|lombok|mataram|luwuk|malang|mamuju|manado|manokwari|maumere|medan|mdn|kuala namu|kualanamu|melanguane|merauke|meulaboh|nabire|natunaranai|padang|palangka raya|palangkaraya|palembang|palu|pangkal pinang|pangkalpinang|pangkalan bun|pangkalanbun|pekanbaru|pomalaa|pontianak|poso|pulau alor|pulaualor|ruteng|sampit|semarang
 ! array city2 = sibolga|silangit|sinabang|solo|sorong|sumbawa|surabaya|sby|sub|tahuna|tambolaka|tanjung pandan|tanjungpandan|tanjung pinang|tanjungpinang|tarakan|ternate|timika|tobelo|tual|makassar|mks|ujungpandang|waingapu|wakatobi|wangi wangi|wangiwangi|yogyakarta|yogya|jogya|jogja|jgj|adelaide|alice springs|alicesprings|brisbane|cairns|coffs harbour|coffsharbour|darwin|gold coast|goldcoast|hobart|mackay whitsundays|mackay|melbourne|perth|sunshine coast|sunshinecoast|sydney|chittagong|delhi|dhaka|brunei|phnom penh|phnompenh|siem reap|siemreap|beijing|chengdu|chongqing|guangzhou|guilin|haikou|hangzhou|kunming|nanning|ningbo|qingdao|shanghai|shenyang|shenzhen|tianjin
 ! array city3 = wuhan|xian|colombo|hong kong|hongkong|ahmedabad|bangalore|chennai|hyderabad|kochi|kolkata|mumbai|thiruvananthapuram|tiruchirapalli trichy|fukuoka|nagoya|okinawa - naha|okinawa|osaka - kansai|osaka|sapporo - shin-chitose|sapporo|tokyo - haneda|haneda|tokyohaneda|tokyo - narita|narita|tokyonarita|tokyo|vientiane|macau|alor setar|alorsetar|bintulu|johor baru|johorbaru|kota bharu|kotabharu|kota kinabalu|kotakinabalu|kinabalu|kuala lumpur|kualalumpur|malaysia|kuala terengganu|kualaterengganu|kuching|langkawi|malacca|miri|penang|sandaka|sibu|subang|tawau|mandalay|yangoon|kathmandu|bacolod|cebu|clark manila|clark|davao|iloilo|manila naia|manila
 ! array city4 = puerto princesa|puertoprincesa|tacloban|jeddah|singapore|singapor|singapura|singgapur|sing|busan|seoul|taipei|bangkok|thailand|don mueang|donmueang|chiang mai|chiangmai|chiang rai|chiangrai|hat yai|hatyai|krabi|nakhon phanom|nakhonphanom|nakhon si thammarat|nakhonsithammarat|narathiwat|phuket|surat thani|suratthani|trang|ubon ratchathani|ubonratchathani|udon thani|udonthani|dili|abu dhabi|abudhabi|da nang|danang|hanoi|london gatwick|london|ho chi minh city|hochiminh
-! array months = 01|1|02|2|03|3|04|4|05|5|06|6|07|7|08|8|09|9|10|11|12|jan|feb|mar|apr|mei|jun|jul|aug|sept|okt|nov|des|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|january|february|pebruari|march|april|may|june|july|august|aug|october|oct|nopember|december|dec
+! array months = jan|feb|mar|apr|mei|jun|jul|aug|sept|okt|nov|des|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|january|february|pebruari|march|april|may|june|july|august|aug|october|oct|nopember|december|dec
+! array bulan = 01|1|02|2|03|3|04|4|05|5|06|6|07|7|08|8|09|9|10|11|12
 ! array years = 17|18|2017|2018
-! array hari ini = hari ini|hr ini|hri ini
+! array hariini = hari ini|hr ini|hri ini|hariini
 ! array besok = besok|bsok|bsk
 ! array pp = pp|pulang pergi|pulangpergi|plg pergi|plg prgi|pulang prgi
 ! array oneway = sekali jalan|1x jalan|skali jalan|skli jalan|sekali jlan|sekali jln|sekali jaln|1x jln|1x jlan|1x jaln|1 x jln|1 x jlan|1 x jaln|1 x jalan|one way|oneway
+! array bangjoni = bang joni|abang|bang|bang jon|bangjon|jon|joni|bro|sob|bos|bangjoni
+! array test = test|tes|tez|tess|testing
 
 
+
++ [*] (@test) [*]
+- {@halo}
+
++ [*] (@bangjoni) [*]
+- {@halo}
 
 + [*] (@halo) [*]
 - gr01 Halo <first_name>, ada yang Bang Joni bisa bantu?
@@ -22,12 +31,12 @@
 - gr01 Oi oi, kenapa kenapa? Ada yang Bang Joni bisa bantu?
 
 + [*] (@assalamualaikum) [*]
-- gr01 Wa'alaikumsalam! <br>
-^ Ya <first_name>, ada yang bisa Bang Joni bantu?
+- Wa'alaikumsalam! <br>
+^ gr01 Ya <first_name>, ada yang bisa Bang Joni bantu?
 
 + [*] (@salam kenal) [*]
-- gr01 Yooo... <first_name>, salam kenal juga ya! <br>
-^ Ada yang bisa Bang Joni bantu?
+- Yooo... <first_name>, salam kenal juga ya! <br>
+^ gr01 Ada yang bisa Bang Joni bantu?
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
 - ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
@@ -419,23 +428,34 @@
 	+ [*] (@pp) [*]
 	- Oke, berangkatnya tanggal berapa?
 
-	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	+ [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months@years|## @months @years|##@months|# @months|#@months@years|# @months @years|##@months|## @months)
 	- Kalo pulangnya, tanggal berapa? {topic=pp_pulang} <set psw_derpature_date=<star>>
+
+	+ [*] (hari ini|besok|lusa|##@bulan|## @bulan|##@bulan@years|## @bulan @years|##*@bulan*@years|##@bulan@years) [*]
+    - Kalo pulangnya, tanggal berapa? {topic=pp_pulang} <set psw_derpature_date=<star>>
 < topic
 
 > topic pp_pulang inherits global
-	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	+ [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months@years|## @months @years|##@months|# @months|#@months@years|# @months @years|##@months|## @months)
 	- Buat berapa orang tuh?\n\n
 	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_return_date=<star>> <set psw_return_time=<murah>>
+
+	+ [*] (hari ini|besok|lusa|##@bulan|## @bulan|##@bulan@years|## @bulan @years|##*@bulan*@years|##@bulan@years) [*]
+    - Buat berapa orang tuh?\n\n
+    ^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_return_date=<star>> <set psw_return_time=<murah>>
 < topic
 
->topic oneway inherits global
+> topic oneway inherits global
 	+ [*] (@oneway) [*]
 	- Oke, berangkatnya tanggal berapa?
 
-	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	+ [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months@years|## @months @years|##@months|# @months|#@months@years|# @months @years|##@months|## @months)
 	- Buat berapa orang tuh?\n\n
 	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>>
+
+	+ [*] (hari ini|besok|lusa|##@bulan|## @bulan|##@bulan@years|## @bulan @years|##*@bulan*@years|##@bulan@years) [*]
+    - Buat berapa orang tuh?\n\n
+    ^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>>
 < topic
 
 > topic passenger_count inherits global
@@ -485,6 +505,10 @@
 
 	+ flightresult123
 	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah.
+
+	+ sky02
+    - Maaf banget Bang Joni gak dapet penerbangan yg kamu pilih, coba cari tanggal lain atau rute lain deh
+
 < topic
 
 > topic psw_skyscann_choose inherits global

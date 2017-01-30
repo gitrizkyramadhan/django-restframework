@@ -562,12 +562,12 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 departTime = 'M'
             elif incomingMsisdn[23] == 1 : #siang
                 departTime = 'A'
-            elif incomingMsisdn[23] == 3 : #malam
+            elif incomingMsisdn[23] == 2 or incomingMsisdn[23] == 3 : #malam
                 departTime = 'E'
         else :
             departTime = 'M;A;E'
 
-        if int(incomingMsisdn[1]) != -1: #pulang pergi
+        if incomingMsisdn[1] != -1: #pulang pergi
             skyResp = sky.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace=departurePlace,
                                                 destinationplace=destinationPlace,
                                                 outbounddate=departureDate, adults=adult, children=children,
@@ -596,7 +596,9 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 actions.append({'type': 'message', 'label': 'Ubah waktu', 'text': "ubah waktu perjalanan"})
                 column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
                 column['title'] = 'Rp '+str(sky_resp_obj['price'])
-                column['text'] = sky_resp_obj['origin']+'-'+sky_resp_obj['destination']+', Perjalanan dengan '+sky_resp_obj['flightNumbers']['carrierCommonName']
+                column['text'] = sky_resp_obj['origin']+'-'+sky_resp_obj['destination']+', Perjalanan dengan '+sky_resp_obj['flightNumbers']['carrierCommonName']+', Waktu berangkat : '+str(sky_resp_obj['departureTime'])[10:]+', Waktu kedatangan : '+str(sky_resp_obj['arrivalTime'])[10:]
+                if (len(column['text']) > 60):
+                    column['text'] = column['text'][:57]+'...'
                 column['actions'] = actions
                 columns.append(column)
 

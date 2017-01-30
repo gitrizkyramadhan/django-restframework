@@ -61,7 +61,7 @@ class SkyscannerSDK():
             return
 
         decodedJson = json.loads(json.dumps(r.json()))
-        print decodedJson
+        # print decodedJson
 
         count = 0
         itenaries = []
@@ -91,7 +91,7 @@ class SkyscannerSDK():
             itenary['price'] = itenaryTemp['PricingOptions'][0]['Price']
             itenary['deepLink'] = itenaryTemp['PricingOptions'][0]['DeeplinkUrl']
             for leg in legs:
-                if leg['Id'] == itenary['outboundLegId']:
+                if leg['Id'] == itenary['inboundLegId']:
                     itenary['arrivalTime'] = leg['Arrival']
                     itenary['departureTime'] = leg['Departure']
                     itenary['stops'] = len(leg['Stops'])
@@ -122,14 +122,50 @@ class SkyscannerSDK():
                                                 'carriers': carrierName[:len(carrierName) - 1],
                                                 'carrierCommonName': carrierCommonName[:len(carrierCommonName) - 1],
                                                 'airlineLogo': carrierLogoURL}
+
+
+                if itenary.has_key('outboundLegId'):
+                    if leg['Id'] == itenary['inboundLegId']:
+                        itenary['inbound_arrivalTime'] = leg['Arrival']
+                        itenary['inbound_departureTime'] = leg['Departure']
+                        itenary['inbound_stops'] = len(leg['Stops'])
+                        itenary['inbound_duration'] = leg['Duration']
+
+                        carrierName = ""
+                        flightNumber = ""
+                        carrierCommonName = ""
+                        for flightNum in leg['FlightNumbers']:
+                            for carrier in carriers:
+                                if carrier['Id'] == flightNum['CarrierId']:
+                                    # logoFound = False
+                                    # for value in airlineLogoJson:
+                                    #     if value['iataCode'] == carrier['Code']:
+                                    #         carrierLogoURL = value
+                                    #         logoFound = True
+                                    #         break
+                                    # if not logoFound:
+                                    #     carrierLogoURL = {'url' : 'https://www.bangjoni.com/skyscanner/images/logo/image_na.png' }
+                                    # carrierLogoURL = 'http://logos.skyscnr.com/images/airlines/'+carrier['Code']+'.png'
+                                    carrierLogoURL = carrier['ImageUrl']
+                                    carrierName += carrier['Code'] + '-' + flightNum['FlightNumber'] + ','
+                                    flightNumber += flightNum['FlightNumber'] + ','
+                                    carrierCommonName += carrier['Name'] + ','
+
+                        # print carrierName, flightNumber
+                        itenary['inbound_flightNumbers'] = {'flightNumber': flightNumber[:len(flightNumber) - 1],
+                                                    'carriers': carrierName[:len(carrierName) - 1],
+                                                    'carrierCommonName': carrierCommonName[:len(carrierCommonName) - 1],
+                                                    'airlineLogo': carrierLogoURL}
+
+
                 for place in places:
                     if place['Id'] == leg['DestinationStation']:
-                        itenary['destination'] = place['Code']
-                        itenary['destinationName'] = place['Name']
+                        itenary['inbound_destination'] = place['Code']
+                        itenary['inbound_destinationName'] = place['Name']
                     if place['Id'] == leg['OriginStation']:
-                        itenary['origin'] = place['Code']
-                        itenary['originName'] = place['Name']
-            # print itenary
+                        itenary['inbound_origin'] = place['Code']
+                        itenary['inbound_originName'] = place['Name']
+            print itenary
             itenaries.append(itenary)
         # print json.dumps(itenaries)
         return json.loads(json.dumps(itenaries))

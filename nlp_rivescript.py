@@ -1004,6 +1004,8 @@ class Nlp:
                 if idx > -1:
                     incomingMsisdn[23] = idx
                 # mapping departure date
+                if len(psw_derpature_date.strip().split(" ")) == 2:
+                    psw_derpature_date = psw_derpature_date.strip() + " 2017"
                 idx = self.search_string(psw_derpature_date, self.when)
                 if idx == 0:
                     incomingMsisdn[2] = (datetime.now() + timedelta(days=0)).strftime('%Y-%m-%d')
@@ -1018,6 +1020,8 @@ class Nlp:
                     else:
                         incomingMsisdn[2] = "%04s-" % (str_date[1]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
                 # mapping return date
+                if len(psw_return_date.strip().split(" ")) == 2:
+                    psw_return_date = psw_return_date.strip() + " 2017"
                 idx = self.search_string(psw_return_date, self.when)
                 if idx == 0:
                     incomingMsisdn[1] = (datetime.now() + timedelta(days=0)).strftime('%Y-%m-%d')
