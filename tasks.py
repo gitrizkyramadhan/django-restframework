@@ -897,8 +897,8 @@ def onMessage(msisdn, ask, first_name):
 
             ####################GREETINGS####################
     if answer[:4] == "gr01":
-        linebot.send_text_message(msisdn, answer[4:])
         linebot.send_carousel(msisdn, 'greetings')
+        linebot.send_text_message(msisdn, answer[4:])
     if answer[:4] == "gr02":
         linebot.send_carousel(msisdn, 'transport_other')
     if answer[:4] == "gr03":

@@ -381,6 +381,21 @@
 
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
++ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] [pesawat|psw|pswt|pesawar] [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
+- Untuk berapa orang?\n\n
+^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat} <set mycontext=pesawat>
+
++ [*] (cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket) [pesawat|psw|pswt|pesawar] [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
+-  Oke, buat berangkat kapan?\n\n
+^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=pesawat} <set mycontext=pesawat>
+
++ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] (pesawat|psw|pswt|pesawar|pswbj) [*]
+- Boleh tau rute penerbangannya, <first_name>?\n\n
+^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
+// ^ (Contoh: Jakarta ke Bali) {topic=pesawat} <set mycontext=pesawat>
+
 > topic psw_skyscann inherits global
   + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
   - Oke, buat berangkat kapan?\n\n
