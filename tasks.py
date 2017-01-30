@@ -257,7 +257,7 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
         # linebot.send_text_message(msisdn, message.strip())
     if keyboard == "bjpaydeposit":
         # linebot.send_rich_message_bjpay_deposit_text(msisdn, link_url,"Rich Message", message.strip())
-        linebot.send_imagemap(msisdn, 'bjpay_register')
+        linebot.send_imagemap(msisdn, 'bjpay_deposit')
         linebot.send_text_message(msisdn, message.strip())
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     save_last10chat(logDtm, msisdn, message.strip(), 'BJ')

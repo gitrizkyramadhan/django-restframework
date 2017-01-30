@@ -225,16 +225,23 @@ carousels = [{
             columns=[
                 CarouselColumn(
                     thumbnail_image_url='https://example.com/item1.jpg',
+                    title='Uber',
+                    text='taksi',
+                    actions=[
+                        MessageTemplateAction(
+                            label='Mulai',
+                            text='uber'
+                        )
+                    ]
+                ),
+                CarouselColumn(
+                    thumbnail_image_url='https://example.com/item1.jpg',
                     title='Kereta',
                     text='tut...tut..tuuutt..',
                     actions=[
                         MessageTemplateAction(
                             label='Pesan',
                             text='pesan'
-                        ),
-                        MessageTemplateAction(
-                            label='Cek Booking',
-                            text='cek booking'
                         )
                     ]
                 )
