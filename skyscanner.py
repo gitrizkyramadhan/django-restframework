@@ -61,7 +61,7 @@ class SkyscannerSDK():
             return
 
         decodedJson = json.loads(json.dumps(r.json()))
-        # print decodedJson
+        print decodedJson
 
         count = 0
         itenaries = []

@@ -212,3 +212,8 @@ class Bot(object):
         payload = template_carousel.composeCarousel(alt_text, columns)
         user_ids = user_ids.split(",")
         self.__send_multicast(user_ids, payload)
+
+    def send_composed_confirm(self, user_ids, alt_text, text, option1, option2):
+        payload = template_confirm.composeConfirm(alt_text, text, option1, option2)
+        user_ids = user_ids.split(",")
+        self.__send_multicast(user_ids, payload)

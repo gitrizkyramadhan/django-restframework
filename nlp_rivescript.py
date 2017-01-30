@@ -976,6 +976,8 @@ class Nlp:
                 psw_bayi = self.get_uservar(msisdn, "psw_bayi")
                 psw_maskapai = self.get_uservar(msisdn, "psw_maskapai")
                 psw_derpature_time = self.get_uservar(msisdn, "psw_derpature_time")
+                psw_return_date = self.get_uservar(msisdn, "psw_return_date")
+                psw_return_time = self.get_uservar(msisdn, "psw_return_time")
 
                 # mapping city name to city code
                 idx = self.search_string(psw_derpature_city, self.city)
@@ -996,7 +998,7 @@ class Nlp:
                 idx = self.search_string(psw_maskapai, self.airlinecode_rive)
                 if idx > -1:
                     incomingMsisdn[8] = self.airlinecode[idx]
-                    # mapping departure time part
+                # mapping departure time part
                 incomingMsisdn[23] = '-1'
                 idx = self.search_string(psw_derpature_time, self.timepart)
                 if idx > -1:
@@ -1015,6 +1017,25 @@ class Nlp:
                         incomingMsisdn[2] = "%04s-" % (incomingMsisdn[26]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
                     else:
                         incomingMsisdn[2] = "%04s-" % (str_date[1]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
+                # mapping return date
+                idx = self.search_string(psw_return_date, self.when)
+                if idx == 0:
+                    incomingMsisdn[1] = (datetime.now() + timedelta(days=0)).strftime('%Y-%m-%d')
+                elif idx == 1:
+                    incomingMsisdn[1] = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+                elif idx == 2:
+                    incomingMsisdn[1] = (datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d')
+                elif idx in range(3, 15):
+                    str_date = re.findall(r'\d+', psw_return_date)
+                    if len(str_date) == 1:
+                        incomingMsisdn[1] = "%04s-" % (incomingMsisdn[26]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
+                    else:
+                        incomingMsisdn[1] = "%04s-" % (str_date[1]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
+                # mapping departure time part
+                incomingMsisdn[5] = '-1'
+                idx = self.search_string(psw_return_time, self.timepart)
+                if idx > -1:
+                    incomingMsisdn[5] = idx
             if answer[:5] == "sky04":
                 psw_user_choose = self.get_uservar(msisdn, "psw_user_choose")
                 isnumeric = re.findall(r'\d+', psw_user_choose)

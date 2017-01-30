@@ -401,7 +401,7 @@
 
 > topic flight_route inherits global
 	+ [*] (@city1|@city2|@city3|@city4) [*] (@city1|@city2|@city3|@city4) [*]
-	- Kamu nyari tiket pesawat dari <star1> ke <star2> buat PP apa sekali jalan nih?? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+	- sky05 Kamu nyari tiket pesawat dari <star1> ke <star2> buat PP apa sekali jalan nih?? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
 
 	+ [*] (@pp) [*]
 	- Oke, berangkatnya tanggal berapa? {topic=pp_berangkat} <set psw_derpature_time=<murah>>
@@ -426,7 +426,7 @@
 > topic pp_pulang inherits global
 	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
 	- Buat berapa orang tuh?\n\n
-	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_arrival_date=<star>>
+	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_return_date=<star>> <set psw_return_time=<murah>>
 < topic
 
 >topic oneway inherits global
@@ -484,7 +484,7 @@
 	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
 
 	+ flightresult123
-	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah buat tanggal <dep_date>.
+	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah.
 < topic
 
 > topic psw_skyscann_choose inherits global

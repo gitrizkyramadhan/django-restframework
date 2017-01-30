@@ -567,10 +567,18 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
         else :
             departTime = 'M;A;E'
 
-
-        skyResp = sky.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace=departurePlace, destinationplace=destinationPlace,
-                                            outbounddate=departureDate, adults=adult, children=children, infants=infant, country='id', locationschema='Iata',
-                                            outbounddeparttime=departTime)
+        if int(incomingMsisdn[1]) != -1: #pulang pergi
+            skyResp = sky.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace=departurePlace,
+                                                destinationplace=destinationPlace,
+                                                outbounddate=departureDate, adults=adult, children=children,
+                                                infants=infant, country='id', locationschema='Iata',
+                                                outbounddeparttime=departTime)
+        else:
+            skyResp = sky.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace=departurePlace,
+                                                destinationplace=destinationPlace,
+                                                outbounddate=departureDate, adults=adult, children=children,
+                                                infants=infant, country='id', locationschema='Iata',
+                                                outbounddeparttime=departTime, inboundDate=incomingMsisdn[1])
 
         if len(skyResp) < 1 :
             ans = lineNlp.doNlp("sky02", msisdn, first_name)
@@ -603,7 +611,6 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 sql = "insert into searching_airlines values('" + msisdn + "','" + departureDate + "','" + str(tempId) + "','" + item['outboundLegId'] + "','" + item['flightNumbers']['carriers'] + '-' + item['flightNumbers']['carrierCommonName'] + "','" + item['agentName'] + "','" + item['departureTime'][len(item['departureTime']) - 8:len(item['arrivalTime']) - 3].replace(":", "") + "','" + item['arrivalTime'][len(item['arrivalTime']) - 8:len(item['arrivalTime']) - 3] + "','" + item['deepLink'] + "')"
                 insert(sql)
 
-
     elif answer[:5] == 'sky04' :
         bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         sql = "select * from searching_airlines where msisdn = '%s' and id = %s" % (msisdn, bookingMsisdn['flight_id'])
@@ -621,6 +628,8 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
             onMessage(msisdn, "sky04a", first_name)
         else :
             sendLinkMessageT2(msisdn, "skyscanner", "Tap untuk melanjutkan booking", "Booking", token, "https://cdns.klimg.com/newshub.id/news/2015/11/16/27439/750xauto-meski-ada-airplane-mode-mengapa-ponsel-harus-mati-saat-di-pesawat-151116s.jpg")
+    elif answer[:5] == 'sky05':
+        linebot.send_composed_confirm(msisdn, "Confirm trip", answer[5:], {'type':'message', 'label':'PP', 'text':'pp'}, {'type':'message', 'label':'Sekali jalan', 'text':'sekali jalan'})
     else :
         sendMessageT2(msisdn, answer[5:], 0)
 
