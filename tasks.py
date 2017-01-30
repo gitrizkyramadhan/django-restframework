@@ -240,13 +240,19 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
     if keyboard == "tokenpln":
         linebot.send_rich_message_token_pln_text(msisdn, link_url,"Rich Message", message.strip())
     if keyboard == "pulsahp":
-        linebot.send_rich_message_pulsa_hp_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_pulsa_hp_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'pulsa')
+        linebot.send_text_message(msisdn, message.strip())
     if keyboard == "jatis":
         linebot.send_rich_message_payment_jatis_text(msisdn, link_url,"Rich Message", message.strip())
     if keyboard == "bjpayregister":
-        linebot.send_rich_message_bjpay_register_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_bjpay_register_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'bjpay_register')
+        linebot.send_text_message(msisdn, message.strip())
     if keyboard == "bjpaydeposit":
-        linebot.send_rich_message_bjpay_deposit_text(msisdn, link_url,"Rich Message", message.strip())
+        # linebot.send_rich_message_bjpay_deposit_text(msisdn, link_url,"Rich Message", message.strip())
+        linebot.send_imagemap(msisdn, 'bjpay_register')
+        linebot.send_text_message(msisdn, message.strip())
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     save_last10chat(logDtm, msisdn, message.strip(), 'BJ')
 
