@@ -278,13 +278,16 @@ def get_line_username(msisdn):
     if first_name != "":
         return first_name
     else:
-        r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
-        rjson = json.loads(r.content)
+        profile_obj = linebot.get_profile(msisdn)
+
+        # r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
+        #
+        # rjson = json.loads(r.content)
         try:
-            sql = "insert into line_users values('" + msisdn + "','" + rjson["contacts"][0]["displayName"] + "')"
+            sql = "insert into line_users values('" + msisdn + "','" + profile_obj.display_name + "')"
             print sql
             insert(sql)
-            return rjson["contacts"][0]["displayName"]
+            return profile_obj.display_name
         except:
             return "bro/sis"
 
