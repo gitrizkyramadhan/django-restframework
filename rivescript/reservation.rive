@@ -21,17 +21,112 @@
 - ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
 - ca01 Sip! Pesanan kamu udah Bang Joni cancel {topic=random}
 
+> topic global
+
+  + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*] {weight=10}
+  * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
+  - ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
+  - ca01 Sip! Pesanan kamu udah Bang Joni cancel {topic=random}
+
+  + [*] (ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp) [*]
+  - sippp
+  - okee
+
+  + [*] (thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih) [*]
+  - Sama-sama <first_name>
+  - You're welcome <first_name>
+  - Anytime! <first_name>
+  - Yoi sama-sama :D
+
+  + (*)
+  - {topic=random}{@ <star>}
+
+  + [*] (menu|bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
+  - gr01 Bang Joni adalah teman virtual yang saat ini bisa bantu layanan berikut:  {topic=random}
+
+< topic
+
 + *
-* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+//* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
 - ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
 ^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
 ^ Ketik 'cancel' untuk melakukan pembatalan.\n
 ^ Ketik 'menu' untuk kembali ke menu awal.\n
 ^ Updating bang joni masih terus dilakukan ya.
 
+///////////////////////////////////SALDO CHECK BJPAY
++ [*] (saldo|balance) [*]
+- bj00 <first_name>
+
+///////////////////////////////////DEPOSIT BJPAY
++ [*] (deposit|topup|top up|isi bjpay) [*]
+- bj99 Okay, pilih bank dibawah untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>
+
+///////////////////////////////////DEPOSIT BJPAY
++ [*] (bjpay register) [*]
+- bj11 {topic=pulsa} <set mycontext=pulsa>
+
+///////////////////////////////////START PULSA HP
++ [*] (pulsa|bang isiin pulsa dong) [*]
+//- Halo <first_name>! Beli pulsa di Bang Joni saat ini lagi ada promo loh! Bisa dapet cashback 25% dari nominal pulsa yang kamu beli, dg minimal pembelian pulsa 20K\n\n
+//^ Karena kuota promo 100K saat ini udah abis, kamu nggak akan dapet cahsback untuk pembelian pulsa 100k.\nSilakan pilih nominal lain untuk dapetin cashback 25%.\n\n
+//^ Sekarang, ketik nomor HP yang mau diisi pulsanya (contoh 08xxxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+- Psstt.. Bang Joni lagi ada promo cashback 25% nih untuk pembelian pulsa 100k./nSekarang, ketik nomor HP yang mau diisiin pulsanya dengan format 08xxxxxxxxxx.<br>
+^ Buruan sini nomernya, sebelom keabisan nih! {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+
+//////////////////////////////////START TOKEN LISTRIK
++ [*] (token|pulsa listrik|token pln|token listrik) [*]
+- Nomor meter PLN prepaid-nya berapa <first_name>? {topic=token} <set mycontext=token>
+
+
+///////////////////////////////////START PULSA DATA HP
++ [*] (pulsa data|bang isiin pulsa data dong|paket data|paket internet|pulsa internet) [*]
+- Bang Joni sementara baru punya pulsa data Telkomsel ya\n\n
+^ Sekarang, ketik nomor HP Telkomsel yang mau diisi pulsa datanya (contoh 0812xxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=1>
+
 + [*] (skyscanner) [*]
 - Boleh tau rute penerbangannya, <first_name>?\n\n
 ^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
+
+> topic pulsa inherits global
+  + [*] # [*] {weight=10}
+  - pu01 <set no_hp=<star>> Ok, kamu memilih pulsa nominal
+
+  + (lima ribu|sepuluh ribu|dua puluh ribu|dua puluh lima ribu|lima puluh ribu|seratus ribu)
+  - pu02 <set nominal_token=<star>>Ok, kamu memilih pulsa nominal <get nominal_token>\n
+  ^ Eh, ada yang baru nih! BJPay, metode pembayaran terbaru dari Bang Joni yang saat ini bisa kamu pake untuk beli pulsa dan token pln\n
+  ^ Tinggal isi saldonya, kapan aja dan di mana aja kamu bisa beli pulsa di Bang Joni!\n\n
+  ^ Untuk daftar BJPay, tap gambar di bawah ini
+
+  + bjpay register
+  - Sip, sekarang masukan no HP-mu untuk register BJPAY\nIsi no HP dg format 08xxxxx (contoh: 08xxxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
+
+< topic
+
+> topic registerbjpay inherits global
+  + [*] # [*] {weight=10}
+  - bj02 <set hp_deposit=<star>> Ok, Bang Joni registerin BJPAY...
+
+  + (va permata|transfer bca)
+  - bj03 Mau deposit berapa? misal 27000 (isi tanpa titik ya, dan pastikan minimal sesuai dg harga pulsa yg kamu pilih) <set deposit_bank=<star>> {topic=deposit} <set mycontext=deposit>
+
+  + (transfer mandiri)
+  - Untuk sementara transfer ke Mandiri belom bisa bang joni proses, pakai VA Permata atau BCA dl ya
+
+  //+ (transfer bca)
+  //- Untuk sementara transfer ke BCA belom bisa bang joni proses, pakai VA Permata atau BCA dl ya
+< topic
+
+> topic token inherits global
+  + [*] # [*] {weight=10}
+  - pl01 Ok, Bang Joni cek dl nomor meter-nya ... <set id_pln=<star>>
+
+  + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
+  - pl02 <set nominal_token=<star>> Ok, kamu memilih token nominal <get nominal_token>, selanjutnya pilih metode bayar dengan tap menu di bawah.
+
+  + bjpay register
+  - Nah gitu dong! Sekarang ketik nomor HP yang mau kamu daftarin BJPay dengan format (08xxxxxxxxxx) {topic=registerbjpay} <set mycontext=registerbjpay>
+< topic
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
 > topic psw_skyscann inherits global
