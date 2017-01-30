@@ -566,6 +566,8 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 departTime = 'E'
         else :
             departTime = 'M;A;E'
+
+
         skyResp = sky.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace=departurePlace, destinationplace=destinationPlace,
                                             outbounddate=departureDate, adults=adult, children=children, infants=infant, country='id', locationschema='Iata',
                                             outbounddeparttime=departTime)
@@ -576,70 +578,30 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
             incomingMsisdn[14] = -1
             incomingMsisdn[15] = 2
         else :
-            # ans = lineNlp.doNlp("sky03", msisdn, first_name)
-            # sendMessageT2(msisdn, ans, 0)
-            connAPI = httplib2.Http()
-            try:
-                # print "aaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                url = "http://bangjoni.com/skyscanner/sk_result.php"
-                (resp_headers, content) = connAPI.request(url, "POST", body=json.dumps(skyResp))
-                # print ">>resp_header", resp_headers
-                respAPI = content
-                print "----->", respAPI
-            except Exception as e:
-                print ">>Error is:", e
+            columns = []
+            for sky_resp_obj in skyResp:
+                column = {}
+                actions = []
 
-            insert("insert into searched_tickets values ('" + logDtm + "','" + msisdn + "','" + incomingMsisdn[3] + "','" +
-                   incomingMsisdn[4] + "','" + incomingMsisdn[8] + "','" + incomingMsisdn[2] + "')")
-            incomingMsisdn[21] = incomingMsisdn[3]
-            incomingMsisdn[22] = incomingMsisdn[4]
+                actions.append({'type':'uri', 'label':'Beli', 'uri':sky_resp_obj['deepLink']})
+                actions.append({'type': 'message', 'label': 'Ubah tanggal', 'text': "ubah tanggal"})
+                actions.append({'type': 'message', 'label': 'Ubah waktu', 'text': "ubah waktu perjalanan"})
+                column['thumbnail_image_url'] = 'thumbnail'
+                column['title'] = 'Rp '+sky_resp_obj['price']
+                column['text'] = sky_resp_obj['flightNumbers']['carriers']
+                column['actions'] = actions
+                columns.append(column)
 
-            fo = open('/tmp/%s_cari.html' % (msisdn), "w")
-            fo.write(respAPI)
-            fo.close()
-            options = {
-                'page-size': 'A5',
-                'margin-top': '0',
-                'margin-right': '0',
-                'margin-bottom': '0',
-                'margin-left': '0',
-                'encoding': "UTF-8"
-            }
-            try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-            except Exception as e:
-                print "Error pdfkit", e
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
-                # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-                answer = lineNlp.doNlp("sky03", msisdn, first_name)
-                # sendMessageT2(msisdn, answer, 0)
+            linebot.send_composed_carousel(msisdn, "Skyscanner result",columns)
+            answer = lineNlp.doNlp("flightresult123", msisdn, first_name)
+            linebot.send_text_message(msisdn, answer)
 
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                pdf2jpg = PythonMagick.Image()
-                pdf2jpg.density("200")
-                pdf2jpg.read(outfile)
-                randomDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y%m%d%H%M%S')
-                pdf2jpg.write("%s_%s.jpg" % (outfile.split('.')[0], randomDtm))
+            for item in skyResp:
+                tempId = tempId + 1
+                sql = "insert into searching_airlines values('" + msisdn + "','" + departureDate + "','" + str(tempId) + "','" + item['outboundLegId'] + "','" + item['flightNumbers']['carriers'] + '-' + item['flightNumbers']['carrierCommonName'] + "','" + item['agentName'] + "','" + item['departureTime'][len(item['departureTime']) - 8:len(item['arrivalTime']) - 3].replace(":", "") + "','" + item['arrivalTime'][len(item['arrivalTime']) - 8:len(item['arrivalTime']) - 3] + "','" + item['deepLink'] + "')"
+                insert(sql)
 
-                # print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[6], randomDtm)
-                print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[5], randomDtm)
-                # photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                # sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
-                sendPhotoCaptionT2(msisdn, 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
-                # incomingMsisdn[13] = token
-                insert("delete from searching_airlines where msisdn = '%s'" % (msisdn))
-
-                tempId = 0
-                for item in skyResp :
-                    tempId = tempId + 1
-                    sql = "insert into searching_airlines values('" + msisdn + "','" + departureDate + "','" + str(tempId) + "','" + item['outboundLegId'] + "','" + item['flightNumbers']['carriers'] + '-' + item['flightNumbers']['carrierCommonName']+ "','" + item['agentName'] + "','" + item['departureTime'][len(item['departureTime'])-8:len(item['arrivalTime'])-3].replace(":","") + "','" + item['arrivalTime'][len(item['arrivalTime'])-8:len(item['arrivalTime'])-3] + "','" + item['deepLink'] + "')"
-                    insert(sql)
-                incomingMsisdn[14] = -1
-                list_airlines = ""
     elif answer[:5] == 'sky04' :
         bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         sql = "select * from searching_airlines where msisdn = '%s' and id = %s" % (msisdn, bookingMsisdn['flight_id'])
@@ -1620,7 +1582,7 @@ def onMessage(msisdn, ask, first_name):
         ####################XTRANS MODULE START####################
     if answer[:4] == "xt01":
         log_service(logDtm, msisdn, first_name, "XTRANS")
-        sendPhotoCaptionT2(msisdn, 'http://128.199.88.72/line_images/Pool_Xtrans.jpg', 'http://128.199.88.72/line_images/Pool_Xtrans.jpg', answer.replace("xt01 ",""))
+        sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/Pool_Xtrans.jpg', 'http://128.199.88.72/line_images/Pool_Xtrans.jpg', answer.replace("xt01 ",""))
         incomingMsisdn[11] = "xt01"
 
 
@@ -1704,7 +1666,7 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                sendPhotoCaptionT2(msisdn, 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
 
                 insert("delete from searching_jadwal_xtrans where msisdn = '%s'" % (msisdn))
                 list_airlines = list_airlines[:len(list_airlines)-1]
@@ -1770,7 +1732,7 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                sendPhotoCaptionT2(msisdn, 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
+                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
 
     if answer[:4] == "xt09":
         log_book(logDtm, msisdn, first_name, "XTRANS", incomingMsisdn[4] + "-" + incomingMsisdn[2])

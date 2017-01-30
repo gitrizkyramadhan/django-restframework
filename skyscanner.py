@@ -78,7 +78,7 @@ class SkyscannerSDK():
 
         for itenaryTemp in decodedJson['Itineraries']:
             count += 1
-            if count > 9:
+            if count > 5:
                 break
             itenary = {}
             for agent in agents:

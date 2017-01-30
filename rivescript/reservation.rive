@@ -2,6 +2,18 @@
 ! array halo = hi|halo|hai|hello|eh|hei|oi|hallo|helo|alo|hay|uy|haiii|hy|haloo
 ! array assalamualaikum = assalamualaikum|asalamualaikum|salamualaikum|samlekum|asalammualaikum
 ! array salam kenal = slam kenal|slm kenal|lam kenal|salm kenal|salam knal|salam knl|salken|lam nal|sal ken|salam kenal|salamkenal
+! array pesawat = pesawat|psw|pswt|pesawar|psawat|pswat|pesawt
+! array city1 = ambon|bajawa|balikpapan|bpp|banda aceh|aceh|bandung|bdg|banjarmasin|banyuwangi|batam|baubau|bengkulu|berau|biak|bima|buli|buol|denpasar|dps|bali|ende|fakfak|gorontalo|gunungsitoli|jakarta|cengkareng|jkt|halim perdanakusuma|halim|halimperdanakusuma|jambi|jayapura|kaimana|kendari|kotabaru|kupang|labuanbajo|labuha|lampung|lhokseumawe|lombok|mataram|luwuk|malang|mamuju|manado|manokwari|maumere|medan|mdn|kuala namu|kualanamu|melanguane|merauke|meulaboh|nabire|natunaranai|padang|palangka raya|palangkaraya|palembang|palu|pangkal pinang|pangkalpinang|pangkalan bun|pangkalanbun|pekanbaru|pomalaa|pontianak|poso|pulau alor|pulaualor|ruteng|sampit|semarang
+! array city2 = sibolga|silangit|sinabang|solo|sorong|sumbawa|surabaya|sby|sub|tahuna|tambolaka|tanjung pandan|tanjungpandan|tanjung pinang|tanjungpinang|tarakan|ternate|timika|tobelo|tual|makassar|mks|ujungpandang|waingapu|wakatobi|wangi wangi|wangiwangi|yogyakarta|yogya|jogya|jogja|jgj|adelaide|alice springs|alicesprings|brisbane|cairns|coffs harbour|coffsharbour|darwin|gold coast|goldcoast|hobart|mackay whitsundays|mackay|melbourne|perth|sunshine coast|sunshinecoast|sydney|chittagong|delhi|dhaka|brunei|phnom penh|phnompenh|siem reap|siemreap|beijing|chengdu|chongqing|guangzhou|guilin|haikou|hangzhou|kunming|nanning|ningbo|qingdao|shanghai|shenyang|shenzhen|tianjin
+! array city3 = wuhan|xian|colombo|hong kong|hongkong|ahmedabad|bangalore|chennai|hyderabad|kochi|kolkata|mumbai|thiruvananthapuram|tiruchirapalli trichy|fukuoka|nagoya|okinawa - naha|okinawa|osaka - kansai|osaka|sapporo - shin-chitose|sapporo|tokyo - haneda|haneda|tokyohaneda|tokyo - narita|narita|tokyonarita|tokyo|vientiane|macau|alor setar|alorsetar|bintulu|johor baru|johorbaru|kota bharu|kotabharu|kota kinabalu|kotakinabalu|kinabalu|kuala lumpur|kualalumpur|malaysia|kuala terengganu|kualaterengganu|kuching|langkawi|malacca|miri|penang|sandaka|sibu|subang|tawau|mandalay|yangoon|kathmandu|bacolod|cebu|clark manila|clark|davao|iloilo|manila naia|manila
+! array city4 = puerto princesa|puertoprincesa|tacloban|jeddah|singapore|singapor|singapura|singgapur|sing|busan|seoul|taipei|bangkok|thailand|don mueang|donmueang|chiang mai|chiangmai|chiang rai|chiangrai|hat yai|hatyai|krabi|nakhon phanom|nakhonphanom|nakhon si thammarat|nakhonsithammarat|narathiwat|phuket|surat thani|suratthani|trang|ubon ratchathani|ubonratchathani|udon thani|udonthani|dili|abu dhabi|abudhabi|da nang|danang|hanoi|london gatwick|london|ho chi minh city|hochiminh
+! array months = 01|1|02|2|03|3|04|4|05|5|06|6|07|7|08|8|09|9|10|11|12|jan|feb|mar|apr|mei|jun|jul|aug|sept|okt|nov|des|januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember|january|february|pebruari|march|april|may|june|july|august|aug|october|oct|nopember|december|dec
+! array years = 17|18|2017|2018
+! array hari ini = hari ini|hr ini|hri ini
+! array besok = besok|bsok|bsk
+! array pp = pp|pulang pergi|pulangpergi|plg pergi|plg prgi|pulang prgi
+! array oneway = sekali jalan|1x jalan|skali jalan|skli jalan|sekali jlan|sekali jln|sekali jaln|1x jln|1x jlan|1x jaln|1 x jln|1 x jlan|1 x jaln|1 x jalan|one way|oneway
+
 
 
 + [*] (@halo) [*]
@@ -381,107 +393,98 @@
 
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
-+ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] [pesawat|psw|pswt|pesawar] [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
-- Untuk berapa orang?\n\n
-^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=psw_skyscann} <set mycontext=psw_skyscann>
-// ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat} <set mycontext=pesawat>
++ [*] (@pesawat) [*]
+- Wih, mau kemana nih? Coba sini kasih tau rutenya. {topic=flight_route}
 
-+ [*] (cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket) [pesawat|psw|pswt|pesawar] [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4) [dong|donk|bang joni|bang|joni|jon|bang jon|bangjon]
--  Oke, buat berangkat kapan?\n\n
-^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=psw_skyscann} <set mycontext=psw_skyscann>
-// ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star2>> <set psw_arrival_city=<star3>> {topic=pesawat} <set mycontext=pesawat>
++ [*] (@city1|@city2|@city3|@city4) [*] (@city1|@city2|@city3|@city4) [*]
+- Kamu mau pergi dari <star1> ke <star2>, PP apa sekali jalan nih? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
 
-+ [*] [cari|cariin|cek|pesen|pesenin|pesan|booking|book|tanya|tny|liat|lihat|psn|psen|order|ordr|jadwal|tket|tiket|ticket] (pesawat|psw|pswt|pesawar|pswbj) [*]
-- Boleh tau rute penerbangannya, <first_name>?\n\n
-^ (Contoh: Jakarta ke Bali) {topic=psw_skyscann} <set mycontext=psw_skyscann>
-// ^ (Contoh: Jakarta ke Bali) {topic=pesawat} <set mycontext=pesawat>
+> topic flight_route inherits global
+	+ [*] (@city1|@city2|@city3|@city4) [*] (@city1|@city2|@city3|@city4) [*]
+	- Kamu nyari tiket pesawat dari <star1> ke <star2> buat PP apa sekali jalan nih?? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
 
-> topic psw_skyscann inherits global
-  + [dari|dr|dri|from] (@city1|@city2|@city3|@city4) [ke|k|to|-] (@city1|@city2|@city3|@city4)
-  - Oke, buat berangkat kapan?\n\n
-  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
+	+ [*] (@pp) [*]
+	- Oke, berangkatnya tanggal berapa? {topic=pp_berangkat} <set psw_derpature_time=<murah>>
 
-  + [dari|dri|dr] (@city1|@city2|@city3|@city4) [ke|k] (@city1|@city2|@city3|@city4) [buat|untuk|untk|utk] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
-  - Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>> <set psw_derpature_date=<star3>>{topic=pesawat}
+	+ [*] (@oneway) [*]
+	- Buat berangkat kapan tuh? {topic=oneway} <set psw_derpature_time=<murah>>
 
-  + [*] (hari ini|hr ini|bsok|besok|bsk|lusa|##@months|## @months|##@months@years|## @months @years)
-  //%Oke, buat berangkat kapan?\n\n
-  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
-  - Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+	+ *
+	- Hah? Bang Joni nggak ngerti deh rute yang kamu jelasin. <br>
+	^ Coba ketik rutenya dari kota asal ke kota tujuan. <br>
+	^ Misalnya nih, Jakarta ke Bali.
+< topic
 
-  + [*] (#@months|# @months|#@months@years|# @months @years)
-  //%Oke, buat berangkat kapan?\n\n
-  ^ (Contoh: hari ini, besok, lusa atau ketik tanggalnya seperti ini 31 Desember 2016)
-  - Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi) <set psw_derpature_date=<star>> <set psw_dewasa=0> <set psw_anak=0> <set psw_bayi=0> <set psw_maskapai=semua> <set psw_derpature_time=murah>
+> topic pp_berangkat inherits global
+	+ [*] (@pp) [*]
+	- Oke, berangkatnya tanggal berapa?
 
-  + [*] #dewasa #anak #bayi [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
+	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	- Kalo pulangnya, tanggal berapa? {topic=pp_pulang} <set psw_derpature_date=<star>>
+< topic
 
-  + [*] # dewasa # anak # bayi [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
+> topic pp_pulang inherits global
+	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	- Buat berapa orang tuh?\n\n
+	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_arrival_date=<star>>
+< topic
 
-  + [*] #dewasa #anak [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air) <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+>topic oneway inherits global
+	+ [*] (@oneway) [*]
+	- Oke, berangkatnya tanggal berapa?
 
-  + [*] # dewasa # anak [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=<star2>>
+	+ [*] (hari ini|besok|lusa|##@months|## @months|##@months@years|## @months @years|##*@months*@years|##@months@years) [*]
+	- Buat berapa orang tuh?\n\n
+	^ Misalnya nih, buat 1 dewasa 1 anak 1 bayi {topic=passenger_count} <set psw_derpature_date=<star>>
+< topic
 
-  + [*] #dewasa [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+> topic passenger_count inherits global
+	+ [*] #dewasa #anak #bayi [*]
+	- sky01 Oke.. Untuk <star1> dewasa, <star2> anak sama <star3> bayi ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
 
-  + [*] # dewasa [*]
-  //%Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+	+ [*] # dewasa # anak # bayi [*]
+	- sky01 Oke.. Untuk <star1> dewasa, <star2> anak sama <star3> bayi ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=<star2>> <set psw_bayi=<star3>>
 
-  + [*] #orang [*]
-  //%Untuk berapa orang? \n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>>
+	+ [*] #dewasa #anak [*]
+	- sky01 Oke.. Untuk <star1> dewasa sama <star2> anak ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=<star2>>
 
-  + [*] # orang [*]
-  //%Boleh. Untuk berapa orang?\n\n
-  ^ (Contoh: 2 dewasa 1 anak 1 bayi)
-  - Oke deh, mau Bang Joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Semua, Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)  <set psw_dewasa=<star1>> <set psw_anak=0>
+	+ [*] # dewasa # anak [*]
+	- sky01 Oke.. Untuk <star1> dewasa sama <star2> anak ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=<star2>>
 
-  + [*] (smua|semua|apa aja|apa saja|terserah|@maskapai) [*]
-  //%Oke deh, mau Bang joni cariin untuk semua maskapai atau kamu mau pilih maskapai tertentu?\n\n
-  ^ (Contoh: Garuda Indonesia, Lion Air, Airasia, Citilink, Batik Air, Sriwijaya Air)
-  - Untuk take-off-nya kamu mau pilih pagi, siang atau malam? <set psw_maskapai=<star>>
+	+ [*] #dewasa #bayi [*]
+	- sky01 Oke.. Untuk <star1> dewasa sama <star2> bayi ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_bayi=<star2>> <set psw_anak=0>
 
-  + [*] (pagi|pgi|pg|siang|sore|sre|malam|malem|mlem|mlm|murah|murag|termurah|bebas|atur aja|kapan aja|kpn aja) [*]
-  //%Untuk take-off-nya kamu mau pilih pagi, siang, malam atau penerbangan termurah?
-  - sky01 Sip deh! Tunggu sebentar ya, Bang Joni cariin jadwal penerbangannya. <set psw_derpature_time=<star>>
+	+ [*] # dewasa # bayi [*]
+	- sky01 Oke.. Untuk <star1> dewasa sama <star2> bayi ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_bayi=<star2>> <set psw_anak=0>
 
-  + sky02
-  - Maaf banget Bang Joni gak dapet penerbangan yg kamu pilih, coba cari tanggal lain atau rute lain deh {topic=random}
+	+ [*] #dewasa [*]
+	- sky01 Oke.. Untuk <star1> dewasa ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
 
-  + sky03
-  - Berikut jadwal penerbangan termurah sesuai dengan yang kamu mau.\n\n
-  ^ Untuk memilih penerbangan, cukup ketik nomor pilihnya.\n\n
-  ^ Untuk mengganti penerbangan, kamu langsung bisa ketik rute pesawat atau tanggal keberangkatan.\n\n  {topic=psw_skyscann_choose} <set mycontext=psw_skyscann_choose>
+	+ [*] # dewasa [*]
+	- sky01 Oke.. Untuk <star1> dewasa ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
 
+	+ [*] #orang [*]
+	- sky01 Oke.. Untuk <star1> dewasa ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
+
+	+ [*] # orang [*]
+	- sky01 Oke.. Untuk <star1> dewasa ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
+
+	+ [*] # [*]
+	- sky01 Oke.. Untuk <star1> dewasa ya. <br>
+	^ Bang Joni cariin nih jadwalnya, tunggu sebentar ya! <set psw_dewasa=<star1>> <set psw_anak=0>
+
+	+ flightresult123
+	- Nih, coba cek deh. Bang Joni udah dapet jadwal penerbangan termurah.
 < topic
 
 > topic psw_skyscann_choose inherits global
