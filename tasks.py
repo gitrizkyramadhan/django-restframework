@@ -875,7 +875,7 @@ def onMessage(msisdn, ask, first_name):
 
             ####################GREETINGS####################
     if answer[:4] == "gr01":
-        linebot.send_rich_message_greeting_text(msisdn, 'https://www.bangjoni.com/line_images/halo1','RICH MESG',temp_answer.strip())
+        linebot.send_carousel(msisdn, 'greetings')
     #################################################
 
     ####################BJPAY CEK SALDO####################

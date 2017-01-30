@@ -145,6 +145,14 @@ class Bot(object):
             raise Exception('Invalid imagemap ID!')
 
     def send_image_button(self, user_ids, img_button_id):
+        """
+        Send image button message to specific one or more user ID.
+        Pass a valid image button id from template_img_buttons.py, otherwise invalid id exception will be raised
+
+        :param user_ids:
+        :param img_button_id:
+        :return:
+        """
         for payload_object in template_img_buttons.imgbuttons:
             if payload_object["id"] == img_button_id:
                 payload = payload_object["payload"]
@@ -154,9 +162,17 @@ class Bot(object):
             user_ids = user_ids.split(",")
             self.__send_multicast(user_ids, payload)
         else:
-            raise Exception('Invalid imagemap ID!')
+            raise Exception('Invalid image button ID!')
 
     def send_confirmation(self, user_ids, confirm_id):
+        """
+        Send confirmation message to specific one or more user ID.
+        Pass a valid confirmation_id from template_confirmation.py, otherwise invalid confirmation id exception will be raised
+
+        :param user_ids:
+        :param confirm_id:
+        :return:
+        """
         for payload_object in template_confirm.confirmations:
             if payload_object["id"] == confirm_id:
                 payload = payload_object["payload"]
@@ -169,6 +185,14 @@ class Bot(object):
             raise Exception('Invalid imagemap ID!')
 
     def send_carousel(self, user_ids, carousel_id):
+        """
+        Send carousel message to specific one or more user ID.
+        Pass a valid carousel_id from template_carousel.py, otherwise invalid carousel id exception will be raised
+
+        :param user_ids:
+        :param carousel_id:
+        :return:
+        """
         for payload_object in template_carousel.carousels:
             if payload_object["id"] == carousel_id:
                 payload = payload_object["payload"]
@@ -179,3 +203,7 @@ class Bot(object):
             self.__send_multicast(user_ids, payload)
         else:
             raise Exception('Invalid imagemap ID!')
+
+    def send_composed_carousel(self, user_ids, alt_text, columns):
+        payload = template_carousel.composeCarousel(alt_text, columns)
+        self.__send_multicast(user_ids, payload)
