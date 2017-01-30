@@ -56,3 +56,4 @@ def composeConfirm(alt_text, text, option1, option2):
             actions=[opt1_payload, opt2_payload]
         )
     )
+    return payload
