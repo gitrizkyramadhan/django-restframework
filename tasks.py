@@ -869,6 +869,7 @@ def onMessage(msisdn, ask, first_name):
                 do_mgm(msisdn, ask, first_name, answer, incomingMsisdn)
         else:
             if incomingMsisdn[1] != "TRANSLATOR_MODE":
+                print "hola hola hola hola"
                 sendMessageT2(msisdn, answer, 0)
 
 
