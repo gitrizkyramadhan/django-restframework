@@ -158,14 +158,16 @@ class SkyscannerSDK():
                                                     'airlineLogo': carrierLogoURL}
 
 
-                for place in places:
-                    if place['Id'] == decodedJson['Query']['DestinationPlace']:
-                        itenary['destination'] = place['Code']
-                        itenary['destinationName'] = place['Name']
-                    if place['Id'] == decodedJson['Query']['OriginPlace']:
-                        itenary['origin'] = place['Code']
-                        itenary['originName'] = place['Name']
-            print itenary
+                # for place in places:
+                #     if place['Id'] == leg['DestinationStation']:
+                #         itenary['destination'] = place['Code']
+                #         itenary['destinationName'] = place['Name']
+                #     if place['Id'] == leg['DestinationStation']:
+                #         itenary['origin'] = place['Code']
+                #         itenary['originName'] = place['Name']
+            itenary['destination'] = decodedJson['Query']['DestinationPlace']
+            itenary['origin'] = decodedJson['Query']['OriginPlace']
+            # print itenary
             itenaries.append(itenary)
         # print json.dumps(itenaries)
         return json.loads(json.dumps(itenaries))
