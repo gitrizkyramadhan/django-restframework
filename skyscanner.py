@@ -124,7 +124,7 @@ class SkyscannerSDK():
                                                 'airlineLogo': carrierLogoURL}
 
 
-                if itenary.has_key('outboundLegId'):
+                if itenary.has_key('inboundLegId'):
                     if leg['Id'] == itenary['inboundLegId']:
                         itenary['inbound_arrivalTime'] = leg['Arrival']
                         itenary['inbound_departureTime'] = leg['Departure']
