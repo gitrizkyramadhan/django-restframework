@@ -452,6 +452,8 @@ def create_recommended_carousell(msisdn):
     column['actions'] = actions
     columns.append(column)
 
+    return columns
+
 # ---------- DWP MODULE START ----------
 def do_dwp_event(msisdn, ask, first_name, answer, incomingMsisdn):
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
@@ -3127,88 +3129,90 @@ def doworker(req):
     print ""
     print "================================NEW LINE REQUEST============================================="
     print content
-    msisdn = ""
-    ask = ""
-    longitude = ""
-    latitude = ""
-    username = ""
-    first_name = ""
-    last_name = ""
-    phone_number = ""
-    first_name_c = ""
-    last_name_c = ""
-    address = ""
-    sticker	= ""
-    stickerid = ""
-    contentType = 0
-    opType = ""
 
-    try:
-        if content["events"][0]["type"] == "message":
-            contentType = content["events"][0]["message"]["type"]
-            msisdn = str(content["events"][0]["source"]["userId"])
-            if contentType == "text":
-                ask = str(content["events"][0]["message"]["text"])
-            elif contentType == "location":
-                longitude = content["events"][0]["message"]["longitude"]
-                latitude = content["events"][0]["message"]["latitude"]
-                address = content["events"][0]["message"]["address"]
-            elif contentType == "sticker":
-                sticker = content["events"][0]["message"]["packageId"]
-                stickerid = content["events"][0]["message"]["stickerId"]
-                print "--->STICKER", sticker, stickerid
-                sendMessageT2(msisdn, "Makasih sticker-nya..", 0)
-            elif contentType == "image":
-                print "--->IMAGE"
-                sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
+    for event in content["events"] :
+        msisdn = ""
+        ask = ""
+        longitude = ""
+        latitude = ""
+        username = ""
+        first_name = ""
+        last_name = ""
+        phone_number = ""
+        first_name_c = ""
+        last_name_c = ""
+        address = ""
+        sticker	= ""
+        stickerid = ""
+        contentType = 0
+        opType = ""
+
+        try:
+            if event["type"] == "message":
+                contentType = event["message"]["type"]
+                msisdn = str(event["source"]["userId"])
+                if contentType == "text":
+                    ask = str(event["message"]["text"])
+                elif contentType == "location":
+                    longitude = event["message"]["longitude"]
+                    latitude = event["message"]["latitude"]
+                    address = event["message"]["address"]
+                elif contentType == "sticker":
+                    sticker = event["message"]["packageId"]
+                    stickerid = event["message"]["stickerId"]
+                    print "--->STICKER", sticker, stickerid
+                    sendMessageT2(msisdn, "Makasih sticker-nya..", 0)
+                elif contentType == "image":
+                    print "--->IMAGE"
+                    sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
+                else:
+                    print "--->"+contentType.capitalize()
+                    sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
             else:
-                print "--->"+contentType.capitalize()
-                sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
-        else:
-            opType = content["events"][0]["type"]
-            msisdn = str(content["events"][0]["source"]["userId"])
+                opType = event["type"]
+                msisdn = str(event["source"]["userId"])
+                print "-->", opType, msisdn
+        except:
+            opType = content["result"][0]["content"]["opType"]
+            msisdn = str(content["result"][0]["content"]["params"][0])
             print "-->", opType, msisdn
-    except:
-        opType = content["result"][0]["content"]["opType"]
-        msisdn = str(content["result"][0]["content"]["params"][0])
-        print "-->", opType, msisdn
 
 
-    logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+        logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
 
-    if content["events"][0]["type"] == "message":
-        if contentType == "text" or contentType == "location": # request text location
-            print "Incoming>>>", logDtm, first_name, msisdn, ask, longitude, latitude, username
+        if event["type"] == "message":
+            if contentType == "text" or contentType == "location": # request text location
+                print "Incoming>>>", logDtm, first_name, msisdn, ask, longitude, latitude, username
 
-            incomingClient = lineNlp.redisconn.get("status/%s" % (msisdn))
-            if incomingClient is None:
-                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-                incomingClient = "0"
+                incomingClient = lineNlp.redisconn.get("status/%s" % (msisdn))
+                if incomingClient is None:
+                    lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+                    incomingClient = "0"
 
-                #if incomingClient == "0":
-                #lineNlp.redisconn.set("status/%s" % (msisdn), 1)
-            if longitude != "":
-                ask = "[LOC]" + str(latitude) + ";" + str(longitude)
-                print ">>>>>>>", longitude, ask
+                    #if incomingClient == "0":
+                    #lineNlp.redisconn.set("status/%s" % (msisdn), 1)
+                if longitude != "":
+                    ask = "[LOC]" + str(latitude) + ";" + str(longitude)
+                    print ">>>>>>>", longitude, ask
+                displayname = get_line_username(msisdn)
+                try:
+                    onMessage(str(msisdn), ask, displayname)
+                    lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+                except Exception as e:
+                    # print e
+                    traceback.print_exc()
+                    print "ERROR HAPPEN!!!"
+                    lineNlp.redisconn.set("status/%s" % (msisdn), 0)
+                    lineNlp.redisconn.delete("rs-users/%s" % (msisdn))
+
+                    failureAns = lineNlp.doNlp("bjsysfail", msisdn, first_name)
+                    sendMessageT2(msisdn, failureAns, 0)
+        elif event["type"] == "follow" or event["type"] == "unfollow": # request add friend and unblock
             displayname = get_line_username(msisdn)
-            try:
-                onMessage(str(msisdn), ask, displayname)
-                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-            except Exception as e:
-                # print e
-                traceback.print_exc()
-                print "ERROR HAPPEN!!!"
-                lineNlp.redisconn.set("status/%s" % (msisdn), 0)
-                lineNlp.redisconn.delete("rs-users/%s" % (msisdn))
-
-                failureAns = lineNlp.doNlp("bjsysfail", msisdn, first_name)
-                sendMessageT2(msisdn, failureAns, 0)
-    elif content["events"][0]["type"] == "follow" or content["events"][0]["type"] == "unfollow": # request add friend and unblock
-        displayname = get_line_username(msisdn)
-        reply = "Halo " + displayname + ", terima kasih telah add Bang Joni sebagai teman.\n\nBang Joni adalah teman virtual kamu yang bisa diandalkan kapan aja dan di mana aja.\nSekarang Bang Joni bisa bantu kamu pesen tiket pesawat, travel xtrans, uber, isi pulsa, isi token pln, infoin jalan tol dan cuaca, terjemahkan bahasa.\n\n"
-        reply = reply + "Untuk memulai ketik aja \"Halo bang\"\n\nOh iya, pake penulisan yang benar ya, jangan terlalu banyak singkatan, biar Bang Joni nggak bingung."
-        sendMessageT2(msisdn, reply, 0)
-        log_addfriends(logDtm, msisdn, displayname, "ADD FRIENDS")
+            reply = "Halo " + displayname + ", terima kasih telah add Bang Joni sebagai teman.\n\nBang Joni adalah teman virtual kamu yang bisa diandalkan kapan aja dan di mana aja.\nSekarang Bang Joni bisa bantu kamu pesen tiket pesawat, travel xtrans, uber, isi pulsa, isi token pln, infoin jalan tol dan cuaca, terjemahkan bahasa.\n\n"
+            reply = reply + "Untuk memulai ketik aja \"Halo bang\"\n\nOh iya, pake penulisan yang benar ya, jangan terlalu banyak singkatan, biar Bang Joni nggak bingung."
+            sendMessageT2(msisdn, reply, 0)
+            log_addfriends(logDtm, msisdn, displayname, "ADD FRIENDS")
 
 # ---------- DWP MODULE START ----------
 @app.task
