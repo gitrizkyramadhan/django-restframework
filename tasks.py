@@ -915,7 +915,7 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "gr03":
         linebot.send_carousel(msisdn, 'info_other')
     if answer[:4] == "fl00":
-        linebot.send_text_message(msisdn, answer[4:])
+        # linebot.send_text_message(msisdn, answer[4:])
         linebot.send_composed_carousel(msisdn, "Recommended Destination", create_recommended_carousell(msisdn))
     #################################################
 
