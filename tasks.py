@@ -418,6 +418,40 @@ def submit_unknown_agent(msisdn, ask, first_name):
     except requests.exceptions.RequestException as e:
         print ">>Error HTTP to facebook chat server:",e
 
+# ---------- FLIGHT CAROUSELL START ----------
+def create_recommended_carousell(msisdn):
+    microsite_url = 'https://bangjoni.com/testflv2/flight-bj.php?'
+    top_4_destinations = "CGK-KNO,CGK-SUB,CGK-DPS,CGK-LOP"
+    columns = []
+    for dest in top_4_destinations.split(','):
+        column = {}
+        actions = []
+        top_dest = sky.getLowestDestinationPrice(dest.split('-')[0], dest.split('-')[1])
+
+        url = microsite_url + 'msisdn=' + msisdn + '&d=' + dest.split('-')[0] + '&a=' + dest.split('-')[1] + '&date=' + top_dest['OutboundLeg']['DepartureDate'][:10]
+        print url
+
+        actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
+        column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+        column['title'] = str(dest)
+        column['text'] = 'Mulai dari Rp ' + top_dest['MinPrice'] + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
+        column['actions'] = actions
+        columns.append(column)
+
+    column = {}
+    actions = []
+    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url})
+    # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
+    column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+    column['title'] = 'Gak ada?'
+    column['text'] = "Tap 'Pilih' buat cari destinasi atau jadwal lain"
+    if (len(column['text']) > 60):
+        column['text'] = column['text'][:57] + '...'
+    column['actions'] = actions
+    columns.append(column)
+
 # ---------- DWP MODULE START ----------
 def do_dwp_event(msisdn, ask, first_name, answer, incomingMsisdn):
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
@@ -596,7 +630,7 @@ def do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn) :
                 actions.append({'type': 'message', 'label': 'Ubah waktu', 'text': "ubah waktu perjalanan"})
                 column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
                 column['title'] = 'Rp '+str(sky_resp_obj['price'])
-                column['text'] = sky_resp_obj['origin']+'-'+sky_resp_obj['destination']+', Perjalanan dengan '+sky_resp_obj['flightNumbers']['carrierCommonName']+', Waktu berangkat : '+str(sky_resp_obj['departureTime'])[11:]+', Waktu kedatangan : '+str(sky_resp_obj['arrivalTime'])[11:]
+                column['text'] = sky_resp_obj['origin']+'-'+sky_resp_obj['destination']+', dengan '+sky_resp_obj['flightNumbers']['carrierCommonName']+', '+str(sky_resp_obj['departureTime'])[11:]+'-'+str(sky_resp_obj['arrivalTime'])[11:]
                 if (len(column['text']) > 60):
                     column['text'] = column['text'][:57]+'...'
                 column['actions'] = actions
@@ -870,7 +904,7 @@ def onMessage(msisdn, ask, first_name):
 
 
 
-            ####################GREETINGS####################
+    ####################GREETINGS####################
     if answer[:4] == "gr01":
         linebot.send_carousel(msisdn, 'greetings')
         linebot.send_text_message(msisdn, answer[4:])
@@ -878,6 +912,9 @@ def onMessage(msisdn, ask, first_name):
         linebot.send_carousel(msisdn, 'transport_other')
     if answer[:4] == "gr03":
         linebot.send_carousel(msisdn, 'info_other')
+    if answer[:4] == "fl00":
+        linebot.send_text_message(msisdn, answer[4:])
+        linebot.send_composed_carousel(msisdn, "Recommended Destination", create_recommended_carousell(msisdn))
     #################################################
 
     ####################BJPAY CEK SALDO####################

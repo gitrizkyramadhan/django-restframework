@@ -1,5 +1,7 @@
 ! BJ = V2
+
 ! array halo = hi|halo|hai|hello|eh|hei|oi|hallo|helo|alo|hay|uy|haiii|hy|haloo
+! array bang = bang|abang|bang joni|bangjon|bang jon|jon|joni|bangjoni
 ! array assalamualaikum = assalamualaikum|asalamualaikum|salamualaikum|samlekum|asalammualaikum
 ! array salamkenal = slam kenal|slm kenal|lam kenal|salm kenal|salam knal|salam knl|salken|lam nal|sal ken|salam kenal|salamkenal
 ! array pesawat = pesawat|psw|pswt|pesawar|psawat|pswat|pesawt
@@ -16,6 +18,15 @@
 ! array oneway = sekali jalan|1x jalan|skali jalan|skli jalan|sekali jlan|sekali jln|sekali jaln|1x jln|1x jlan|1x jaln|1 x jln|1 x jlan|1 x jaln|1 x jalan|one way|oneway
 ! array bangjoni = bang joni|abang|bang|bang jon|bangjon|jon|joni|bro|sob|bos|bangjoni
 ! array test = test|tes|tez|tess|testing
+! array salam kenal = slam kenal|slm kenal|lam kenal|salm kenal|salam knal|salam knl|salken|lam nal|sal ken|salam kenal|salamkenal
+! array bosen = bosen|bosan|bt|bete
+! array nggak = nggak|gak|enggak|engga|gk|tidak|tdk|ngga|gamau|nggamau
+! array hurufb = huruf B|huruf bnya|huruf b-nya
+! array gaujan = nggak ujan|nggak hujan|ngga ujan|ngga hujan|enggak ujan|enggak hujan|engga ujan|engga hujan|gak ujan|gak hujan|ga ujan|ga hujan|gaujan
+! array nyerah = nyerah|nggak tau|gatau|enggak tau|gak tau|engga tau|ngga tau
+! array lagiapa = lagi apa|lagiapa|lg apa|lgi apa|lagi ngapain|lgi ngapain|lg ngapain|gi apa
+! array makian = tai|babi|monyet|titit|memek|anjing|ngentot|kupret|kambing|peler|pler|kontol
+! array pesawat = pesawat|pswt|psawat|pswat|psawt
 
 
 
@@ -30,13 +41,18 @@
 - gr01 Hai <first_name>, ada yang Bang Joni bisa bantu?
 - gr01 Oi oi, kenapa kenapa? Ada yang Bang Joni bisa bantu?
 
++ [*] (@bang) [*]
+- gr01 Halo <first_name>, ada yang Bang Joni bisa bantu?
+- gr01 Hai <first_name>, ada yang Bang Joni bisa bantu?
+- gr01 Oi oi, kenapa kenapa? Ada yang Bang Joni bisa bantu?
+
 + [*] (@assalamualaikum) [*]
-- Wa'alaikumsalam! <br>
-^ gr01 Ya <first_name>, ada yang bisa Bang Joni bantu?
+- gr01 Wa'alaikumsalam! <br>
+^ Ya <first_name>, ada yang bisa Bang Joni bantu?
 
 + [*] (@salam kenal) [*]
-- Yooo... <first_name>, salam kenal juga ya! <br>
-^ gr01 Ada yang bisa Bang Joni bantu?
+- gr01 Yooo... <first_name>, salam kenal juga ya! <br>
+^ Ada yang bisa Bang Joni bantu?
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
 - ca01 Oke, Bang Joni udah batalin pesanan kamu. {topic=random}
@@ -66,14 +82,6 @@
   - gr01 Bang Joni adalah teman virtual yang saat ini bisa bantu layanan berikut:  {topic=random}
 
 < topic
-
-+ *
-//* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
-- ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
-^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
-^ Ketik 'cancel' untuk melakukan pembatalan.\n
-^ Ketik 'menu' untuk kembali ke menu awal.\n
-^ Updating bang joni masih terus dilakukan ya.
 
 ///////////////////////////////////START REMINDER
 + [*] (ingetin|reminder|bangunin)
@@ -403,7 +411,8 @@
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
 + [*] (@pesawat) [*]
-- Wih, mau kemana nih? Coba sini kasih tau rutenya. {topic=flight_route}
+- fl00 Mau cari tiket pesawat murah? Udah paling bener deh cari di Bang Joni :D <br>
+^ Ini dia destinasi paling dicari versi Bang Joni.
 
 + [*] (@city1|@city2|@city3|@city4) [*] (@city1|@city2|@city3|@city4) [*]
 - Kamu mau pergi dari <star1> ke <star2>, PP apa sekali jalan nih? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
@@ -565,12 +574,14 @@
 + mgmbjpaynotregistered
 - mgm03 Eittss.. Sebelom ikutan promo ini, kamu mesti punya akun BJPay dulu. Ketik BJPAY REGISTER, sekarang!
 
+
 + ref (*)
 - mgm03 Selamat, kamu mendapatkan saldo BJPay sebesar Rp 5000 dari invitation code yang kamu input. Untuk mengaktifkan akun BJPay kamu, silakan ketik BJPAY REGISTER.\n\n
 ^ Mau tambahan saldo lagi? Kamu bisa dapetin saldo BJPay Rp 500 tiap ajak temen kamu buat add Bang Joni di Line. Info lebih lengkapnya bisa kamu cek di http://line.me/R/home/public/post?id=bangjoni&postId=1148515416806026326 <set ref_code=<star>>
 
 + mgmsuccessref
 - Selamat, kamu mendapatkan tambahan saldo BJPay Rp 500,-
+
 
 + bjpaybalancecheck
 - Saldo BJPay kamu saat ini adalah Rp <bjpay_balance>
@@ -580,8 +591,87 @@
 - Aduh Bang Joni lagi meriang nih, chatmu gak bisa diproses sama Bang Joni skrg
 - Bentar Bang Joni lagi ke warung, ini yg bales mamanya Bang Joni, tunggu ya sampe Bang Joni balik lagi :D
 
+
 + [*] transportasi lainnya [*]
 - gr02 Pilih jenis transportasi
 
 + [*] info lainnya [*]
 - gr03 Pilih informasi lainnya
+
++ [*] iseng [*]
+- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+
++ [*] (@bosen) [*]
+- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+
++ [*] (@lagiapa) [*]
+- lagi ngupil, sini bantuin :D {topic=ngupil}
+- lagi chatting sama kamu lah
+
++ [*] (@makian) [*]
+- Duh, kamu ngomongnya nggak boleh gitu
+- Busyet ngomongnya kasar amat
+
+
+//+ *
+//* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+//- ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
+//^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
+//^ Ketik 'cancel' untuk melakukan pembatalan.\n
+//^ Ketik 'menu' untuk kembali ke menu awal.\n
+//^ Updating bang joni masih terus dilakukan ya.
+
++ *
+- Sip!
+- Yo'i deh
+- He'em
+- Yo'i
+- Oke deh
+- Okay
+
+
+> topic ngupil
+    + [*] (@jorok) [*]
+    - Hahaha <br>
+    - Nggak jorok dong, justru ngupil kan ngebersihin idung biar gak kotor
+
+< topic
+
+> topic tebak_tebakan
+    + [*] (@nggak) [*]
+    - Ih yakin nih nggak mau? Coba dulu dong.
+    - Masa sih nggak mau? Tebak-tebakannya seru loh!
+
+    + [*] (@mau) [*]
+    - Nih coba jawab ya! Kenapa bebek goreng rasanya enak? {topic=tebak_bebek_goreng}
+    - Coba jawab nih! Ada satu payung kecil dipake sama 5 orang, tapi nggak ada satu pun yang keujanan, kok bisa? {topic=tebak_payung5orang}
+
+< topic
+
+> topic tebak_bebek_goreng
+    + [*] (@hurufb) [*]
+    - Hahaha iya bener! Coba kalo nggak ada huruf B-nya. Ogah banget deh makannya. {topic=random}
+
+    + (*)
+    - Salah! coba lagi ayok.
+    _ Bukan itu. Masa nggak tau sih?
+
+    + [*] (@nyerah) [*]
+    - Yah payah deh nyerah. <br>
+    - Jawabannya, karena Bebek Goreng ada huruf B-nya. Coba kalo nggak ada, nggak bakal ada yang mau makan! Hahaha :D {topic=random}
+
+< topic
+
+> topic tebak_payung5orang
+    + [*] (@gaujan) [*]
+    - Hahaha betul! Orang gak ujan, ya nggak ada yang basah lah! {topic=random}
+
+    + (*)
+    - Salah! coba lagi ayok.
+    _ Bukan itu. Masa nggak tau sih?
+
+    + [*] (@nyerah) [*]
+    - Yah payah deh nyerah. <br>
+    - Jawabannya, karena emang nggak ujan, jadi nggak ada yang basah! Hahaha :D {topic=random}
+
+< topic

@@ -1,5 +1,7 @@
 import requests
 import json
+from datetime import date, datetime, timedelta
+# from dateutil.relativedelta import relativedelta
 
 APIKEY = 'ba616238434893123338551586683135'
 BASE_URL = 'http://partners.api.skyscanner.net/apiservices/'
@@ -31,6 +33,27 @@ class SkyscannerSDK():
         # respHeaders = json.load(r.headers)
         # print respHeaders
         # return
+
+    def getLowestDestinationPrice(self, origin, destination):
+        # six_months = date.today() + relativedelta(months=+6)
+        # formatted_date = (six_months).strftime('%Y-%m')
+        url = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/id/IDR/id-ID/"+origin+"/"+destination+"/anytime"
+        # url = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/id/IDR/id-ID/ID/ID/anytime"
+        r = requests.get(url, params={"apikey": APIKEY})
+        decodedJson = json.loads(json.dumps(r.json()))
+
+        lowest_price = 9999999999999999
+        quote_id = 9999999999999999
+        for quote in decodedJson['Quotes'] :
+            # print quote
+            # print str(lowest_price) + " > " + str(quote['MinPrice']) + " = " + str(int(lowest_price) < int(quote['MinPrice']))
+            if int(lowest_price) > int(quote['MinPrice']) :
+                quote_id = int(quote['QuoteId'])
+                lowest_price = int(quote['MinPrice'])
+        # print quote_id, lowest_price
+        for quote in decodedJson['Quotes']:
+            if int(quote['QuoteId']) == quote_id :
+                return quote
 
     def getTop10CheapestPrice(self, **params):
         headers = {'Content-Type': 'application/x-www-form-urlencoded;  charset=UTF-8', 'Accept': 'application/json'}
@@ -172,5 +195,9 @@ class SkyscannerSDK():
         # print json.dumps(itenaries)
         return json.loads(json.dumps(itenaries))
 
-# sk = SkyscannerSDK()
+sk = SkyscannerSDK()
 # sk.getTop10CheapestPrice(currency='IDR', locale='id-ID', originplace='CGK', destinationplace='SUB', outbounddate='2017-01-01', adults=2, country='id', locationschema='Iata', outbounddeparttime='M')
+print sk.getLowestDestinationPrice('CGK','KNO')
+# top_4_destinations = "CGK-KNO,CGK-SUB,CGK-DPS,CGK-LOP"
+# for sky_resp_obj in top_4_destinations.split(','):
+#     print sky_resp_obj
