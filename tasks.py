@@ -434,7 +434,7 @@ def create_recommended_carousell(msisdn):
         actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
         column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
         column['title'] = str(dest)
-        column['text'] = 'Mulai dari Rp ' + top_dest['MinPrice'] + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
+        column['text'] = 'Mulai dari Rp ' + str(top_dest['MinPrice']) + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
         column['actions'] = actions
