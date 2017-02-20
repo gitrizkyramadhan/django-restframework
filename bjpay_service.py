@@ -12,11 +12,10 @@ class BJPayService() :
             content = f.read().splitlines()
         f.close()
 
-        self.EMAIL_NOTIF = content[9].split('=')[1]
-        self.MYSQL_HOST=content[4].split('=')[1]
-        self.MYSQL_USER=content[5].split('=')[1]
-        self.MYSQL_PWD=content[6].split('=')[1]
-        self.MYSQL_DB=content[7].split('=')[1]
+        self.MYSQL_HOST=content[12].split('=')[1]
+        self.MYSQL_USER=content[13].split('=')[1]
+        self.MYSQL_PWD=content[14].split('=')[1]
+        self.MYSQL_DB=content[15].split('=')[1]
 
         self._setup_logger('F_BJPAY', '/home/bambangs/LOGBJ/F_BJPAY.log')
         self._setup_logger('F_BJPTRX', '/home/bambangs/LOGBJ/F_BJPTRX.log')
