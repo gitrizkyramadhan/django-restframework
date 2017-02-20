@@ -153,6 +153,10 @@
 - Halo <first_name>, kamu udah pernah register BJPAY sebelomnya<br>
 ^ Saldo BJPAY kamu dengan nomor HP <bjpay_phone> sekarang Rp <bjpay_balance>
 
++ bj03
+- Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY<br>
+^ Top up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit
+
 ///////////////////////////////////DEPOSIT BJPAY
 + [*] (deposit|topup|top up|isi bjpay) [*]
 - bj99 Okay, pilih bank di atas untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>

@@ -1143,24 +1143,28 @@ def onMessage(msisdn, ask, first_name):
             #     lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
             #     answer = "Yeaay!\nKamu dapet saldo BJPay Rp 5000 dari invitation code yang kamu gunakan.\n\nMakasih ya udah add Bang Joni ;)"
             # else:
-            payload = "0|" + va_no + "|" + incomingMsisdn[6]
-            lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            # payload = "0|" + va_no + "|" + incomingMsisdn[6]
+            # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
             bjp_service.register(msisdn, va_no, incomingMsisdn[6], 0)
 
             # PROMO PULSA CASHBACK 25%
             lineNlp.redisconn.set("promopulsa/%s" % (msisdn), 1)
 
-            answer = "Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY\n\nTop up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit"
+            answer = lineNlp.doNlp("bj03", msisdn, first_name)
+            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer, 'bjpaydeposit')
         elif response == "107":
             migrate(msisdn, incomingMsisdn[6])
 
-            answer = "Pendaftaran BJPAY sudah pernah sebelumnya"
-        else:
-            answer = "Bang Joni gak register BJPAY, coba lagi ya..."
-        if incomingMsisdn[15] is True:
+            answer = lineNlp.doNlp("bj02", msisdn, first_name)
+            answer = answer.replace('<bjpay_phone>', str(phone)).replace('<bjpay_balance>', str(current_balance))
             sendMessageT2(msisdn, answer, 0)
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer, 'bjpaydeposit')
+            answer = "Bang Joni gak register BJPAY, coba lagi ya..."
+            sendMessageT2(msisdn, answer, 0)
+        # if incomingMsisdn[15] is True:
+        #     sendMessageT2(msisdn, answer, 0)
+        # else:
+        #     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer, 'bjpaydeposit')
 
     if answer[:4] == "bj04":
         r = (datetime.now() + timedelta(hours=0)).strftime('%Y%m%d%H%M%S')
