@@ -458,6 +458,28 @@ def submit_unknown_agent(msisdn, ask, first_name):
     except requests.exceptions.RequestException as e:
         print ">>Error HTTP to facebook chat server:",e
 
+def migrate(msisdn, user_phone):
+    sql = "select distinct msisdn from bjpay"
+    sqlout = request(sql)
+    for row in sqlout:
+        r_msisdn = row[0]
+        # print msisdn
+
+        balance = 0
+        payload = lineNlp.redisconn.get("bjpay/%s" % (r_msisdn))
+        try:
+            balance = int(payload.split('|')[0])
+            va_no = payload.split('|')[1]
+            phone = payload.split('|')[2]
+        except:
+            balance = 0
+            va_no = 0
+            phone = 0
+
+        if str(user_phone) == str(phone) :
+            bjp_service.register(msisdn, va_no, phone, balance)
+            print msisdn, balance, va_no
+
 # ---------- FLIGHT CAROUSELL START ----------
 def create_recommended_carousell(msisdn):
     microsite_url = 'https://bangjoni.com/testflv2/flight-bj.php?'
@@ -482,7 +504,7 @@ def create_recommended_carousell(msisdn):
 
     column = {}
     actions = []
-    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url})
+    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
     # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
     column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
     column['title'] = 'Gak ada?'
@@ -1116,19 +1138,22 @@ def onMessage(msisdn, ask, first_name):
         response = content['Response']
         message = content['Message']
         if response == "0":
-            if incomingMsisdn[15] is True:
-                payload = "5000|" + va_no + "|" + incomingMsisdn[6]
-                lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                answer = "Yeaay!\nKamu dapet saldo BJPay Rp 5000 dari invitation code yang kamu gunakan.\n\nMakasih ya udah add Bang Joni ;)"
-            else:
-                payload = "0|" + va_no + "|" + incomingMsisdn[6]
-                lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            # if incomingMsisdn[15] is True:
+            #     payload = "5000|" + va_no + "|" + incomingMsisdn[6]
+            #     lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            #     answer = "Yeaay!\nKamu dapet saldo BJPay Rp 5000 dari invitation code yang kamu gunakan.\n\nMakasih ya udah add Bang Joni ;)"
+            # else:
+            payload = "0|" + va_no + "|" + incomingMsisdn[6]
+            lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            bjp_service.register(msisdn, va_no, incomingMsisdn[6], 0)
 
-                # PROMO PULSA CASHBACK 25%
-                lineNlp.redisconn.set("promopulsa/%s" % (msisdn), 1)
+            # PROMO PULSA CASHBACK 25%
+            lineNlp.redisconn.set("promopulsa/%s" % (msisdn), 1)
 
-                answer = "Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY\n\nTop up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit"
+            answer = "Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY\n\nTop up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit"
         elif response == "107":
+
+
             answer = "Pendaftaran BJPAY sudah pernah sebelumnya"
         else:
             answer = "Bang Joni gak register BJPAY, coba lagi ya..."
