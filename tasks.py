@@ -494,7 +494,14 @@ def create_recommended_carousell(msisdn):
         print url
 
         actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
-        column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+        if dest == "CGK-KNO" :
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/medan.jpg'
+        elif dest == "CGK-SUB" :
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/surabaya.jpg'
+        elif dest == "CGK-DPS" :
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/denpasar.jpg'
+        elif dest == "CGK-LOP":
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/lombok.jpg'
         column['title'] = str(dest)
         column['text'] = 'Mulai dari Rp ' + str(top_dest['MinPrice']) + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
         if (len(column['text']) > 60):
@@ -506,7 +513,7 @@ def create_recommended_carousell(msisdn):
     actions = []
     actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
     # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
-    column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+    column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
     column['title'] = 'Gak ada?'
     column['text'] = "Tap 'Pilih' buat cari destinasi atau jadwal lain"
     if (len(column['text']) > 60):
