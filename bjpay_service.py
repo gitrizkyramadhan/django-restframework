@@ -99,7 +99,8 @@ class BJPayService() :
             self._write_log(self.F_BJPAY, "Register BJPAY :: msisdn="+str(msisdn)+", va_number="+str(va_number)+", phone="+str(phone)+", initial_amount="+str(initial_amount)+", log_dtm="+str(logDtm))
 
             if int(initial_amount) != 0:
-                self.credit(msisdn, phone, initial_amount, "", "Initial amount for account "+va_number)
+                self._set_redis(msisdn, initial_amount, va_number, phone)
+                self.credit(msisdn, phone, initial_amount, "1000", "Initial amount for account "+va_number)
         self._set_redis(msisdn, initial_amount, va_number, phone)
 
 
