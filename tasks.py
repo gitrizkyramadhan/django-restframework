@@ -1062,7 +1062,8 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
             _print_debug("USER HAS BJPAY")
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) :
+
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) is None:
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
