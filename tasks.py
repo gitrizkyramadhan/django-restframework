@@ -217,6 +217,31 @@ def insert(sql):
         print e.args
         print "ERROR: %d: %s" % (e.args[0], e.args[1])
 
+def insert5(sql):
+    try:
+        db_connect = MySQLdb.connect(host = "139.59.96.133", port = 3306, user = "root", passwd = "cikapali99", db = "bangjoni")
+        # Create cursor
+        cursor = db_connect.cursor()
+        cursor.execute(sql)
+        db_connect.commit()
+    except MySQLdb.Error, e:
+        logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+        print e.args
+        print "ERROR: %d: %s" % (e.args[0], e.args[1])
+
+def request5(sql):
+    try:
+        db_connect = MySQLdb.connect(host = "139.59.96.133", port = 3306, user = "root", passwd = "cikapali99", db = "bangjoni")
+        # Create cursor
+        cursor = db_connect.cursor()
+        cursor.execute(sql)
+        sqlout = cursor.fetchall()
+        return sqlout
+    except MySQLdb.Error, e:
+        logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+        print e.args
+        print "ERROR: %d: %s" % (e.args[0], e.args[1])
+
 def fetchJSON(url):
     (resp_headers, content) = connAPI.request(url, "GET")
 
@@ -2738,7 +2763,7 @@ def onMessage(msisdn, ask, first_name):
 
 
 
-@app.task
+@app.task(ignore_result=True)
 def uber_request_ride_surge(surge_confirmation_id):
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     sql = "select * from booking_uber where status = '%s'" % (surge_confirmation_id)
@@ -2779,7 +2804,7 @@ def uber_request_ride_surge(surge_confirmation_id):
     lineNlp.redisconn.set("inc/%s" % (msisdn_uber), json.dumps(incomingMsisdn))
 
 
-@app.task
+@app.task(ignore_result=True)
 def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_resource_id, meta_resource_type, meta_status, resource_href):
     sql = "select * from booking_uber where request_id = '%s'" % (meta_resource_id)
     print sql
@@ -2922,7 +2947,7 @@ def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_
     lineNlp.redisconn.set("inc/%s" % (msisdn_uber), json.dumps(incomingMsisdn))
 
 
-@app.task
+@app.task(ignore_result=True)
 def uber_authorization(msisdn, code):
     print "uber_authorization >>>>>", msisdn, code
     sql = "select * from token_uber where state = '%s'" % (msisdn)
@@ -2985,7 +3010,7 @@ def uber_authorization(msisdn, code):
         #return "Y"
 
 
-@app.task
+@app.task(ignore_result=True)
 def push_billers_jatis(trxid, trxstatus, chart_table, payment_channel, trxtime):
     if trxstatus == "PENDING":
         status = trxstatus
@@ -3055,7 +3080,7 @@ def push_billers_jatis(trxid, trxstatus, chart_table, payment_channel, trxtime):
         print sql
         insert(sql)
 
-@app.task
+@app.task(ignore_result=True)
 def docloudmailin(content):
     to_email = content['envelope']['to']
     from_email = content['envelope']['from']
@@ -3206,7 +3231,7 @@ def docloudmailin(content):
             onEmailReceived(filename, "pdf")
 
 
-@app.task
+@app.task(ignore_result=True)
 def doagentresp(content):
     print content
     print content['rive']
@@ -3237,7 +3262,7 @@ def doloadtest():
     onMessage(str("load/%s" % (random.randrange(1, 10000))), "galon", "testload")
 
 
-@app.task
+@app.task(ignore_result=True)
 def doworker(req):
     content = json.dumps(req)
     content = json.loads(content)
@@ -3367,13 +3392,13 @@ def handlePostbackEcomm(userId, merchantName, merchantPhone, merchantUrl):
 
 
 
-@app.task
+@app.task(ignore_result=True)
 def depositNotification(trx_id):
     r = (datetime.now() + timedelta(hours=0)).strftime('%Y%m%d%H%M%S')
     signature = hashlib.md5('bangjoni' + r + 'bang567jon1').hexdigest()
     print signature
 
-    payload = { 'command': 'validatetrx', 'username': 'bangjoni', 'time': r, 'trx_id': trx_id, 'signature': signature }
+    payload = {'command': 'validatetrx', 'username': 'bangjoni', 'time': r, 'trx_id': trx_id, 'signature': signature}
 
     headers = {'content-type': 'application/json'}
     resp = requests.post('https://cyrusku.cyruspad.com/pgw/pgwapi.asp', data=json.dumps(payload), headers=headers)
@@ -3393,15 +3418,17 @@ def depositNotification(trx_id):
         cust_id = content['cust_id']
 
         if va_no[:6] == "865010":
-            sql = "select msisdn from bjpay where va_no = '%s' limit 1" % (va_no)
+            sql = "select msisdn,dtm from bjpay where va_no = '%s' limit 1" % (va_no)
         else:
-            sql = "select msisdn from bjpay where amount = %s limit 1" % (amount)
+            sql = "select msisdn,dtm from bjpay where amount = %s order by dtm desc limit 1" % (amount)
 
         print sql
         sqlout = request(sql)
         msisdn = ""
+        dtm = ""
         for row in sqlout:
             msisdn = row[0]
+            dtm = row[1]
 
         if msisdn != "":
             payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
@@ -3412,11 +3439,59 @@ def depositNotification(trx_id):
             balance = balance + int(amount)
             payload = str(balance) + "|" + va_no + "|" + deposit_hp
             lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-            answer = "Top up BJ-PAY senilai Rp. %s berhasil, jumlah saldomu sekarang Rp. %s\nUntuk isi pulsa ketik aja pulsa, token pln juga bisa dg ketik token" % (amount, balance)
+            answer = "Top up saldo BJPAY senilai Rp. %s berhasil, saldo kamu saat ini Rp. %s\n\nUntuk melanjutkan pembelian pulsa, silakan ketik Pulsa" % (
+            amount, balance)
             sendMessageT2(msisdn, answer, 0)
+            sql = "update bjpay set paid = '1' where msisdn = '%s' and dtm = '%s'" % (msisdn, dtm)
+            print sql
+            insert5(sql)
     else:
         answer = "Top up BJ-PAY tidak berhasil, %s" % (message)
         sendMessageT2(msisdn, answer, 0)
+
+
+@app.task(ignore_result=True)
+def handle_complaint(user_id, cust_name, contact_phone, bjpay_phone, complaint, trx_date):
+    ticket_id = "BJ/" + str(datetime.now())[:19].replace('-', '').replace(':', '').split(' ')[0] + '/' + \
+                str(datetime.now())[:19].replace('-', '').replace(':', '').split(' ')[1]
+    sql = "INSERT INTO complaint (id, ticket_id, user_id, cust_name, contact_phone, bjpay_phone, trx_date, complaint) VALUES (NULL, '" + ticket_id + "', '" + user_id + "', '" + cust_name + "', '" + contact_phone + "', '" + bjpay_phone + "', '" + trx_date + "', '" + complaint + "');"
+    print sql
+    insert(sql)
+
+    sendMessageT2(user_id,
+                  'Ticket komplain kamu dengan nomor :' + ticket_id + ', akan segera Bang Joni proses ya. Tunggu aja max 2x24 jam komplain kamu belom selesai, segera hubungi contact center Bang Joni.',
+                  0)
+
+
+
+@app.task(ignore_result=True)
+def reversal_1pulsa(trxid, partner_trxid, bnumber):
+    logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+    sql = "select msisdn,harga from 1pulsa_pulsa_token where trxid = '%s' and partner_trxid = '%s' limit 1" % (
+    trxid, partner_trxid)
+    print sql
+    sqlout = request5(sql)
+    msisdn = ""
+    for row in sqlout:
+        msisdn = row[0]
+        refund = row[1]
+
+        if msisdn != "":
+            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
+            print payload
+            balance = int(payload.split('|')[0])
+            va_no = payload.split('|')[1]
+            deposit_hp = payload.split('|')[2]
+            balance = balance + int(refund)
+            payload = str(balance) + "|" + va_no + "|" + deposit_hp
+            lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            answer = "Pembelian pulsa-mu no %s gak masuk ya, Bang Joni refund saldo BJPAY-mu Rp. %s\n\nUntuk coba lagi pembelian pulsa, silakan ketik Pulsa" % (
+            bnumber, refund)
+            sendMessageT2(msisdn, answer, 0)
+            sql = "update 1pulsa_pulsa_token set reversal = '%s' where trxid = '%s' and partner_trxid = '%s'" % (
+            logDtm, trxid, partner_trxid)
+            print sql
+            insert5(sql)
 
 
 #Second Initialization
