@@ -161,7 +161,7 @@ class BJPayService() :
         self._write_log(self.F_BJPTRX, "CREDIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
 
         (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
-        total_amount = int(current_balance) - int(transaction_amount)
+        total_amount = int(current_balance) + int(transaction_amount)
 
         self._set_redis(msisdn, total_amount, va_no, redis_phone)
         self.update_db_balance(msisdn, phone)

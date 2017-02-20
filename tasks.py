@@ -1155,6 +1155,8 @@ def onMessage(msisdn, ask, first_name):
         elif response == "107":
             migrate(msisdn, incomingMsisdn[6])
 
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+
             answer = lineNlp.doNlp("bj02", msisdn, first_name)
             answer = answer.replace('<bjpay_phone>', str(phone)).replace('<bjpay_balance>', str(current_balance))
             sendMessageT2(msisdn, answer, 0)
