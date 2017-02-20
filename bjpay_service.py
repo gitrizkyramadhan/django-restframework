@@ -96,7 +96,7 @@ class BJPayService() :
         else :
             sql = "INSERT INTO bjpay_account (va_no, msisdn, phone_number, amount, register_date, update_time, status) VALUES ('"+va_number+"', '"+msisdn+"', '"+phone+"', '0', now(), now(), 1)"
             self._insert(sql)
-            self._write_log(self.F_BJPAY, "Register BJPAY :: msisdn="+str(msisdn)+", va_number="+str(va_number)+", phone="+str(phone)+", initial_amount="+str(initial_amount)+", log_dtm="+str(logDtm))
+            self._write_log(self.F_BJPAY, "Register BJPAY :: msisdn="+str(msisdn)+", va_number="+str(va_number)+", phone="+str(phone)+", initial_amount=0, log_dtm="+str(logDtm))
 
             if int(initial_amount) != 0:
                 self._set_redis(msisdn, initial_amount, va_number, phone)
@@ -185,7 +185,7 @@ class BJPayService() :
 
     def check_balance(self, msisdn, transaction_amount):
         (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
-        print "CHECKING BALANCE FOR ID : "+msisdn+", BALANCE : "+str(current_balance)+", TX_AMOUNT : "+transaction_amount
+        print "CHECKING BALANCE FOR ID : "+msisdn+", BALANCE : "+str(current_balance)+", TX_AMOUNT : "+str(transaction_amount)
         remaining_amount = int(current_balance) - int(transaction_amount)
         if int(remaining_amount) < self._min_balance :
             return "3001"
