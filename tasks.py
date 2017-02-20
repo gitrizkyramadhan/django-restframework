@@ -1103,15 +1103,16 @@ def onMessage(msisdn, ask, first_name):
 
                     debit = int(msg.split('(Rp ')[1].split(')')[0]) + (modal - int(msg.split('(Rp ')[1].split(')')[0]))
 
-                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4])
+                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4] + ", no hp " + incomingMsisdn[1])
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
+                    _print_debug(return_code)
                     if return_code is None :
                         try:
                             answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, serial number %s\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
                             answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, cek hp-mu ya.\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, current_balance)
                     else :
-                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
 
                 else:
                     answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
@@ -1217,22 +1218,23 @@ def onMessage(msisdn, ask, first_name):
 
 
     if answer[:4] == "pl02":
-        if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
-            print "USER HAS BJPAY"
-            #Check BJPAY Balance
+        if bjp_service.is_exist(msisdn):
             payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
             balance = int(payload.split('|')[0])
             va_no = payload.split('|')[1]
             deposit_hp = payload.split('|')[2]
-            if balance >= (incomingMsisdn[5] + 1000):
-                print balance, incomingMsisdn[5] + 1000
+            _print_debug("USER HAS BJPAY")
+
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5]) + 1000) is None:
+            # if balance >= (incomingMsisdn[5] + 1000):
+            #     print balance, incomingMsisdn[5] + 1000
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
                 m = incomingMsisdn[1][-4:][::-1] + 'kingsm'
                 s=''.join(chr(ord(a)^ord(b)) for a,b in zip(s,m))
                 sign = s.encode('base64').strip()
-                print sign.strip()
+                # print sign.strip()
 
                 xml = '<?xml version="1.0" ?> <evoucher>'
                 xml = xml + '<command>TOPUP</command>'
@@ -1244,23 +1246,31 @@ def onMessage(msisdn, ask, first_name):
                 xml = xml + '<signature>' + sign + '</signature>'
                 xml = xml + '</evoucher>'
 
-                print xml
-
+                _print_debug(xml)
                 headers = {'Content-Type': 'text/xml'}
                 resp = requests.post('https://cyrusku.cyruspad.com/interkoneksi/interkoneksicyrusku.asp', data=xml, headers=headers)
-                print resp.text
+                _print_debug(resp.text)
+
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
-                print response, msg
+                # print response, msg
                 if response == "0":
                     s = msg.split('S/N ')[1].split('No HP')[0]
                     # decrement saldo
                     debit = int(msg.split('(Rp ')[1].split(')')[0]) + 200
-                    balance = balance - debit
-                    payload = str(balance) + "|" + va_no + "|" + deposit_hp
-                    lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                    answer = "Bang Joni berhasil isiin token dg harga Rp. %s, berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s\nSisa saldo BJPAY-mu Rp. %s" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], balance)
+
+                    return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1])
+                    (current_balance, va_no, phone) = bjp_service.get(msisdn)
+                    _print_debug(return_code)
+
+                    if return_code is None:
+                    # balance = balance - debit
+                    # payload = str(balance) + "|" + va_no + "|" + deposit_hp
+                    # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+                        answer = "Bang Joni berhasil isiin token dg harga Rp. %s, berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s\nSisa saldo BJPAY-mu Rp. %s" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                    else :
+                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
                 else:
                     answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
