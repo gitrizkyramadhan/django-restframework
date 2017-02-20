@@ -1152,7 +1152,7 @@ def onMessage(msisdn, ask, first_name):
 
             answer = "Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY\n\nTop up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit"
         elif response == "107":
-
+            migrate(msisdn, incomingMsisdn[6])
 
             answer = "Pendaftaran BJPAY sudah pernah sebelumnya"
         else:
