@@ -23,6 +23,8 @@ class BJPayService() :
         self.F_BJPAY = logging.getLogger('F_BJPAY')
         self.F_BJPTRX = logging.getLogger('F_BJPTRX')
 
+        self._min_balance = 0
+
         self.lineNlp = Nlp()
 
     def _setup_logger(self,loggername, logfile):
@@ -135,17 +137,22 @@ class BJPayService() :
         if bjpay_row:
             self._set_redis(msisdn, bjpay_row[0], bjpay_row[1], phone)
 
-    def debit(self, msisdn, phone, transaction_amount, transaction_id, description):
-        logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-        sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'D', '"+str(msisdn)+"', '"+str(phone)+"', '"+str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
-        self._write_log(self.F_BJPTRX, "DEBIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
 
+    def debit(self, msisdn, transaction_amount, transaction_id, description):
         (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
-        total_amount = int(current_balance) + int(transaction_amount)
+        remaining_amount = int(current_balance) - int(transaction_amount)
+        if int(remaining_amount) < self._min_balance :
+            return "3001"
+        else :
+            logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+            sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'D', '"+str(msisdn)+"', '"+str(redis_phone)+"', '"+str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
+            self._write_log(self.F_BJPTRX, "DEBIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(redis_phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
 
-        self._set_redis(msisdn, total_amount, va_no, redis_phone)
-        self.update_db_balance(msisdn, phone)
-        self._insert(sql)
+            (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
+
+            self._set_redis(msisdn, remaining_amount, va_no, redis_phone)
+            self.update_db_balance(msisdn, redis_phone)
+            self._insert(sql)
 
 
     def credit(self, msisdn, phone, transaction_amount, transaction_id, description):
@@ -160,3 +167,27 @@ class BJPayService() :
         self.update_db_balance(msisdn, phone)
         self._insert(sql)
 
+    def is_exist(self, msisdn):
+        logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+        if self.lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
+            return True
+        else :
+            # sql = "SELECT * FROM bjpay_account WHERE va_no = '" + phone + "'"
+            # row = self._request(sql)
+            # if row :
+            #     payload = str(row[0]) + "|" + row[1] + "|" + row[2]
+            #     self.lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            #     return True
+            # else :
+            #     return False
+            return False
+
+    def check_balance(self, msisdn, transaction_amount):
+        (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
+        print "CHECKING BALANCE FOR ID : "+msisdn+", BALANCE : "+str(current_balance)+", TX_AMOUNT : "+transaction_amount
+        remaining_amount = int(current_balance) - int(transaction_amount)
+        if int(remaining_amount) < self._min_balance :
+            return "3001"
+
+    def get(self, msisdn):
+        return self._get_redis(msisdn)

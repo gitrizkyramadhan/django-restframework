@@ -143,7 +143,15 @@
 
 ///////////////////////////////////SALDO CHECK BJPAY
 + [*] (saldo|balance) [*]
-- bj00 <first_name>
+- bj00 Halo <first_name>, saldo BJPAY kamu dengan nomor HP <bjpay_phone> sekarang Rp <bjpay_balance>
+
++ bj01
+- Hari gini belom daftar BJPAY? Ckckckck, buruan daftar gih, gampang banget tap aja Register<br>
+^ Atau kalo kamu udah pernah punya BJPAY sebelumnya, abis nge-tap, ketik nomer HP kamu yg udah pernah kamu daftarin
+
++ bj02
+- Halo <first_name>, kamu udah pernah register BJPAY sebelomnya<br>
+^ Saldo BJPAY kamu dengan nomor HP <bjpay_phone> sekarang Rp <bjpay_balance>
 
 ///////////////////////////////////DEPOSIT BJPAY
 + [*] (deposit|topup|top up|isi bjpay) [*]

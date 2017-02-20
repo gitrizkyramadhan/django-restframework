@@ -64,6 +64,7 @@ from module_cimb import CIMBModule
 # ---------- SKYSCANNER MODULE START ----------
 from skyscanner import SkyscannerSDK
 from mgm import MGM
+from bjpay_service import BJPayService
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -101,6 +102,8 @@ WEB_HOOK=""
 EMAIL_NOTIF=""
 LINE_TOKEN=""
 
+DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
+
 ##########OPEN CONFIGURATION#######################
 with open('BJCONFIG.txt') as f:
     content = f.read().splitlines()
@@ -126,6 +129,7 @@ mcomm = MerchantCommerce()
 cimb = CIMBModule()
 sky = SkyscannerSDK()
 mgm = MGM()
+bjp_service = BJPayService()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -135,6 +139,42 @@ F_PAID = None
 F_NOREPLY = None
 F_ADDFRIENDS = None
 
+def _log_print(message, log_level = None) :
+    if DEBUG_MODE == "V" : #highest
+        level = 0
+    elif DEBUG_MODE == "D" :
+        level = 1
+    elif DEBUG_MODE == "E" :
+        level = 2
+    elif DEBUG_MODE == "I" :
+        level = 3
+
+    if log_level :
+        if log_level == "V":
+            msg_level = 0
+        elif log_level == "D":
+            msg_level = 1
+        elif log_level == "E":
+            msg_level = 2
+        elif log_level == "I":
+            msg_level = 3
+    else :
+        msg_level = 3
+
+    if level <= msg_level :
+        print message
+
+def _print_info(msg) :
+    _log_print(msg, "I")
+
+def _print_error(msg) :
+    _log_print(msg, "E")
+
+def _print_verbose(msg) :
+    _log_print(msg, "V")
+
+def _print_debug(msg) :
+    _log_print(msg, "D")
 
 def setup_logger(loggername, logfile):
     l = logging.getLogger(loggername)
@@ -921,33 +961,62 @@ def onMessage(msisdn, ask, first_name):
 
     ####################BJPAY CEK SALDO####################
     if answer[:4] == "bj00":
-        if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
-            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
-            balance = int(payload.split('|')[0])
-            answer = answer + ", saldo BJPAY-mu sekarang Rp. %s" % (balance)
-            sendMessageT2(msisdn, answer[4:], 0)
+        if bjp_service.is_exist(msisdn) :
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+            answer = answer[4:]
+            answer = answer.replace('<bjpay_phone>', str(phone)).replace('<bjpay_balance>', str(current_balance))
+            sendMessageT2(msisdn, answer, 0)
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
+            # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer, 'bjpayregister')
+        # if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
+        #     payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
+        #     balance = int(payload.split('|')[0])
+        #     answer = answer + ", saldo BJPAY-mu sekarang Rp. %s" % (balance)
+        #     sendMessageT2(msisdn, answer[4:], 0)
+        # else:
+        #     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
 
         ####################BJPAY TOPUP SALDO####################
     if answer[:4] == "bj99":
-        if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
+        if bjp_service.is_exist(msisdn):
             sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer[4:], 'bjpaydeposit')
             incomingMsisdn[6] = "deposit"
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
-            answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+            lineNlp.doNlp("ga jadi", msisdn, first_name)
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
+
+        # if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
+        #     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer[4:], 'bjpaydeposit')
+        #     incomingMsisdn[6] = "deposit"
+        # else:
+        #     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+        #     answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
 
         ####################BJPAY REGISTER####################
     if answer[:4] == "bj11":
-        if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
-            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
-            balance = int(payload.split('|')[0])
-            sendMessageT2(msisdn, "Kamu sudah memiliki BJPAY dengan saldo Rp. %s" % (balance), 0)
-            answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+        if bjp_service.is_exist(msisdn) :
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+            lineNlp.doNlp("ga jadi", msisdn, first_name)
+            answer = lineNlp.doNlp("bj02", msisdn, first_name)
+            answer = answer.replace('<bjpay_phone>', str(phone)).replace('<bjpay_balance>', str(current_balance))
+            sendMessageT2(msisdn, answer, 0)
         else:
             answer = lineNlp.doNlp("bjpay register", msisdn, first_name)
             sendMessageT2(msisdn, answer[4:], 0)
+
+        # if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
+        #     payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
+        #     balance = int(payload.split('|')[0])
+        #     sendMessageT2(msisdn, "Kamu sudah memiliki BJPAY dengan saldo Rp. %s" % (balance), 0)
+        #     answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+        # else:
+        #     answer = lineNlp.doNlp("bjpay register", msisdn, first_name)
+        #     sendMessageT2(msisdn, answer[4:], 0)
 
 
 
@@ -969,22 +1038,15 @@ def onMessage(msisdn, ask, first_name):
         sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
     if answer[:4] == "pu02":
-        if lineNlp.redisconn.exists("bjpay/%s" % (msisdn)):
-            print "USER HAS BJPAY"
-            #Check BJPAY Balance
-            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
-            balance = int(payload.split('|')[0])
-            va_no = payload.split('|')[1]
-            deposit_hp = payload.split('|')[2]
-            if balance >= (incomingMsisdn[5] + 1000):
-                print balance, incomingMsisdn[5] + 1000
+        if bjp_service.is_exist(msisdn) :
+            _print_debug("USER HAS BJPAY")
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) :
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
                 m = incomingMsisdn[1][-4:][::-1] + 'kingsm'
-                s=''.join(chr(ord(a)^ord(b)) for a,b in zip(s,m))
+                s = ''.join(chr(ord(a) ^ ord(b)) for a, b in zip(s, m))
                 sign = s.encode('base64').strip()
-                print sign.strip()
 
                 xml = '<?xml version="1.0" ?> <evoucher>'
                 xml = xml + '<command>TOPUP</command>'
@@ -996,17 +1058,15 @@ def onMessage(msisdn, ask, first_name):
                 xml = xml + '<signature>' + sign + '</signature>'
                 xml = xml + '</evoucher>'
 
-                print xml
-
+                _print_debug(xml)
                 headers = {'Content-Type': 'text/xml'}
                 resp = requests.post('https://cyrusku.cyruspad.com/interkoneksi/interkoneksicyrusku.asp', data=xml, headers=headers)
-                print resp.text
+                _print_debug(resp.text)
+
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
-                print response, msg
-                #msg = "BERHASIL, Isi pulsa berhasil. No trx: 11002982626 (Rp 10250). Saldo: Rp 57066. S/N 0041001006848036 No HP: 081295021833.TSEL 10-20-25-50-100 NORMAL"
-                #response = "0"
+
                 if response == "0":
                     # decrement saldo
                     x = ['5K','10K','20K','25K','50K','100K']
@@ -1018,17 +1078,23 @@ def onMessage(msisdn, ask, first_name):
                             modal = y[i] + int(item)
                         i = i + 1
 
-                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + ( modal - int(msg.split('(Rp ')[1].split(')')[0]) )
-                    balance = balance - debit
-                    payload = str(balance) + "|" + va_no + "|" + deposit_hp
-                    lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                    answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, dengan serial number %s\nSisa saldo BJPAY-mu Rp. %s" % (debit, msg.split('S/N ')[1].split(' ')[0], balance)
+                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + (modal - int(msg.split('(Rp ')[1].split(')')[0]))
+
+                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4])
+                    (current_balance, va_no, phone) = bjp_service.get(msisdn)
+                    if return_code is None :
+                        try:
+                            answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, serial number %s\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
+                        except:
+                            answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, cek hp-mu ya.\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, current_balance)
+                    else :
+                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+
                 else:
                     answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
-            else:
+            else :
                 sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
-
         else:
             sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
 

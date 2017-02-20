@@ -29,6 +29,22 @@ imgbuttons = [{
             ]
         )
     )
+},{
+    "id":"bjpay_register",
+    "payload": TemplateSendMessage(
+        alt_text='Register BJPAY',
+        template=ButtonsTemplate(
+            thumbnail_image_url='https://example.com/image.jpg',
+            title='Register BJPAY',
+            text='Buat BJPAY biar kamu gampang transaksinya',
+            actions=[
+                MessageTemplateAction(
+                    label='Register',
+                    text='bjpay register'
+                )
+            ]
+        )
+    )
 }]
 
 def compose_link_message(alt_text, thumbnail_url, title, description, label, uri):
