@@ -1705,25 +1705,25 @@ def onMessage(msisdn, ask, first_name):
         now_column = {}
         now_column['thumbnail_image_url'] = w_now['image']
         now_column['title'] = 'Cuaca hari ini'
-        now_column['text'] = "Cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h." % (w_now['cuaca'], w_now['suhu'], w_now['kec_angin'])
+        now_column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
         if (len(now_column['text']) > 60):
             now_column['text'] = now_column['text'][:57] + '...'
         w_now.pop('image')
         encoded_url = urllib.urlencode(w_now, doseq=True)
-        now_actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': encoded_url})
+        now_actions.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
         now_column['actions'] = now_actions
         columns.append(now_column)
 
         tom_column = {}
-        tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
-        tom_column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
+        # tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
+        tom_column['thumbnail_image_url'] = w_tom['image']
         tom_column['title'] = 'Cuaca besok'
-        tom_column['text'] = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (w_tom['cuaca'], w_tom['suhu_min'], w_tom['suhu_max'])
+        tom_column['text'] = "Besok kira-kira %s" % (w_tom['cuaca'])
         if (len(tom_column['text']) > 60):
             tom_column['text'] = tom_column['text'][:57] + '...'
         w_tom.pop('image')
         encoded_url = urllib.urlencode(w_tom, doseq=True)
-        tom_column.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': encoded_url})
+        tom_column.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
         tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
