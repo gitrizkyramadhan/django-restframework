@@ -65,6 +65,7 @@ from module_cimb import CIMBModule
 from skyscanner import SkyscannerSDK
 from mgm import MGM
 from bjpay_service import BJPayService
+from weather import WeatherService
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -130,6 +131,7 @@ cimb = CIMBModule()
 sky = SkyscannerSDK()
 mgm = MGM()
 bjp_service = BJPayService()
+weather_service = WeatherService()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -1690,30 +1692,32 @@ def onMessage(msisdn, ask, first_name):
         incomingMsisdn[2]  = ask[5:].split(';')[0]
         incomingMsisdn[3]  = ask[5:].split(';')[1]
 
-        print "http://128.199.139.105/weather/weather1.php?latlong=%s,%s" % (incomingMsisdn[2], incomingMsisdn[3])
-        respAPI = fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s" % (incomingMsisdn[2], incomingMsisdn[3]))
-        print respAPI
-        weather_forecast = ""
-        sqlstart = respAPI.find("<weather>")
-        sqlstop = respAPI.find("</weather>") - 1
-        weather_forecast = respAPI[sqlstart+9:sqlstop]
-        if sqlstart > -1:
-            print weather_forecast
-            weather_forecasts = weather_forecast.split('|')
-            time_updated = weather_forecasts[0]
-            suhu = weather_forecasts[1]
-            cuaca = weather_forecasts[2].upper()
-            kec_angin = weather_forecasts[3]
-            humidity = weather_forecasts[4]
+        (w_now, w_tom) = weather_service.get_wheather(incomingMsisdn[2], incomingMsisdn[3])
 
-            tom_cuaca = weather_forecasts[5].upper()
-            tom_suhu_min = weather_forecasts[6]
-            tom_suhu_max = weather_forecasts[7]
-            tom_sunrise = weather_forecasts[8]
-            tom_sunset = weather_forecasts[9]
-            print "*******************************"
-            sendMessageT2(msisdn, first_name +  ", cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h.\nPerkiraan cuaca untuk besok adalah %s, dengan suhu minimal %s Celcius dan suhu maksimal %s Celcius" % (cuaca, suhu, kec_angin, tom_cuaca, tom_suhu_min, tom_suhu_max), 0)
+        columns = []
+        actions = []
+        # actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
+        # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
 
+        now_column = {}
+        now_column['thumbnail_image_url'] = w_now['image']
+        now_column['title'] = 'Cuaca hari ini'
+        now_column['text'] = "Cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h." % (w_now['cuaca'], w_now['suhu'], w_now['kec_angin'])
+        if (len(now_column['text']) > 60):
+            now_column['text'] = now_column['text'][:57] + '...'
+            now_column['actions'] = actions
+        columns.append(now_column)
+
+        tom_column = {}
+        tom_column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
+        tom_column['title'] = 'Cuaca besok'
+        tom_column['text'] = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (w_tom['cuaca'], w_tom['suhu_min'], w_tom['suhu_max'])
+        if (len(tom_column['text']) > 60):
+            tom_column['text'] = tom_column['text'][:57] + '...'
+            tom_column['actions'] = actions
+        columns.append(tom_column)
+
+        linebot.send_composed_carousel(msisdn, "Cuaca", columns)
         ####################WEATHER MODULE END####################
 
 
