@@ -25,6 +25,7 @@ from PyQt4.QtWebKit import *
 from PyQt4.QtNetwork import *
 
 import urllib
+import urlparse
 import requests
 import httplib2
 
@@ -1695,9 +1696,11 @@ def onMessage(msisdn, ask, first_name):
         (w_now, w_tom) = weather_service.get_wheather(incomingMsisdn[2], incomingMsisdn[3])
 
         columns = []
-        actions = []
+        now_actions = []
+        tom_actions = []
         # actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
         # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
+
 
         now_column = {}
         now_column['thumbnail_image_url'] = w_now['image']
@@ -1705,16 +1708,23 @@ def onMessage(msisdn, ask, first_name):
         now_column['text'] = "Cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h." % (w_now['cuaca'], w_now['suhu'], w_now['kec_angin'])
         if (len(now_column['text']) > 60):
             now_column['text'] = now_column['text'][:57] + '...'
-            now_column['actions'] = actions
+        w_now.pop('image')
+        encoded_url = urllib.urlencode(w_now, doseq=True)
+        now_actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': encoded_url})
+        now_column['actions'] = now_actions
         columns.append(now_column)
 
         tom_column = {}
+        tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
         tom_column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
         tom_column['title'] = 'Cuaca besok'
         tom_column['text'] = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (w_tom['cuaca'], w_tom['suhu_min'], w_tom['suhu_max'])
         if (len(tom_column['text']) > 60):
             tom_column['text'] = tom_column['text'][:57] + '...'
-            tom_column['actions'] = actions
+        w_tom.pop('image')
+        encoded_url = urllib.urlencode(w_tom, doseq=True)
+        tom_column.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': encoded_url})
+        tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
         linebot.send_composed_carousel(msisdn, "Cuaca", columns)
@@ -3357,6 +3367,28 @@ def doworker(req):
             reply = reply + "Untuk memulai ketik aja \"Halo bang\"\n\nOh iya, pake penulisan yang benar ya, jangan terlalu banyak singkatan, biar Bang Joni nggak bingung."
             sendMessageT2(msisdn, reply, 0)
             log_addfriends(logDtm, msisdn, displayname, "ADD FRIENDS")
+
+        elif event["type"] == "postback":
+            msisdn = str(event["source"]["userId"])
+            parsed = urlparse.urlparse('?' + event["postback"]["data"])
+            postback_event = urlparse.parse_qs(parsed.query)['evt'][0]
+            if (postback_event == 'weather'):
+                day_type = urlparse.parse_qs(parsed.query)['day_type'][0]
+                if day_type == 'today':
+                    suhu = urlparse.parse_qs(parsed.query)['suhu'][0]
+                    cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
+                    angin = urlparse.parse_qs(parsed.query)['kec_angin'][0]
+
+                    answer = "Cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h." % (
+                    cuaca, suhu, angin)
+                    sendMessageT2(msisdn, answer, 0)
+                else:
+                    suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
+                    cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
+                    suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
+
+                    answer = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
+                    sendMessageT2(msisdn, answer, 0)
 
 # ---------- DWP MODULE START ----------
 @app.task
