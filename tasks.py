@@ -1081,7 +1081,7 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "pu01":
         log_service(logDtm, msisdn, first_name, "PULSA")
         print incomingMsisdn[2]
-        reply = "Berikut harga pulsa %s :\n" % (incomingMsisdn[2])
+        reply = "Ini nih harga pulsa %s :\n" % (incomingMsisdn[2])
         x = ['5K','10K','20K','25K','50K','100K']
         y = [5000,10000,20000,25000,50000,100000]
         i = 0
@@ -1090,7 +1090,7 @@ def onMessage(msisdn, ask, first_name):
             if item != "99":
                 reply = reply + x[i] + " Rp. %d" % (z) + "\n"
             i = i + 1
-        reply = reply + "Untuk memilih nominal pulsa, tap menu dibawah."
+        reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
         #print reply
         sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
@@ -1822,6 +1822,7 @@ def onMessage(msisdn, ask, first_name):
                     print sql
                     insert(sql)
                     answer = answer + xtrans_cabangTujuan + "\n"
+                answer = answer + "<br>Ketik lagi nama poolnya kayak tadi yaa"
         else:
             insert("delete from searching_xtrans where msisdn = '%s'" % (msisdn))
             incomingMsisdn[3] = kode_jurusan
