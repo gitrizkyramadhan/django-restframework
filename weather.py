@@ -7,7 +7,7 @@ class WeatherService() :
     def __init__(self):
         print "Weather module loaded..."
 
-    def fetchHTML(url):
+    def fetchHTML(self, url):
         connAPI = httplib2.Http()
         try:
             (resp_headers, content) = connAPI.request(url, "GET")
