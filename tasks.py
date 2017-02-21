@@ -1723,7 +1723,7 @@ def onMessage(msisdn, ask, first_name):
             tom_column['text'] = tom_column['text'][:57] + '...'
         w_tom.pop('image')
         encoded_url = urllib.urlencode(w_tom, doseq=True)
-        tom_column.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
+        tom_actions.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
         tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
