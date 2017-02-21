@@ -1859,11 +1859,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -1872,7 +1875,8 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
                 insert("delete from searching_jadwal_xtrans where msisdn = '%s'" % (msisdn))
                 list_airlines = list_airlines[:len(list_airlines)-1]
@@ -1925,11 +1929,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -1938,7 +1945,8 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
+                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
+                sendPhotoCaptionT2(msisdn, 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
     if answer[:4] == "xt09":
         log_book(logDtm, msisdn, first_name, "XTRANS", incomingMsisdn[4] + "-" + incomingMsisdn[2])
