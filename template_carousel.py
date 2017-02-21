@@ -298,7 +298,7 @@ def composeCarousel(alt_text, columns):
         actions = []
         for action in column['actions']:
             if action['type'] == 'postback':
-                actions.append(PostbackTemplateAction(label=action['label'], text=action['text'], data=action['data']))
+                actions.append(PostbackTemplateAction(label=action['label'], data=action['data']))
             elif action['type'] == 'message':
                 actions.append(MessageTemplateAction(label=action['label'], text=action['text']))
             elif action['type'] == 'uri':
