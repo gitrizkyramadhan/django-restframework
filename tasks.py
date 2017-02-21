@@ -1876,7 +1876,7 @@ def onMessage(msisdn, ask, first_name):
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
                 # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
-                sendPhotoCaptionT2(msisdn, 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://139.59.244.156/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
 
                 insert("delete from searching_jadwal_xtrans where msisdn = '%s'" % (msisdn))
                 list_airlines = list_airlines[:len(list_airlines)-1]

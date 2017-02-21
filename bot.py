@@ -67,17 +67,17 @@ class Bot(object):
         :return:
         """
         user_ids = user_ids.split(",")
-        if params is not None :
-            thumbnail = params.get("thumbnail") if params.has_key("thumbnail") else None
-            self.__send_multicast(user_ids, ImageSendMessage(
-                    original_content_url=img_url,
-                    preview_image_url=thumbnail if thumbnail is not None else img_url
-                ))
-        else :
-            self.__send_multicast(user_ids, ImageSendMessage(
-                original_content_url=img_url,
-                preview_image_url=img_url
-            ))
+        # if params is not None :
+        #     thumbnail = params.get("thumbnail") if params.has_key("thumbnail") else None
+        #     self.__send_multicast(user_ids, ImageSendMessage(
+        #             original_content_url=img_url,
+        #             preview_image_url=thumbnail if thumbnail is not None else img_url
+        #         ))
+        # else :
+        self.__send_multicast(user_ids, ImageSendMessage(
+            original_content_url=img_url,
+            preview_image_url=img_url
+        ))
 
     def send_video_message(self, user_ids, video_url, thumbnail_img_url):
         """
