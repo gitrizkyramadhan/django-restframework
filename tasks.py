@@ -3431,16 +3431,25 @@ def depositNotification(trx_id):
             dtm = row[1]
 
         if msisdn != "":
-            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
-            print payload
-            balance = int(payload.split('|')[0])
-            va_no = payload.split('|')[1]
-            deposit_hp = payload.split('|')[2]
-            balance = balance + int(amount)
-            payload = str(balance) + "|" + va_no + "|" + deposit_hp
-            lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-            answer = "Top up saldo BJPAY senilai Rp. %s berhasil, saldo kamu saat ini Rp. %s\n\nUntuk melanjutkan pembelian pulsa, silakan ketik Pulsa" % (
-            amount, balance)
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+
+            bjp_service.credit(msisdn, phone, int(amount), '1005', 'Topup BJPAY ')
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+            # _print_debug(return_code)
+
+            # payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
+            # print payload
+            # balance = int(payload.split('|')[0])
+            # va_no = payload.split('|')[1]
+            # deposit_hp = payload.split('|')[2]
+            # balance = balance + int(amount)
+            # payload = str(balance) + "|" + va_no + "|" + deposit_hp
+            # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+
+            answer = lineNlp.doNlp("bj04", msisdn, get_line_username(msisdn))
+            answer = answer.replace('<bjpay_topup>', str(amount)).replace('<bjpay_balance>', str(current_balance))
+
+            # answer = "Top up saldo BJPAY senilai Rp. %s berhasil, saldo kamu saat ini Rp. %s\n\nUntuk melanjutkan pembelian pulsa, silakan ketik Pulsa" % (amount, current_balance)
             sendMessageT2(msisdn, answer, 0)
             sql = "update bjpay set paid = '1' where msisdn = '%s' and dtm = '%s'" % (msisdn, dtm)
             print sql
@@ -3467,8 +3476,7 @@ def handle_complaint(user_id, cust_name, contact_phone, bjpay_phone, complaint, 
 @app.task(ignore_result=True)
 def reversal_1pulsa(trxid, partner_trxid, bnumber):
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-    sql = "select msisdn,harga from 1pulsa_pulsa_token where trxid = '%s' and partner_trxid = '%s' limit 1" % (
-    trxid, partner_trxid)
+    sql = "select msisdn,harga from 1pulsa_pulsa_token where trxid = '%s' and partner_trxid = '%s' limit 1" % (trxid, partner_trxid)
     print sql
     sqlout = request5(sql)
     msisdn = ""
@@ -3477,19 +3485,24 @@ def reversal_1pulsa(trxid, partner_trxid, bnumber):
         refund = row[1]
 
         if msisdn != "":
-            payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
-            print payload
-            balance = int(payload.split('|')[0])
-            va_no = payload.split('|')[1]
-            deposit_hp = payload.split('|')[2]
-            balance = balance + int(refund)
-            payload = str(balance) + "|" + va_no + "|" + deposit_hp
-            lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-            answer = "Pembelian pulsa-mu no %s gak masuk ya, Bang Joni refund saldo BJPAY-mu Rp. %s\n\nUntuk coba lagi pembelian pulsa, silakan ketik Pulsa" % (
-            bnumber, refund)
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+
+            bjp_service.credit(msisdn, phone, int(refund), '1006', 'Refund 1 pulsa no '+str(bnumber)+' trx ID '+str(trxid)+' dan partner trx ID '+str(partner_trxid))
+            (current_balance, va_no, phone) = bjp_service.get(msisdn)
+
+            # payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
+            # print payload
+            # balance = int(payload.split('|')[0])
+            # va_no = payload.split('|')[1]
+            # deposit_hp = payload.split('|')[2]
+            # balance = balance + int(refund)
+            # payload = str(balance) + "|" + va_no + "|" + deposit_hp
+            # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
+            # answer = "Pembelian pulsa-mu no %s gak masuk ya, Bang Joni refund saldo BJPAY-mu Rp. %s\n\nUntuk coba lagi pembelian pulsa, silakan ketik Pulsa" % (bnumber, refund)
+            answer = lineNlp.doNlp("bj05", msisdn, get_line_username(msisdn))
+            answer = answer.replace('<phone_number>', str(bnumber)).replace('<bjpay_refund>', str(refund))
             sendMessageT2(msisdn, answer, 0)
-            sql = "update 1pulsa_pulsa_token set reversal = '%s' where trxid = '%s' and partner_trxid = '%s'" % (
-            logDtm, trxid, partner_trxid)
+            sql = "update 1pulsa_pulsa_token set reversal = '%s' where trxid = '%s' and partner_trxid = '%s'" % (logDtm, trxid, partner_trxid)
             print sql
             insert5(sql)
 

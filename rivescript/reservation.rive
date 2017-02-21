@@ -157,6 +157,15 @@
 - Pendaftaran BJPAY berhasil, selanjutnya silahkan pilih bank berikut untuk top up saldo BJPAY<br>
 ^ Top up ke BCA deposit masuk maks 2 jam, sedang ke Permata deposit masuk maks 3 menit
 
++ bj04
+- Yeayy, Top up saldo BJPay kamu senilai Rp <bjpay_topup> udah berhasil! <br>
+^ Saldo BJPay kamu saat ini Rp <bjpay_balance> <br>
+^ Terus saldonya mau dibeliin apa nih, <first_name>?
+
++ bj05
+- Pembelian pulsa-mu no <phone_number> gak masuk ya, Bang Joni refund saldo BJPAY-mu Rp. <bjpay_refund> <br>
+^ Untuk coba lagi pembelian pulsa, silakan ketik Pulsa
+
 ///////////////////////////////////DEPOSIT BJPAY
 + [*] (deposit|topup|top up|isi bjpay) [*]
 - bj99 Okay, pilih bank di atas untuk deposit dg tap logonya {topic=deposit} <set mycontext=deposit>

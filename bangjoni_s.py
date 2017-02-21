@@ -12,6 +12,8 @@ from tasks import updateDWPInvoice
 from tasks import handlePostbackLovidovi
 from tasks import depositNotification
 from tasks import handlePostbackEcomm
+from tasks import handle_complaint
+from tasks import reversal_1pulsa
 
 #import logging
 import gevent.monkey
@@ -201,6 +203,32 @@ if __name__==  "__main__":
         return "OK"
 
 
+    @app.route('/complaint', methods=['GET'])
+    def complaint():
+        user_id = request.args.get('user_id')
+        cust_name = request.args.get('cust_name')
+        contact_phone = request.args.get('contact_phone')
+        bjpay_phone = request.args.get('bjpay_phone')
+        complaint = request.args.get('complaint')
+        trx_date = request.args.get('trx_date')
+        print ""
+        print "================================NEW COMPLAINT============================================="
+        print "user_id=" + user_id + ", cust_name=" + cust_name + ", contact_phone=" + contact_phone + ", bjpay_phone=" + bjpay_phone + ", complaint=" + complaint + ", trx_date=" + trx_date
+        handle_complaint.delay(user_id, cust_name, contact_phone, bjpay_phone, complaint, trx_date)
+        return redirect('https://line.me/R/ti/p/%40bangjoni', code=302)
+
+
+    @app.route('/cyrusku', methods=['GET'])
+    def cyrusku():
+        print "================================REVERSAL CYRUS REQUEST============================================="
+        trxid = request.args.get('trxid')
+        partner_trxid = request.args.get('partner_trxid')
+        msg = request.args.get('msg')
+        if msg == "Reversal":
+            result = request.args.get('result')
+            msisdn = request.args.get('msisdn')
+            reversal_1pulsa.delay(trxid, partner_trxid, msisdn)
+        return "OK"
 
     print "starting gevent wsgi..."
     pywsgi.WSGIServer(('', 8001), app).serve_forever()
