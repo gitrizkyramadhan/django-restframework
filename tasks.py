@@ -1710,7 +1710,7 @@ def onMessage(msisdn, ask, first_name):
             now_column['text'] = now_column['text'][:57] + '...'
         w_now.pop('image')
         encoded_url = urllib.urlencode(w_now, doseq=True)
-        now_actions.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
+        now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
         now_column['actions'] = now_actions
         columns.append(now_column)
 
@@ -1723,7 +1723,7 @@ def onMessage(msisdn, ask, first_name):
             tom_column['text'] = tom_column['text'][:57] + '...'
         w_tom.pop('image')
         encoded_url = urllib.urlencode(w_tom, doseq=True)
-        tom_actions.append({'type': 'uri', 'label': 'Detailnya', 'uri': encoded_url})
+        tom_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=tomorrow"})
         tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
