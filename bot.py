@@ -54,7 +54,7 @@ class Bot(object):
         user_ids = user_ids.split(",")
         messages = text.split("<br>")
         for msg in messages:
-            self.__send_multicast(user_ids, TextSendMessage(text=msg))
+            self.__send_multicast(user_ids, TextSendMessage(text=msg.strip()))
 
     def send_image_message(self, user_ids, img_url, **params):
         """
