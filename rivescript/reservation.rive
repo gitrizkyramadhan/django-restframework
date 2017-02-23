@@ -26,16 +26,48 @@
 ! array lagiapa = lagi apa|lagiapa|lg apa|lgi apa|lagi ngapain|lgi ngapain|lg ngapain|gi apa
 ! array makian = tai|babi|monyet|titit|memek|anjing|ngentot|kupret|kambing|peler|pler|kontol
 ! array pesawat = pesawat|pswt|psawat|pswat|psawt
-! array cuaca = cuaca|suhu|hujan|panas|suhunya|cuacanya|cuacabj
+! array cuaca = cuaca|suhu|hujan|panas|suhunya|cuacanya|cuacabj|hari ini bakal ujan gak ya bang|hari ini ujan gak bang|hari ini ujan gak ya|hari ini bakal ujan gak ya| hari ini ujan gak|hari ini bakal ujan nggak ya bang|hari ini ujan nggak bang| hari ini ujan nggak ya|hari ini bakal ujan nggak ya|hari ini ujan nggak|hari ini bakal ujan ngga ya bang|hari ini ujan ngga bang|hari ini ujan ngga ya|hari ini bakal ujan ngga ya|hari ini ujan ngga|hari ini bakal ujan ga ya bang|hari ini ujan ga bang|hari ini ujan ga ya|hari ini bakal ujan ga ya|hari ini ujan ga
+! array halo = hi|halo|hai|hello|eh|hei|oi|hallo|helo|alo|hay|uy|haiii|hy|haloo|bang|abang|bang joni|bangjon|bang jon|jon|joni|bangjoni
+! array namaku = namaku|namaqu|nama aku|nama aqu|nama gue|nama gua|nama gw|nama w|namaq|nama q|nmaku|nmaqu|nma aku|nma aqu|nma gue|nma gua|nma gw|nma w|nmaq|nma q|nama gwe|nma gwe|nama saya|nama sya|nama sy|nma saya|nma sya|nma sy|nm saya|nm sya|nm sy|aku|ak|aq|aqu|saya|sy|sya|gue|gua|gw|w|gwe
+! array udah = udah|udh|sudah|sdh|sdah
+! array belom = belom|blom|belum|blum|blm
+! array test = test|tes|tez|tess|testing
+! array emang = emang|emg|emng|memang|mmg|mmng|mmang|emangnya|emgnya|emngnya|memangnya|mmgnya|mmngnya|mmangnya|emangny|emgny|emngny|memangny|mmgny|mmngny|mmangny
+! array hadiah = hadiah|hadia|hdiah|hadiahnya|hadianya|hdiahnya|hadiahny|hadiany|hdiahny
+! array thanks = thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih|maaci
+! array ok = ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp
+! array pulsa = pulsa|plsa
+! array pesawat = pesawat|pswt|psawat|pswat|pesawt
+! array xtrans = xtrans|xtran|shuttle bus|shutle bus
+! array token = token|tken|tokn|tkn
+! array ingetin = ingetin|ingatin|ingatkan
+! array jemput = jemput|jmput|jempt|jmpt
 
 
 + [*] (@test) [*]
 - {@halo}
 
+//+ [*] (@halo) [*]
+//- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+//- gr01 Yes <first_name>, kenapa?
+//- gr01 Halo, <first_name> ada apa nih?
+
 + [*] (@halo) [*]
-- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
-- gr01 Yes <first_name>, kenapa?
-- gr01 Halo, <first_name> ada apa nih?
+- Halo! <br>
+^ Gue Bang Joni, temen virtual yang hidup di HP lo <br>
+^ Jadi, kemana pun lo pergi, gue bisa ikut. Hihihihi :p <br>
+^ Ya kecuali kalo HP lo ketinggalan sih, berarti guenya juga ketinggalan :( <br>
+^ Eh, kenalan dulu dong, nama lo siapa? {topic=nama}
+
++ [*] (@thanks) [*] {weight=10}
+- Sip! Sama-sama yaa :)
+- You're welcome!
+- Sama-sama yaa ;)
+
++ [*] (@ok) [*] {weight=10}
+- Ok!
+- Okeee
+- Sip!
 
 + [*] (@assalamualaikum) [*]
 - gr01 Wa'alaikumsalam! <br>
@@ -75,21 +107,25 @@
 < topic
 
 ///////////////////////////////////START REMINDER
-+ [*] (ingetin|reminder|bangunin)
-* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
-- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
-^ - Ingetin ada resepsi nikah lusa\n
-^ - Ingetin bangun pagi tiap jam 5\n
-^ - Ingetin bayar listrik tiap tgl 5 juli\n
-^ - Ingetin meeting dengan sales tiap senin jam 9.30
++ [*] (@ingetin) [*] {weight=10}
+- Siap! Ntar gue ingetin deh
+- Oke! Udah gue catet!
 
-+ [*] (ingetin|reminder|bangunin) *{weight=10}
-* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
-- re01 OK <first_name>. <set rem_pesan=<star2>>
+//+ [*] (ingetin|reminder|bangunin)
+//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+//- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+//^ - Ingetin ada resepsi nikah lusa\n
+//^ - Ingetin bangun pagi tiap jam 5\n
+//^ - Ingetin bayar listrik tiap tgl 5 juli\n
+//^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
-+ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
-* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
-- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
+//+ [*] (ingetin|reminder|bangunin) *{weight=10}
+//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+//- re01 OK <first_name>. <set rem_pesan=<star2>>
+
+//+ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
+//* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
+//- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
 
 + [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
 - OK
@@ -168,15 +204,11 @@
 - bj11 {topic=pulsa} <set mycontext=pulsa>
 
 ///////////////////////////////////START PULSA HP
-+ [*] (pulsa|bang isiin pulsa dong) [*]
-//- Halo <first_name>, beli pulsa lagi ada promo loh! Bisa dapet cashback 25% dari nominal pulsa yang lo beli, dg minimal pembelian pulsa 20K\n\n
-//^ Karena kuota promo 100K saat ini udah abis, kamu nggak akan dapet cahsback untuk pembelian pulsa 100k.\nSilakan pilih nominal lain untuk dapetin cashback 25%.\n\n
-//^ Sekarang, ketik nomor HP yang mau diisi pulsanya (contoh 08xxxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
-- Psstt.. Gue lagi ada promo cashback 25% nih untuk pembelian pulsa 100k <br>
-^ Buruan mana sini nomernya, sebelom keabisan nih! {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
++ [*] (@pulsa) [*] {weight=10}
+- Mau isi pulsa? Mana sini nomernya {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 //////////////////////////////////START TOKEN LISTRIK
-+ [*] (token|pulsa listrik|token pln|token listrik) [*]
++ [*] (token|pulsa listrik|token pln|token listrik) [*] {weight=10}
 - Nomor meter prabayar-nya berapa <first_name>? {topic=token} <set mycontext=token>
 
 
@@ -298,9 +330,11 @@
 
 ///////////////////////////////////START XTRANS
 + [*] [tolong|mau] [order|pesen|psn|booking] (travel|xtrans|xtran|xtransbj) [*]
-- xt01 Itu daftar pool keberangkatan Xtrans <br>
-^ Lo mau berangkat dari mana, <first_name>?\n
-^ Ketik aja nama poolnya (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
+//- xt01 Itu daftar pool keberangkatan Xtrans <br>
+//^ Lo mau berangkat dari mana, <first_name>?\n
+//^ Ketik aja nama poolnya (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
+- Oke, gue coba kontak Xtrans dulu ya <br>
+^ Duh sori ya, gue belom bisa kontak Xtrans nih sekarang, coba lagi nanti ya :)
 
 > topic xtrans inherits global
   + [*] (@city11) [*]
@@ -411,7 +445,7 @@
 < topic
 
 ///////////////////////////////////START CUACA
-+ [*] (@cuaca) [*]
++ [*] (@cuaca) [*] {weight=10}
 - we01 Oke! Pake fitur share location lo ya untuk menentukan lokasinya (tombol + samping tombol emoticon).<br>
 ^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain.<br>
 ^ Nanti gue kasih info perkiraan cuaca berdasarkan lokasi yang lo pilih ;)
@@ -702,5 +736,116 @@
     + [*] (@nyerah) [*]
     - Yah payah deh nyerah. <br>
     ^ Jawabannya, karena emang nggak ujan, jadi nggak ada yang basah! Hahaha :D {topic=random}
+
+< topic
+
++ [*] (@jemput) [*] {weight=10}
+- Siap! Gue jemput naik Uber ya!
+
++ [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
+- Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
+
++ restart
+- Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
+
++ *
+- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+
+> topic nama
++ [@namaku] (*) [*]
+- Oh <star2> <br>
+^ Bagus juga namanya :) <br>
+^ Ngomong-ngomong, lo udah add gue belom di Line? {topic=add_line}
+
++ restart
+- Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
+
+< topic
+
+> topic add_line
++ [*] (@udah) [*]
+- gr01 Mantaaaapppp.. <br>
+^ Btw, gue sebagai temen lo bisa bantuin lo banyak hal loh! <br>
+^ Tuh contohnya beberapa hal yang bisa gue lakuin <br>
+^ Eh iya, jangan lupa ikutan foto di photobooth gue ya! <br>
+^ Bisa dapet hadiah seru loh! {topic=hadiahnyaapa}
+
++ [*] (@belom) [*]
+- gr01 Yaahh.. Kok belom di add sih? <br>
+^ Semua orang di sini udah nge-add gue loh! Hahaha :D <br>
+^ Yaudah nggak papa, tapi nanti jangan lupa add gue ya abis ini <br>
+^ Cari aja di Line lo, @BangJoni <br>
+^ Btw, gue sebagai temen lo bisa bantuin lo banyak hal loh! <br>
+^ Tuh contohnya beberapa hal yang bisa gue lakuin <br>
+^ Eh iya, jangan lupa ikutan foto di photobooth gue ya! <br>
+^ Bisa dapet hadiah seru loh! {topic=hadiahnyaapa}
+
++ *
+- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+
++ restart
+- Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
+
+< topic
+
+> topic hadiahnyaapa
++ [*] (@emang) [*] (@hadiah) [*]
+- Banyaaaakkk! Coba tanya sama temen Bang Joni yang namanya {random}Eva|Ama|Ache|Weka|Anita|Arra|Asti|Bimo|Dewe|Hesty|Kenzo|Rizky{/random} deh, masih ada apa aja hadiahnya <br>
+^ Cepet gih, keburu keabisan hadiahnyaaa! {topic=random}
+
++ [*] (@hadiah) [*] (@emang) [*]
+- Banyaaaakkk! Coba tanya sama temen Bang Joni yang namanya {random}Eva|Ama|Ache|Weka|Anita|Arra|Asti|Bimo|Dewe|Hesty|Kenzo|Rizky{/random} deh, masih ada apa aja hadiahnya <br>
+^ Cepet gih, keburu keabisan hadiahnyaaa! {topic=random}
+
++ *
+- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=random}
+- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=random}
+- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=random}
+- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=random}
+
++ restart
+- Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
 
 < topic
