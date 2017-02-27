@@ -49,7 +49,7 @@
     - Okee lanjut {topic=<get mycontext>}
 
     + *
-    - Gue gak ngerti dah, seriusan
+    - Gue gak ngerti dah, seriusan. Yakin banget nih gak jadi?
 
 < topic
 
@@ -225,7 +225,7 @@
   ^ Formatnya gini ya, 08xxxxxx {topic=registerbjpay} <set mycontext=registerbjpay>
 
   + *
-  - Bang Joni gak ngerti deh, coba ulangin
+  - Bang Joni gak ngerti deh, coba ulangin lagi
 
 < topic
 
