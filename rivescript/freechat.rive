@@ -14,11 +14,21 @@
  + pesawat
  - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
  ^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
-<
+< topic
+
++ [*] (@beli) [di] (@bangjoni) [*] {weight=11}
+- Kamu mau beli apa di Bang Joni? <set res_topic=general> {topic=askservice}
+
++ [*] (@beli) (@pulsa) [*] {weight=11}
+- Kamu mau beli pulsa di Bang Joni? <set res_topic=pulsa> {topic=askservice}
+
++ [*] (@beli) (@pesawat) [*] {weight=11}
+- Kamu mau beli tiket pesawat di Bang Joni? <set res_topic=pesawat> {topic=askservice}
+
 
 > topic freechatservice inherits random
 
-    + [*] (@beli) [*] (@bangjoni) [*]
+    + [*] (@beli) [di] (@bangjoni) [*]
     - Kamu mau beli apa di Bang Joni? <set res_topic=general> {topic=askservice}
 
     + [*] (@beli) (@pulsa) [*]
@@ -34,15 +44,18 @@
 
 > topic askservice inherits service
 
-    + [*] (@halo) [*]
-    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+    //+ [*] (@halo) [*]
+    //- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
     - gr01 Yes <first_name>, kenapa?
     - gr01 Halo, <first_name> ada apa nih?
 
     + [*] (@mau) [*]
     * <get res_topic> == general => {@ halo} {topic=service}
     * <get res_topic> == pulsa => {@ pulsa} {topic=pulsa}
-    * <get res_topic> == pesawat => {@ pesawat} {topic=pesawat}
+    * <get res_topic> == pesawat =>{topic=service} {@ pesawat}
+    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+-   - gr01 Yes <first_name>, kenapa?
+-   - gr01 Halo, <first_name> ada apa nih?
 
     + [*] (@nggak) [*]
     - Okee, kita ngobrol lagi yuk {topic=random}
@@ -158,4 +171,3 @@
 
 + [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
 - Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
-

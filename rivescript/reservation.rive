@@ -1,12 +1,13 @@
+! version = 2.0
 ! BJ = V2
 
 + [*] (@test) [*]
 - {@halo}
 
-+ [*] (@halo) [*]
-- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
-- gr01 Yes <first_name>, kenapa?
-- gr01 Halo, <first_name> ada apa nih?
+//+ [*] (@halo) [*]
+//- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+//- gr01 Yes <first_name>, kenapa?
+//- gr01 Halo, <first_name> ada apa nih?
 
 //+ [*] (@halo) [*]
 //- Halo! <br>
@@ -35,25 +36,27 @@
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
 - Yakin banget nih gak jadi? {topic=cancelconfirm}
-- ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
+//- ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
 
 > topic cancelconfirm
 
     + [*] (@mau) [*]
-    - ca01 Yaudah deh, udah gue batalin nih {topic=random]
+    * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
+    - ca01 Yaudah deh, udah gue batalin nih {topic=random}
     - ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
 
     + [*] (@nggak) [*]
-    - Okee lanjut
+    - Okee lanjut {topic=<get mycontext>}
+
+    + *
+    - Gue gak ngerti dah, seriusan
 
 < topic
 
-> topic global inherits cancelconfirm
+> topic global
 
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*] {weight=10}
-  * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
-  - ca01 Oke, udah gue batalin yaa {topic=random}
-  - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random}
+  - Yakin banget nih gak jadi? {topic=cancelconfirm}
 
   + [*] (ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp) [*]
   - sippp
@@ -220,6 +223,9 @@
   + bjpay register
   - Oke! Ketik nomer HP yang mau lo daftarin buat akun BJPay <br>
   ^ Formatnya gini ya, 08xxxxxx {topic=registerbjpay} <set mycontext=registerbjpay>
+
+  + *
+  - Bang Joni gak ngerti deh, coba ulangin
 
 < topic
 
@@ -433,9 +439,9 @@
 
 
 ///////////////////////////////////START SKYSCANNER Edited by AWK 2017-01-04 03:00
-+ [*] (@pesawat) [*]
-- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
-^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
+//+ [*] (@pesawat) [*]
+//- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
 
 + [*] (@city1|@city2|@city3|@city4) [*] (@city1|@city2|@city3|@city4) [*]
 - Kamu mau pergi dari <star1> ke <star2>, PP apa sekali jalan nih? <set psw_derpature_time=<murah>> <set psw_derpature_city=<star1>> <set psw_arrival_city=<star2>>
@@ -620,108 +626,3 @@
 
 + [*] info lainnya [*]
 - gr03 Pilih informasi lainnya
-
-
-+ restart
-- Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
-
-+ *
-- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru! {topic=hadiahnyaapa}
-- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru! {topic=hadiahnyaapa}
-- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
-- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
-
-> topic nama
-    + [@namaku] (*) [*]
-    - Oh <star2> <br>
-    ^ Bagus juga namanya :) <br>
-    ^ Ngomong-ngomong, lo udah add gue belom di Line? {topic=add_line}
-
-    + restart
-    - Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
-
-< topic
-
-> topic add_line
-    + [*] (@udah) [*]
-    - gr01 Mantaaaapppp.. <br>
-    ^ Btw, gue sebagai temen lo bisa bantuin lo banyak hal loh! Tuh contohnya di atas <br>
-    ^ Eh iya, jangan lupa ikutan foto di photobooth gue ya! <br>
-    ^ Bisa dapet hadiah seru loh! {topic=hadiahnyaapa}
-
-    + [*] (@belom) [*]
-    - gr01 Yaahh.. Kok belom di add sih? Yaudah deh tapi nanti di add ya, @BangJoni <br>
-    ^ Btw, gue sebagai temen lo bisa bantuin lo banyak hal loh! Tuh contohnya di atas <br>
-    ^ Eh iya, jangan lupa ikutan foto di photobooth gue ya! <br>
-    ^ Bisa dapet hadiah seru loh! {topic=hadiahnyaapa}
-
-    + *
-    - Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru! {topic=hadiahnyaapa}
-    - Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru! {topic=hadiahnyaapa}
-    - Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
-    - Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
-
-    + restart
-    - Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
-
-< topic
-
-> topic hadiahnyaapa
-    + [*] (@emang) [*] (@hadiah) [*]
-    - Banyaaaakkk! Coba tanya sama temen Bang Joni yang namanya {random}Eva|Ama|Ache|Weka|Anita|Arra|Asti|Bimo|Dewe|Hesty|Kenzo|Rizky{/random} deh, masih ada apa aja hadiahnya <br>
-    ^ Cepet gih, keburu keabisan hadiahnyaaa! {topic=random}
-
-    + [*] (@hadiah) [*] (@emang) [*]
-    - Banyaaaakkk! Coba tanya sama temen Bang Joni yang namanya {random}Eva|Ama|Ache|Weka|Anita|Arra|Asti|Bimo|Dewe|Hesty|Kenzo|Rizky{/random} deh, masih ada apa aja hadiahnya <br>
-    ^ Cepet gih, keburu keabisan hadiahnyaaa! {topic=random}
-
-    + [*] (@hadiah) [*]
-    - Banyaaaakkk! Coba tanya sama temen Bang Joni yang namanya {random}Eva|Ama|Ache|Weka|Anita|Arra|Asti|Bimo|Dewe|Hesty|Kenzo|Rizky{/random} deh, masih ada apa aja hadiahnya <br>
-
-    ^ Cepet gih, keburu keabisan hadiahnyaaa! {topic=random}
-    + *
-    - Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru! {topic=random}
-    - Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru! {topic=random}
-    - Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru loh! {topic=random}
-    - Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
-    ^ Nanti kita lanjut chatting lagi yaa.. <br>
-    ^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-    ^ Banyak hadiah seru loh! {topic=random}
-
-    + restart
-    - Done {topic=random} //Ini Fungsinya Sebagai Keyword Cancel//
-
-< topic
