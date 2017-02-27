@@ -1,0 +1,161 @@
+! version = 2.0
+
+
++ [*] (@halo) [*]
+- Halo <first_name>, Bang Joni mau bantu kamu nih, boleh nggak? {topic=askservice}
+
++ [*] (@test) [*]
+- {@halo}
+
+> topic service inherits random
+ + pulsa
+ - Mau isi pulsa? Mana sini nomernya  {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+
+ + pesawat
+ - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+ ^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
+<
+
+> topic freechatservice inherits random
+
+    + [*] (@beli) [*] (@bangjoni) [*]
+    - Kamu mau beli apa di Bang Joni? <set res_topic=general> {topic=askservice}
+
+    + [*] (@beli) (@pulsa) [*]
+    - Kamu mau beli pulsa di Bang Joni? <set res_topic=pulsa> {topic=askservice}
+
+    + [*] (@beli) (@pesawat) [*]
+    - Kamu mau beli tiket pesawat di Bang Joni? <set res_topic=pesawat> {topic=askservice}
+
+    + (*)
+    - {topic=random}{@ <star>}
+
+< topic
+
+> topic askservice inherits service
+
+    + [*] (@halo) [*]
+    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+    - gr01 Yes <first_name>, kenapa?
+    - gr01 Halo, <first_name> ada apa nih?
+
+    + [*] (@mau) [*]
+    * <get res_topic> == general => {@ halo} {topic=service}
+    * <get res_topic> == pulsa => {@ pulsa} {topic=pulsa}
+    * <get res_topic> == pesawat => {@ pesawat} {topic=pesawat}
+
+    + [*] (@nggak) [*]
+    - Okee, kita ngobrol lagi yuk {topic=random}
+    - Yaah, padahal gue udah ngarep banget :( <br>
+    ^ Yaudah yuk kita ngobrol lagi {topic=random}
+    - Ah PHP luu, ngobrol aja yuk ama gue {topic=random}
+
+< topic
+
++ *
+- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru! {topic=hadiahnyaapa}
+- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
+^ Nanti kita lanjut chatting lagi yaa.. <br>
+^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+
+
+> topic ngupil
+
+    + [*] (@jorok) [*]
+    - Hahaha <br>
+    ^ Kalo jorok tuh upilnya gue peperin ke lo :D
+    ^ gr01 Btw, apa yang bisa gue bantu nih? {topic=random}
+
+    + [*] (@idih) [*]
+    - Hahaha, nggak lah bercanda <br>
+    ^ gr01 Btw, apa yang bisa gue bantu nih? {topic=random}
+
+< topic
+
++ [*] iseng [*] {weight=10}
+- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+
++ [*] (@bosen) [*] {weight=10}
+- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+
++ [*] (@lagiapa) [*] {weight=10}
+- lagi ngupil, sini bantuin :D {topic=ngupil}
+
++ [*] (@makian) [*] {weight=10}
+- Ush! Nggak boleh gitu ah ngomongnya
+- Busyet ngomongnya kasar amat
+
+
+//+ *
+//* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+//- ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\n
+//^ Ketik informasi sesuai yang Bang Joni tanyakan.\n
+//^ Ketik 'cancel' untuk melakukan pembatalan.\n
+//^ Ketik 'menu' untuk kembali ke menu awal.\n
+//^ Updating bang joni masih terus dilakukan ya.
+
+//+ *
+//- Sip!
+//- Yo'i deh
+//- He'em
+//- Yo'i
+//- Oke deh
+//- Okay
+
+> topic tebak_tebakan
+    + [*] (@nggak) [*]
+    - Ih yakin nih nggak mau? Coba dulu dong.
+    - Masa sih nggak mau? Tebak-tebakannya seru loh!
+
+    + [*] (@mau) [*]
+    - Nih coba jawab ya! Kenapa bebek goreng rasanya enak? {topic=tebak_bebek_goreng}
+    - Coba jawab nih! Ada satu payung kecil dipake sama 5 orang, tapi nggak ada satu pun yang keujanan, kok bisa? {topic=tebak_payung5orang}
+
+< topic
+
+> topic tebak_bebek_goreng
+    + [*] (@hurufb) [*]
+    - Hahaha iya bener! Coba kalo nggak ada huruf B-nya. Ogah banget deh makannya. {topic=random}
+
+    + (*)
+    - Salah! coba lagi ayok.
+    - Bukan itu. Masa nggak tau sih?
+
+    + [*] (@nyerah) [*]
+    - Yah payah deh nyerah. <br>
+    ^ Jawabannya, karena Bebek Goreng ada huruf B-nya. Coba kalo nggak ada, nggak bakal ada yang mau makan! Hahaha :D {topic=random}
+
+< topic
+
+> topic tebak_payung5orang
+    + [*] (@gaujan) [*]
+    - Hahaha betul! Orang gak ujan, ya nggak ada yang basah lah! {topic=random}
+
+    + (*)
+    - Salah! coba lagi ayok.
+    - Bukan itu. Masa nggak tau sih?
+
+    + [*] (@nyerah) [*]
+    - Yah payah deh nyerah. <br>
+    ^ Jawabannya, karena emang nggak ujan, jadi nggak ada yang basah! Hahaha :D {topic=random}
+
+< topic
+
++ [*] (@jemput) [*] {weight=10}
+- Siap! Gue jemput naik Uber ya!
+
++ [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
+- Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
+
