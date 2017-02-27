@@ -1016,6 +1016,11 @@ def onMessage(msisdn, ask, first_name):
         linebot.send_composed_carousel(msisdn, "Recommended Destination", create_recommended_carousell(msisdn))
     #################################################
 
+    ####################GREETINGS####################
+    if answer[:4] == "co00":
+        linebot.send_text_message(msisdn, answer[4:])
+        linebot.send_composed_confirm(msisdn, 'Konfirmasi', 'Mau aja ya', {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
+
     ####################BJPAY CEK SALDO####################
     if answer[:4] == "bj00":
         if bjp_service.is_exist(msisdn) :

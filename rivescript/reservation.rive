@@ -35,7 +35,7 @@
 ^ Apa yang bisa gue bantu nih?
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
-- Yakin banget nih gak jadi? {topic=cancelconfirm}
+- co00 Yakin banget nih gak jadi? {topic=cancelconfirm}
 //- ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
 
 > topic cancelconfirm
@@ -56,7 +56,7 @@
 > topic global
 
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*] {weight=10}
-  - Yakin banget nih gak jadi? {topic=cancelconfirm}
+  - co00 Yakin banget nih gak jadi? {topic=cancelconfirm}
 
   + [*] (ok|okk|oke|okee|okeee|sip|sipp|sippp|siip|siiipp|siiippp) [*]
   - sippp
