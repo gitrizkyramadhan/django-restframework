@@ -1065,7 +1065,7 @@ class Nlp:
         self.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
         #s = json.loads(self.redisconn.get("book/%s" % (msisdn)))
         #print "------------->>", bookingMsisdn, s
-        return answer
+        return answer.strip()
 
 
 
