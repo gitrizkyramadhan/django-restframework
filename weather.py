@@ -57,5 +57,6 @@ class WeatherService() :
 
 
     def choose_image(self, cuaca):
+        cuaca = cuaca.lower().replace(' ', '_') + '.png'
         # return '' + cuaca.replace(' ', '').lower() + '.jpg'
-        return 'https://bangjoni.com/testflv2/carousell/xxx.jpg'
+        return 'https://bangjoni.com/weather_images/' + cuaca

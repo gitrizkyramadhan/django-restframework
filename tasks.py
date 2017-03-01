@@ -67,6 +67,7 @@ from skyscanner import SkyscannerSDK
 from mgm import MGM
 from bjpay_service import BJPayService
 from weather import WeatherService
+from log_mongo import MongoLog
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -133,6 +134,7 @@ sky = SkyscannerSDK()
 mgm = MGM()
 bjp_service = BJPayService()
 weather_service = WeatherService()
+mongolog = MongoLog()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -194,6 +196,8 @@ def save_last10chat(dtm, msisdn, mesg, actor):
     if chat_len > 10:
         lineNlp.redisconn.lpop(id)
     lineNlp.redisconn.rpush(id, chat)
+
+    record_answers(msisdn, str(mesg))
 
 def request(sql):
     try:
@@ -316,6 +320,9 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
     if keyboard == "pulsahp":
         # linebot.send_rich_message_pulsa_hp_text(msisdn, link_url,"Rich Message", message.strip())
         linebot.send_imagemap(msisdn, 'pulsa')
+        linebot.send_text_message(msisdn, message.strip())
+    if keyboard == "pulsaxl":
+        linebot.send_imagemap(msisdn, 'pulsa_xl')
         linebot.send_text_message(msisdn, message.strip())
     if keyboard == "jatis":
         linebot.send_rich_message_payment_jatis_text(msisdn, link_url,"Rich Message", message.strip())
@@ -507,6 +514,34 @@ def migrate(msisdn, user_phone):
         if str(user_phone) == str(phone) :
             bjp_service.register(msisdn, va_no, phone, balance)
             print msisdn, balance, va_no
+
+def record_conversation(msisdn, ask, end_conversation):
+    incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
+    if end_conversation :
+        if lineNlp.redisconn.exists("answers/%s" % (msisdn)):
+            answers = json.loads(lineNlp.redisconn.get("answers/%s" % (msisdn)))
+        else:
+            answers = []
+        mongolog.log_conversation(msisdn, ask, answers, 'service', 'topic')
+        lineNlp.redisconn.delete("answers/%s" % (msisdn))
+    else :
+        incomingMsisdn
+
+
+def record_answers(msisdn, answer) :
+    if lineNlp.redisconn.exists("answers/%s" % (msisdn)):
+        answers = json.loads(lineNlp.redisconn.get("answers/%s" % (msisdn)))
+    else :
+        answers = []
+    answers.append(answer)
+    lineNlp.redisconn.set("answers/%s" % (msisdn), json.dumps(answers))
+
+
+def create_incoming_msisdn():
+    logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+    incomingMsisdn = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, logDtm, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, "2017", "", [], 'no topic']
+    return incomingMsisdn
+
 
 # ---------- FLIGHT CAROUSELL START ----------
 def create_recommended_carousell(msisdn):
@@ -927,10 +962,10 @@ def onMessage(msisdn, ask, first_name):
         last_request = datetime.strptime(incomingMsisdn[12],'%Y-%m-%d %H:%M:%S')
         new_request = datetime.strptime(logDtm,'%Y-%m-%d %H:%M:%S')
         if (new_request - last_request).total_seconds() > 1800: #reset request after half an hour
-            incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+            incomingMsisdn = create_incoming_msisdn()
             answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
     else:
-        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+        incomingMsisdn = create_incoming_msisdn()
     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
 
     ask_temp = ask
@@ -1097,7 +1132,10 @@ def onMessage(msisdn, ask, first_name):
             i = i + 1
         reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
         #print reply
-        sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
+        if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
+            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
+        else :
+            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
@@ -1553,7 +1591,7 @@ def onMessage(msisdn, ask, first_name):
     ####################CANCEL MODULE START####################
     if answer[:4] == "ca01":
         try:
-            incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+            incomingMsisdn = create_incoming_msisdn()
             bookingMsisdn = {}
             print "Done cancel order"
         except:
@@ -1591,7 +1629,7 @@ def onMessage(msisdn, ask, first_name):
             respAPI = fetchHTML("http://128.199.88.72/uber/cancel_ride.php?request_id=%s&access_token=%s" % (incomingMsisdn[6], incomingMsisdn[7]))
             print respAPI
 
-        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+        incomingMsisdn = create_incoming_msisdn()
     ###########################################################
 
     ####################INFO TOL MODULE FOR LOAD TEST START####################
@@ -2437,7 +2475,7 @@ def onMessage(msisdn, ask, first_name):
                     if respAPI.find("ATM_SUKSES") >= 0:
                         #goHtml2Png(respAPI, msisdn + "_bayar")
                         #print "Done convert html to png"
-                        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                        incomingMsisdn = create_incoming_msisdn()
                         bookingMsisdn = {}
                         #sendImg("/tmp/%s_bayar.jpg" %(msisdn), msisdn)
                         print "Sukses ATM:"
@@ -2454,7 +2492,7 @@ def onMessage(msisdn, ask, first_name):
                         answer = answer + ": " + err_msg
                         sendMessageT2(msisdn, answer, 0)
                     try:
-                        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                        incomingMsisdn = create_incoming_msisdn()
                         bookingMsisdn = {}
                     except Exception as e:
                         return 1
@@ -2612,7 +2650,7 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[15] = 3
             else:
                 answer = "Maaf, terjadi kesalahan, mohon coba lagi"
-                incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                incomingMsisdn = create_incoming_msisdn()
             sendMessageT2(msisdn, answer, 0)
             lineNlp.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
 
@@ -2689,7 +2727,7 @@ def onMessage(msisdn, ask, first_name):
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
                         #goHtml2Png(respAPI, msisdn + "_bayar")
                         #print "Done convert html to png"
-                        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                        incomingMsisdn = create_incoming_msisdn()
                         bookingMsisdn = {}
                         #sendImg("/tmp/%s_bayar.jpg" %(msisdn), msisdn)
                         print "Sukses ATM:"
@@ -2706,7 +2744,7 @@ def onMessage(msisdn, ask, first_name):
                             print "sql error at order gopegi"
                         answer = answer + ": " + err_msg
                         sendMessageT2(msisdn, answer, 0)
-                        incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                        incomingMsisdn = create_incoming_msisdn()
                         bookingMsisdn = {}
                         lineNlp.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
                 elif incomingMsisdn[16] == "Credit Card" or incomingMsisdn[16] == "CIMB Clicks" or incomingMsisdn[16] == "BCA KlikPay":
@@ -2749,7 +2787,7 @@ def onMessage(msisdn, ask, first_name):
                 print "sql error at order gopegi"
             answer = answer + ": " + err_msg
             sendMessageT2(msisdn, answer, 0)
-            incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+            incomingMsisdn = create_incoming_msisdn()
             bookingMsisdn = {}
             lineNlp.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
             #elif answer.find("Maaf") >= 0:
@@ -2781,6 +2819,8 @@ def onMessage(msisdn, ask, first_name):
         print "Ecommerce sharing location"
     print "++++++++++++++++++", incomingMsisdn
     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
+
+    record_conversation(msisdn, ask, True)
 
 
 
@@ -2954,7 +2994,7 @@ def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_
             sendMessageT2(msisdn_uber, answer, 0)
             answer = lineNlp.doNlp("exittorandom", msisdn_uber, first_name)
             try:
-                incomingMsisdn = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,logDtm,-1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,"2016",""]
+                incomingMsisdn = create_incoming_msisdn()
             except:
                 print "Error cancel order"
 

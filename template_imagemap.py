@@ -29,7 +29,7 @@ imagemaps = [
     },{
         "id":"pulsa",
         "payload": ImagemapSendMessage(
-            base_url='https://www.bangjoni.com/line_images/pulsa_hp1',
+            base_url='https://bangjoni.com/pulsa_images/pulsa1',
                 alt_text='Rich Menu Pulsa',
                 base_size=BaseSize(height=701, width=1040),
                 actions=[
@@ -47,6 +47,51 @@ imagemaps = [
                     ),
                     MessageImagemapAction(
                         text='dua puluh ribu',
+                        area=ImagemapArea(
+                            x=693, y=0, width=1040, height=350
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='dua puluh lima ribu',
+                        area=ImagemapArea(
+                            x=0, y=350, width=346, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='lima puluh ribu',
+                        area=ImagemapArea(
+                            x=346, y=350, width=693, height=701
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='seratus ribu',
+                        area=ImagemapArea(
+                            x=693, y=350, width=1040, height=701
+                        )
+                    )
+                ]
+            )
+    },{
+        "id":"pulsa_xl",
+        "payload": ImagemapSendMessage(
+            base_url='https://bangjoni.com/pulsa_images/pulsaxl1',
+                alt_text='Rich Menu Pulsa',
+                base_size=BaseSize(height=701, width=1040),
+                actions=[
+                    MessageImagemapAction(
+                        text='lima ribu',
+                        area=ImagemapArea(
+                            x=0, y=0, width=346, height=350
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='sepuluh ribu',
+                        area=ImagemapArea(
+                            x=346, y=0, width=693, height=350
+                        )
+                    ),
+                    MessageImagemapAction(
+                        text='tidak tersedia',
                         area=ImagemapArea(
                             x=693, y=0, width=1040, height=350
                         )
@@ -224,62 +269,32 @@ imagemaps = [
     },{
         "id":"payment_token",
         "payload": ImagemapSendMessage(
-            base_url='https://www.bangjoni.com/line_images/payment_tiketux1',
+            base_url='https://bangjoni.com/pln_images/pln1',
                 alt_text='Rich Menu Payment Token PLN',
                 base_size=BaseSize(height=701, width=1040),
                 actions=[
                     MessageImagemapAction(
                         text='dua puluh',
                         area=ImagemapArea(
-                            x=0, y=0, width=345, height=235
+                            x=0, y=0, width=720, height=350
                         )
                     ),
                     MessageImagemapAction(
                         text='lima puluh',
                         area=ImagemapArea(
-                            x=345, y=0, width=692, height=235
+                            x=720, y=0, width=1040, height=350
                         )
                     ),
                     MessageImagemapAction(
                         text='seratus',
                         area=ImagemapArea(
-                            x=692, y=0, width=1040, height=235
+                            x=0, y=350, width=720, height=351
                         )
                     ),
                     MessageImagemapAction(
                         text='dua ratus',
                         area=ImagemapArea(
-                            x=0, y=235, width=345, height=467
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='lima ratus',
-                        area=ImagemapArea(
-                            x=345, y=235, width=692, height=467
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='sejuta',
-                        area=ImagemapArea(
-                            x=692, y=235, width=1040, height=467
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='lima juta',
-                        area=ImagemapArea(
-                            x=0, y=467, width=345, height=701
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='sepuluh juta',
-                        area=ImagemapArea(
-                            x=345, y=467, width=692, height=701
-                        )
-                    ),
-                    MessageImagemapAction(
-                        text='lima puluh juta',
-                        area=ImagemapArea(
-                            x=692, y=467, width=1040, height=701
+                            x=720, y=350, width=1040, height=351
                         )
                     )
                 ]

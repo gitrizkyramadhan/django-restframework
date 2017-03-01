@@ -225,6 +225,9 @@ class Nlp:
             elif idx == 4:
                 incomingMsisdn[2] = 'Smartfren'
                 incomingMsisdn[4] = 'Y'
+            elif idx == 5:
+                incomingMsisdn[2] = 'Axis'
+                incomingMsisdn[4] = 'AX'
             else:
                 incomingMsisdn[2] = 'Unknown'
             incomingMsisdn[3] = self.markup_operator[idx]
