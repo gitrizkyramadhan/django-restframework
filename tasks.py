@@ -522,7 +522,7 @@ def record_conversation(msisdn, ask, end_conversation):
             answers = json.loads(lineNlp.redisconn.get("answers/%s" % (msisdn)))
         else:
             answers = []
-        mongolog.log_conversation(msisdn, ask, answers, 'service', 'topic')
+        mongolog.log_conversation(msisdn, ask, answers, 'service', 'topic', incomingMsisdn)
         lineNlp.redisconn.delete("answers/%s" % (msisdn))
     else :
         incomingMsisdn
