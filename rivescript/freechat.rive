@@ -1,8 +1,10 @@
-! version = 2.0
+
+! version 2 = freechat
+! version 2 = freechat
 
 
-+ [*] (@halo) [*]
-- Halo <first_name>, Bang Joni mau bantu kamu nih, boleh nggak? {topic=askservice}
+//+ [*] (@halo) [*]
+//- Halo <first_name>, Bang Joni mau bantu kamu nih, boleh nggak? {topic=askservice}
 
 + [*] (@test) [*]
 - {@halo}
@@ -44,8 +46,8 @@
 
 > topic askservice inherits service
 
-    //+ [*] (@halo) [*]
-    //- gr01 Hey <first_name>, apa yang bisa gue bantu nih?
+    + [*] (@halo) [*]
+    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
     - gr01 Yes <first_name>, kenapa?
     - gr01 Halo, <first_name> ada apa nih?
 
@@ -54,8 +56,8 @@
     * <get res_topic> == pulsa => {@ pulsa} {topic=pulsa}
     * <get res_topic> == pesawat =>{topic=service} {@ pesawat}
     - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
--   - gr01 Yes <first_name>, kenapa?
--   - gr01 Halo, <first_name> ada apa nih?
+    - gr01 Yes <first_name>, kenapa?
+    - gr01 Halo, <first_name> ada apa nih?
 
     + [*] (@nggak) [*]
     - Okee, kita ngobrol lagi yuk {topic=random}
@@ -110,6 +112,11 @@
 - Ush! Nggak boleh gitu ah ngomongnya
 - Busyet ngomongnya kasar amat
 
++ [*] (@maaf) [*]
+- Okee..
+- Iyaa..
+- Sip :)
+
 
 //+ *
 //* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
@@ -135,6 +142,10 @@
     + [*] (@mau) [*]
     - Nih coba jawab ya! Kenapa bebek goreng rasanya enak? {topic=tebak_bebek_goreng}
     - Coba jawab nih! Ada satu payung kecil dipake sama 5 orang, tapi nggak ada satu pun yang keujanan, kok bisa? {topic=tebak_payung5orang}
+
+    + *
+    - Kenapa gitu? <br>
+    ^ jadi gak mau main nih? 
 
 < topic
 
