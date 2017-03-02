@@ -1198,7 +1198,10 @@ def onMessage(msisdn, ask, first_name):
             else :
                 sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+            # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
 
 
     if answer[:4] == "bj02":
@@ -1356,7 +1359,10 @@ def onMessage(msisdn, ask, first_name):
                 sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
 
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
+            # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
 
 
 
