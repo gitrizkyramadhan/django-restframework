@@ -43,7 +43,7 @@
     + [*] (@mau) [*]
     * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
     - ca01 Yaudah deh, udah gue batalin nih {topic=random}
-    - ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
+    - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random}
 
     + [*] (@nggak) [*]
     - Okee lanjut {topic=<get mycontext>}
