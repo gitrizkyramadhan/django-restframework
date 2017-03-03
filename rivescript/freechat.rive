@@ -1,10 +1,5 @@
-
 ! version 2 = freechat
 ! version 2 = freechat
-
-
-//+ [*] (@halo) [*]
-//- Halo <first_name>, Bang Joni mau bantu kamu nih, boleh nggak? {topic=askservice}
 
 + [*] (@test) [*]
 - {@halo}
@@ -18,13 +13,14 @@
  ^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
 < topic
 
-+ [*] (@beli) [di] (@bangjoni) [*] {weight=11}
-- co00 Kamu mau beli apa di Bang Joni? <set res_topic=general> {topic=askservice}
++ [*] (@beli) [*] (@bangjoni) [*] {weight=11}
+- gr01 Hmm.. Nggak cuma beli-beli aja sih sebenernya. Gue juga bisa kasih lo info-info lain juga. <br>
+^ Tuh coba cek deh.
 
-+ [*] (@beli) (@pulsa) [*] {weight=11}
-- co00 Kamu mau beli pulsa di Bang Joni? <set res_topic=pulsa> {topic=askservice}
+//+ [*] (@beli) (@pulsa) [*] {weight=11}
+//- co00 Kamu mau beli pulsa di Bang Joni? <set res_topic=pulsa> {topic=askservice}
 
-+ [*] (@beli) (@pesawat) [*] {weight=11}
+//+ [*] (@beli) (@pesawat) [*] {weight=11}
 - co00 Kamu mau beli tiket pesawat di Bang Joni? <set res_topic=pesawat> {topic=askservice}
 
 
@@ -47,17 +43,21 @@
 > topic askservice inherits service
 
     + [*] (@halo) [*]
-    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
-    - gr01 Yes <first_name>, kenapa?
-    - gr01 Halo, <first_name> ada apa nih?
+    - gr01 Halo, <first_name>! <br>
+    ^ Apa yang bisa gue bantu nih? :)
+    - gr01 Ya? Mau gue bantu apa nih, <first_name>?
+    - gr01 Halo juga! <br>
+    ^ Ada yang bisa gue bantu, <first_name>?
 
     + [*] (@mau) [*]
     * <get res_topic> == general => {@ halo} {topic=service}
     * <get res_topic> == pulsa => {@ pulsa} {topic=pulsa}
     * <get res_topic> == pesawat =>{topic=service} {@ pesawat}
-    - gr01 Hey <first_name>, apa yang bisa gue bantu nih?
-    - gr01 Yes <first_name>, kenapa?
-    - gr01 Halo, <first_name> ada apa nih?
+    - gr01 Halo, <first_name>! <br>
+    ^ Apa yang bisa gue bantu nih? :)
+    - gr01 Ya? Mau gue bantu apa nih, <first_name>?
+    - gr01 Halo juga! <br>
+    ^ Ada yang bisa gue bantu, <first_name>?
 
     + [*] (@nggak) [*]
     - Okee, kita ngobrol lagi yuk {topic=random}
@@ -70,20 +70,17 @@
 + *
 - Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
 ^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru! {topic=hadiahnyaapa}
+^ Btw, kalo lo mau beli pulsa sama gue juga bisa loh, ketik aja PULSA :)
 - Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
 ^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru! {topic=hadiahnyaapa}
-- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+^ Btw, kalo lo mau beli tiket pesawat sama gue juga bisa loh, ketik aja TIKET PESAWAT :)
+//- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
+//^ Nanti kita lanjut chatting lagi yaa.. <br>
+//^ Jangan lupa ikutan foto di photobooth gue tuh <br>
+//^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
 - Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
 ^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
+^ Btw, kalo lo mau beli token listrik sama gue juga bisa loh, ketik aja TOKEN LISTRIK :)
 
 
 > topic ngupil
@@ -178,7 +175,7 @@
 < topic
 
 + [*] (@jemput) [*] {weight=10}
-- Siap! Gue jemput naik Uber ya!
+- ub01 {topic=uber}  <set mycontext=uber>
 
 + [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
 - Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
