@@ -34,7 +34,7 @@ imgbuttons = [{
     "payload": TemplateSendMessage(
         alt_text='Register BJPAY',
         template=ButtonsTemplate(
-            thumbnail_image_url='https://example.com/image.jpg',
+            thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay.png',
             title='Register BJPAY',
             text='Buat BJPAY biar kamu gampang transaksinya',
             actions=[

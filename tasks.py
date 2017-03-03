@@ -963,7 +963,7 @@ def onMessage(msisdn, ask, first_name):
         new_request = datetime.strptime(logDtm,'%Y-%m-%d %H:%M:%S')
         if (new_request - last_request).total_seconds() > 1800: #reset request after half an hour
             incomingMsisdn = create_incoming_msisdn()
-            answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+            answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
     else:
         incomingMsisdn = create_incoming_msisdn()
     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
@@ -1082,7 +1082,7 @@ def onMessage(msisdn, ask, first_name):
             sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_deposit', answer[4:], 'bjpaydeposit')
             incomingMsisdn[6] = "deposit"
         else:
-            lineNlp.doNlp("ga jadi", msisdn, first_name)
+            lineNlp.doNlp("userexittorandom", msisdn, first_name)
             answer = lineNlp.doNlp("bj01", msisdn, first_name)
             linebot.send_image_button(msisdn, "bjpay_register")
             sendMessageT2(msisdn, answer, 0)
@@ -1092,13 +1092,13 @@ def onMessage(msisdn, ask, first_name):
         #     incomingMsisdn[6] = "deposit"
         # else:
         #     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
-        #     answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+        #     answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
 
         ####################BJPAY REGISTER####################
     if answer[:4] == "bj11":
         if bjp_service.is_exist(msisdn) :
             (current_balance, va_no, phone) = bjp_service.get(msisdn)
-            lineNlp.doNlp("ga jadi", msisdn, first_name)
+            lineNlp.doNlp("userexittorandom", msisdn, first_name)
             answer = lineNlp.doNlp("bj02", msisdn, first_name)
             answer = answer.replace('<bjpay_phone>', str(phone)).replace('<bjpay_balance>', str(current_balance))
             sendMessageT2(msisdn, answer, 0)
@@ -1110,7 +1110,7 @@ def onMessage(msisdn, ask, first_name):
         #     payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
         #     balance = int(payload.split('|')[0])
         #     sendMessageT2(msisdn, "Kamu sudah memiliki BJPAY dengan saldo Rp. %s" % (balance), 0)
-        #     answer = lineNlp.doNlp("ga jadi", msisdn, first_name)
+        #     answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
         # else:
         #     answer = lineNlp.doNlp("bjpay register", msisdn, first_name)
         #     sendMessageT2(msisdn, answer[4:], 0)
@@ -1198,7 +1198,10 @@ def onMessage(msisdn, ask, first_name):
             else :
                 sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+            # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
 
 
     if answer[:4] == "bj02":
@@ -1356,7 +1359,10 @@ def onMessage(msisdn, ask, first_name):
                 sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
 
         else:
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
+            # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
+            answer = lineNlp.doNlp("bj01", msisdn, first_name)
+            linebot.send_image_button(msisdn, "bjpay_register")
+            sendMessageT2(msisdn, answer, 0)
 
 
 
