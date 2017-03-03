@@ -1,6 +1,6 @@
 > topic nama
     + [@namaku] (*) [*]
-    - prf01 Oke, jadi nama lo <get star2> ya? {topic=jawaban_nama} <set star2=name>
+    - prf01 Oke, jadi nama lo <star> ya? {topic=jawaban_nama} <set name=<star>>
   < topic
 
   > topic jawaban_nama
@@ -28,11 +28,11 @@
   > topic cewekataucowok
     + [*] (@cowok) [*]
     - prf03b Oke deh Bro! <br>
-    ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
+    ^ Btw, lo suka travelling nggak? <set gender=<star>>{topic=travellingsukanggak}
   
     + [*] (@cewek) [*]
     - prf03a Oke deh Sis!
-    ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
+    ^ Btw, lo suka travelling nggak? <set gender=<star>>{topic=travellingsukanggak}
 
     + *
     - Kenapa gitu?
@@ -46,15 +46,15 @@
     - prf07a Wih sama dong! Gue juga suka banget travelling! <br>
     ^ Seru banget ya! Apa lagi kalo rame-rame bareng temen. <br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
-    ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
+    ^ Langsung tulis aja alamat email lo. <set travelling=<star>>{topic=mintaemail}
     - prf07a Tos! Sama banget! gue juga suka travelling. <br>
     ^ Di Indonesia tuh ada 17.508 pulau! Banyak banget ya tempat yang bisa didatengin. <br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
-    ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
+    ^ Langsung tulis aja alamat email lo. <set travelling=<star>>{topic=mintaemail}
 
     + [*] (@nggak) [*]
     - prf07a Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
-    ^ Mending uangnya ditabung deh buat masa depan :D
+    ^ Mending uangnya ditabung deh buat masa depan :D<br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
 
@@ -66,8 +66,8 @@
   < topic
 
   > topic mintaemail
-    + [@emailku] (*@mail*) [*] {weight=10}
-    - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <get star>? {topic=jawabanemail}
+    + [@emailku] (*) [*] {weight=10}
+    - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <star>? <set email=<star>> {topic=jawabanemail}
 
     + [*] (@buatapa) [*] {weight=10}
     - Buat kasih info kalo ada promo dong! Nggak bakal spamming kok ;)<br>
@@ -110,7 +110,7 @@
     ^ Jadi berapa nomer HP lo?
 
     + [*] (#) [*]
-    - prf06 Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <get star2>? {topic=jawaban_nomor}
+    - prf06 Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <star>? <set nohp=<star>>{topic=jawaban_nomor}
 
     + [*] (@nggak) [*]
     - Yah, padahal lo bisa dapet info promo-promo seru yang cuma bisa didapetin temen spesial Bang Joni loh. <br>
@@ -127,7 +127,7 @@
 
   > topic jawaban_nomor
     + [*] (@betul) [*]
-    - gr01 Oke deh <name>. Tunggu tanggal mainnya ya! <br>
+    - gr01 Oke deh <get name>. Tunggu tanggal mainnya ya! <br>
     ^ Gue bakal kasih info-info promo khusus buat lo! Temen spesial Bang Joni! ;) <br>
     ^ Eh mau kepo deh :) <br>
     ^ Lo ulang tahunnya kapan sih <get name>? {topic=tanggal_lahir}
@@ -149,10 +149,10 @@
     + [*] (@date@months@years|@date @months @years|@date*@months*@years|@date@months@years) [*]
     - prf02 Sip! Nanti kalo lagi ada duit, gue kasih kado deh ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
-    ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
+    ^ Emang sekarang lo tinggal di kota mana sih <get name>? <set dob=<star>> <set year=0>{topic=tinggal_kota}
 
     + [*] (@date@months|@date @months) [*]
-    - prf02 Tahunnya? {topic=tanggal_lahir_kurang_tahun}
+    - prf02 Tahunnya? {topic=tanggal_lahir_kurang_tahun}  <set dob=<star>>
 
     + *
     - Kenapa ngomongnya gitu? <br>
@@ -171,7 +171,7 @@
     + [*] (@years) [*]
     - prf02 Sip! Nanti kalo lagi ada duit, gue kasih kado deh pas lo ultah ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
-    ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
+    ^ Emang sekarang lo tinggal di kota mana sih <get name>?  <set year=<star>>{topic=tinggal_kota}
 
     + *
     - Kenapa ngomongnya gitu? <br>
@@ -188,8 +188,8 @@
 
   > topic tinggal_kota
     + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]
-    - prf05 Wih asik! Gue punya temen baru dari <star2> :D <br>
-    ^ gr01 Yowes deh, sekarang apa yang bisa gue bantu nih? {topic=random}
+    - prf05 Wih asik! Gue punya temen baru dari <star> :D <br>
+    ^ gr01 Yowes deh, sekarang apa yang bisa gue bantu nih?  <set city=<star>>{topic=random}
 
     + [*] (@nggak) [*]
     - Yah kok gitu? <br>
