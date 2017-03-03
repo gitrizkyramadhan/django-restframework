@@ -1,11 +1,11 @@
 > topic nama
     + [@namaku] (*) [*]
-    - Oke, jadi nama lo <star2> ya? {topic=jawaban_nama} <set star2=name>
+    - Oke, jadi nama lo <get star2> ya? {topic=jawaban_nama} <set star2=name>
   < topic
 
   > topic jawaban_nama
     + [*] (@betul) [*]
-    - Oke deh <name>! <br>
+    - Oke deh <get name>! <br>
     ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :){topic=cewekataucowok}
 
     + [*] (@salah) [*]
@@ -67,7 +67,7 @@
 
   > topic mintaemail
     + [@emailku] (*@mail*) [*] {weight=10}
-    - Oke, coba cek lagi deh, bener nih ya emailnya <star>? {topic=jawabanemail}
+    - Oke, coba cek lagi deh, bener nih ya emailnya <get star>? {topic=jawabanemail}
 
     + [*] (@buatapa) [*] {weight=10}
     - Buat kasih info kalo ada promo dong! Nggak bakal spamming kok ;)<br>
@@ -91,7 +91,7 @@
   > topic jawabanemail
     + [*] (@betul) [*] {weight=10}
     - Oke deh, udah gue catet! Janji gak spamming kok :) <br>
-    ^ Nah terus kalo nomor HP lo berapa <name>? <br>
+    ^ Nah terus kalo nomor HP lo berapa <get name>? <br>
     ^ Buat info-info nih kalo ada promo eksklusif buat temen-temen gue! {topic=nomor_hp}
 
     + [*] (@salah) [*]
@@ -110,7 +110,7 @@
     ^ Jadi berapa nomer HP lo?
 
     + [*] (#) [*]
-    - Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <star2>? {topic=jawaban_nomor}
+    - Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <get star2>? {topic=jawaban_nomor}
 
     + [*] (@nggak) [*]
     - Yah, padahal lo bisa dapet info promo-promo seru yang cuma bisa didapetin temen spesial Bang Joni loh. <br>
@@ -130,7 +130,7 @@
     - gr01 Oke deh <name>. Tunggu tanggal mainnya ya! <br>
     ^ Gue bakal kasih info-info promo khusus buat lo! Temen spesial Bang Joni! ;) <br>
     ^ Eh mau kepo deh :) <br>
-    ^ Lo ulang tahunnya kapan sih <name>? {topic=tanggal_lahir}
+    ^ Lo ulang tahunnya kapan sih <get name>? {topic=tanggal_lahir}
 
     + [*] (@salah) [*]
     - Terus jadinya nomor HP lo berapa dong? {topic=nomor_hp}
@@ -149,7 +149,7 @@
     + [*] (@date@months@years|@date @months @years|@date*@months*@years|@date@months@years) [*]
     - Sip! Nanti kalo lagi ada duit, gue kasih kado deh ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
-    ^ Emang sekarang lo tinggal di kota mana sih <name>? {topic=tinggal_kota}
+    ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
 
     + [*] (@date@months|@date @months) [*]
     - Tahunnya? {topic=tanggal_lahir_kurang_tahun}
@@ -171,7 +171,7 @@
     + [*] (@years) [*]
     - Sip! Nanti kalo lagi ada duit, gue kasih kado deh pas lo ultah ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
-    ^ Emang sekarang lo tinggal di kota mana sih <name>? {topic=tinggal_kota}
+    ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
 
     + *
     - Kenapa ngomongnya gitu? <br>
