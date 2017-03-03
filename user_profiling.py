@@ -50,7 +50,7 @@ class UserProfileService():
         if row :
             data = ''
             for key, value in params.iteritems():
-                data += str(key) + " = '" + str(value) + "', "
+                data += str(key) + " = '" + str(value) + "',"
 
             data = data[:len(data) - 1]
             sql = "UPDATE user_profile SET " + data + " WHERE msisdn='"+msisdn+"'"

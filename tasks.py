@@ -968,6 +968,7 @@ def do_profiling(msisdn, first_name, ask, answer) :
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, email=ask)
     elif answer[:5] == "prf05": #kota
+        linebot.send_carousel(msisdn, 'greetings')
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, city=ask)
     elif answer[:5] == "prf06": #phone
@@ -1061,7 +1062,7 @@ def onMessage(msisdn, ask, first_name):
                 temp_answer = temp_answer.replace("ka01 ","")
                 temp_answer = temp_answer.replace("tr01 ","")
                 # ---------- DWP MODULE ADD EXCLUSION ----------
-                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] == "prf":
+                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf":
                     sendMessageT2(msisdn, temp_answer, 0)
                 if answer[:4] == "xt08":
                     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/payment_tiketux1', answer.replace('xt08 ',''), 'tiketux')
