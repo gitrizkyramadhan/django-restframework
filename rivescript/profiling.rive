@@ -66,8 +66,8 @@
 < topic
 
 > topic mintaemail
-    + [@emailku] (*) [*] {weight=10}
-    - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <star>? <set email=<star>> {topic=jawabanemail}
+    + [@emailku] (*@mail*) [*] {weight=10}
+    - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <user_email>? <set email=<star>> {topic=jawabanemail}
 
     + [*] (@buatapa) [*] {weight=10}
     - Buat kasih info kalo ada promo dong! Nggak bakal spamming kok ;)<br>

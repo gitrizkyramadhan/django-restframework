@@ -525,7 +525,7 @@ def record_conversation(msisdn, ask, end_conversation):
             answers = json.loads(lineNlp.redisconn.get("answers/%s" % (msisdn)))
         else:
             answers = []
-        mongolog.log_conversation(msisdn, ask, answers, 'service', 'topic', incomingMsisdn)
+        mongolog.log_conversation(msisdn, ask, answers, 'service', incomingMsisdn[29], incomingMsisdn)
         lineNlp.redisconn.delete("answers/%s" % (msisdn))
     else :
         incomingMsisdn
@@ -947,7 +947,7 @@ def do_mgm(msisdn, ask, first_name, answer, incomingMsisdn):
 # ---------- MGM MODULE END ----------
 
 
-def do_profiling(msisdn, first_name, ask, answer) :
+def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     # answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
     answer = answer.strip()
     if answer[:5] == "prf00":
@@ -965,8 +965,9 @@ def do_profiling(msisdn, first_name, ask, answer) :
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, gender=1)
     elif answer[:5] == "prf04": #email
+        answer = answer.replace('<user_email>', incomingMsisdn[14])
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, email=ask)
+        userpservice.update_profile(msisdn, email=incomingMsisdn[14])
     elif answer[:5] == "prf05": #kota
         linebot.send_carousel(msisdn, 'greetings')
         sendMessageT2(msisdn, answer[5:], 0)
@@ -1027,7 +1028,7 @@ def onMessage(msisdn, ask, first_name):
             status = 0  # profiling in progress
             lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
             answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
-            do_profiling(msisdn, first_name, ask, answer)
+            do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
             return
 
         print "_____________________>", answer, incomingMsisdn
@@ -1088,7 +1089,7 @@ def onMessage(msisdn, ask, first_name):
             if answer[:3] == "mgm":
                 do_mgm(msisdn, ask, first_name, answer, incomingMsisdn)
             if answer[:3] == "prf":
-                do_profiling(msisdn, first_name, ask, answer)
+                do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
         else:
             if incomingMsisdn[1] != "TRANSLATOR_MODE":
                 print "hola hola hola hola"
