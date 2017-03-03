@@ -978,6 +978,8 @@ def do_profiling(msisdn, first_name, ask, answer) :
     elif answer[:6] == "prf07a": #g suka travelling
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, travelling=1)
+    else:
+        sendMessageT2(msisdn, answer, 0)
 
 
 
