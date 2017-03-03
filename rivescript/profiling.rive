@@ -1,0 +1,206 @@
+> topic nama
+    + [@namaku] (*) [*]
+    - Oke, jadi nama lo <star2> ya? {topic=jawaban_nama} <set star2=name>
+  < topic
+
+  > topic jawaban_nama
+    + [*] (@betul) [*]
+    - Oke deh <name>! <br>
+    ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :){topic=cewekataucowok}
+
+    + [*] (@salah) [*]
+    - Loh? Terus jadinya nama lo siapa dong? -__- {topic=nama}
+
+    + [*] (@nggak) [*]
+    - Yah kok gitu? <br>
+    ^ Kan gue cuma mau tau nama lo, biar akrab gitu :D <br>
+    ^ Jadi namanya siapa nih? {topic=nama}
+
+    + *
+    - Kenapa gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Jadi namanya siapa nih? ;) {topic=nama}
+
+    + [*] (@hahaha|@wk) [*] {weight=10}
+    - Ih kok malah ketawa? Serius nih, nama lo siapa? Kan gue mau kenal. {topic=nama}
+  < topic
+
+  > topic cewekataucowok
+    + [*] (@cowok) [*]
+    - Oke deh Bro! <br>
+    ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
+  
+    + [*] (@cewek) [*]
+    - Oke deh Sis!
+    ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
+
+    + *
+    - Kenapa gitu?
+    ^ Gue kan cuma pengen tau lo cewek apa cowok?
+    - Kok gitu?
+    ^ Gue kan cuma pengen tau lo cewek apa cowok?
+  < topic
+
+  > topic travellingsukanggak
+    + [*] (@suka) [*]
+    - Wih sama dong! Gue juga suka banget travelling! <br>
+    ^ Seru banget ya! Apa lagi kalo rame-rame bareng temen. <br>
+    ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
+    ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
+    - Tos! Sama banget! gue juga suka travelling. <br>
+    ^ Di Indonesia tuh ada 17.508 pulau! Banyak banget ya tempat yang bisa didatengin. <br>
+    ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
+    ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
+
+    + [*] (@nggak) [*]
+    - Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
+    ^ Mending uangnya ditabung deh buat masa depan :D
+    ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
+    ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
+
+    + *
+    - Kenapa gitu?
+    ^ Gue kan cuma pengen tau lo suka travelling apa nggak?
+    - Kok gitu?
+    ^ Gue kan cuma pengen tau lo suka travelling apa nggak?
+  < topic
+
+  > topic mintaemail
+    + [@emailku] (*@mail*) [*] {weight=10}
+    - Oke, coba cek lagi deh, bener nih ya emailnya <star>? {topic=jawabanemail}
+
+    + [*] (@buatapa) [*] {weight=10}
+    - Buat kasih info kalo ada promo dong! Nggak bakal spamming kok ;)<br>
+    ^ Jadi apa nih alamat email lo? <br>
+    ^ Langsung tulis aja yaa..
+
+    + [*] (@nggak) [*] {weight=10}
+    - Yah kok gitu? <br>
+    ^ Janji kok gak bakal spamming :) <br>
+    ^ Jadi apa nih alamat email lo?
+
+    + *
+    - Kenapa gitu?
+    ^ Gue kan cuma minta email lo buat kasih info promo-promo seru. <br>
+    ^ Jadi apa nih alamat email lo?
+    - Kok gitu?
+    ^ Gue kan cuma minta email lo buat kasih info promo-promo seru. <br>
+    ^ Jadi apa nih alamat email lo?
+  < topic
+
+  > topic jawabanemail
+    + [*] (@betul) [*] {weight=10}
+    - Oke deh, udah gue catet! Janji gak spamming kok :) <br>
+    ^ Nah terus kalo nomor HP lo berapa <name>? <br>
+    ^ Buat info-info nih kalo ada promo eksklusif buat temen-temen gue! {topic=nomor_hp}
+
+    + [*] (@salah) [*]
+    - Lah? Terus jadinya apa dong alamat email lo? -__- {topic=mintaemail}
+
+    + *
+    - Kenapa gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Jadi apa nih alamat emailnya? ;) {topic=mintaemail}
+  < topic
+
+  > topic nomor_hp
+    + [*] (@buatapa) [*]
+    - Buat dicatet aja sih kalo gue ada promo eksklusif kan gue bisa langsung hubungin lo. <br>
+    ^ Atau kali aja gue lagi banyak duit mau isiin lo pulsa ;)
+    ^ Jadi berapa nomer HP lo?
+
+    + [*] (#) [*]
+    - Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <star2>? {topic=jawaban_nomor}
+
+    + [*] (@nggak) [*]
+    - Yah, padahal lo bisa dapet info promo-promo seru yang cuma bisa didapetin temen spesial Bang Joni loh. <br>
+    ^ Jadi nomer HPnya berapa? :)
+
+    + *
+    - Kenapa ngomongnya gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Jadi nomer HPnya berapa? ;)
+
+    + [*] (@hahaha|@wk) [*] {weight=10}
+    - Ih kok malah ketawa? Serius nih gue, nomer HP lo berapa?
+  < topic
+
+  > topic jawaban_nomor
+    + [*] (@betul) [*]
+    - gr01 Oke deh <name>. Tunggu tanggal mainnya ya! <br>
+    ^ Gue bakal kasih info-info promo khusus buat lo! Temen spesial Bang Joni! ;) <br>
+    ^ Eh mau kepo deh :) <br>
+    ^ Lo ulang tahunnya kapan sih <name>? {topic=tanggal_lahir}
+
+    + [*] (@salah) [*]
+    - Terus jadinya nomor HP lo berapa dong? {topic=nomor_hp}
+  < topic
+
+  > topic tanggal_lahir
+    + [*] (@buatapa) [*]
+    - Ya nggak papa sih, namanya juga temen kan wajar pengen tau tanggal ultah temennya. <br>
+    ^ Biar bisa ngucapin gitu loh pas ultah :) <br>
+    ^ Jadi lo lahirnya tanggal berapa nih?
+
+    + [*] (@date) [*]
+    - Ih kok gitu doang sih jawabnya? :( <br>
+    ^ Yang lengkap dong jawabnya, tanggal berapa, bulan apa, tahun berapa, gitu loh.
+
+    + [*] (@date@months@years|@date @months @years|@date*@months*@years|@date@months@years) [*]
+    - Sip! Nanti kalo lagi ada duit, gue kasih kado deh ;p <br>
+    ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
+    ^ Emang sekarang lo tinggal di kota mana sih <name>? {topic=tinggal_kota}
+
+    + [*] (@date@months|@date @months) [*]
+    - Tahunnya? {topic=tanggal_lahir_kurang_tahun}
+
+    + *
+    - Kenapa ngomongnya gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Jadi lo ulang tahunnya kapan nih? :)
+
+    + [*] (@hahaha|@wk) [*] {weight=10}
+    - Ih kok malah ketawa? Serius nih, tanggal lahir lo kapan? Kan gue mau ngucapin selamat pas lo ultah ;)
+
+    + [*] (@nggak) [*]
+    - Jiee...takut ketauan umurnya ya? Tenang aja, rahasia lo aman kok sama gue! <br>
+    ^ Jadi lo ulang tahunnya kapan nih? :)
+  < topic
+
+  > topic tanggal_lahir_kurang_tahun
+    + [*] (@years) [*]
+    - Sip! Nanti kalo lagi ada duit, gue kasih kado deh pas lo ultah ;p <br>
+    ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
+    ^ Emang sekarang lo tinggal di kota mana sih <name>? {topic=tinggal_kota}
+
+    + *
+    - Kenapa ngomongnya gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Jadi lo lahirnya tahun berapa? :)
+
+    + [*] (@hahaha|@wk) [*] {weight=10}
+    - Ih kok malah ketawa? Serius nih, tahun lahir lo kapan?
+
+    + [*] (@buatapa) [*]
+    - Ya nggak papa sih, namanya juga temen kan wajar pengen tau tentang temennya. <br>
+    ^ Jadi lo lahirnya tahun berapa nih?
+  < topic
+
+  > topic tinggal_kota
+    + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]
+    - Wih asik! Gue punya temen baru dari <star2> :D <br>
+    ^ gr01 Yowes deh, sekarang apa yang bisa gue bantu nih? {topic=random}
+
+    + [*] (@nggak) [*]
+    - Yah kok gitu? <br>
+    ^ Masa temen gak tau temennya tinggal di mana :( <br>
+    ^ Emang lo tinggalnya sekarang di kota mana sih?
+
+    + *
+    - Kenapa ngomongnya gitu? <br>
+    ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
+    ^ Emang lo tinggalnya sekarang di kota mana sih?
+
+    + [*] (@hahaha|@wk) [*] {weight=10}
+    - Ih kok malah ketawa? Serius nih gue, emang lo tinggalnya sekarang di kota mana sih?
+  <topic
