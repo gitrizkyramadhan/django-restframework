@@ -981,14 +981,8 @@ def do_profiling(msisdn, first_name, ask, answer) :
 
 
 def onMessage(msisdn, ask, first_name):
-    # check profiling user
-    if not lineNlp.redisconn.exists("profiling/%s" % (msisdn)):
-        status = 0 #profiling in progress
-        lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
-        answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
-        do_profiling(msisdn, first_name, ask, answer)
-        return
-
+    # if ask == 'userexittorandom' :
+    #     return
 
     if ask[:5] != "[LOC]":
         #ask = ask.translate(None, ",!.?$%").lower()
@@ -1020,6 +1014,15 @@ def onMessage(msisdn, ask, first_name):
 
         answer = lineNlp.doNlp(ask, msisdn, first_name)
         incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
+
+        # check profiling user
+        if not lineNlp.redisconn.exists("profiling/%s" % (msisdn)):
+            status = 0  # profiling in progress
+            lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
+            answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
+            do_profiling(msisdn, first_name, ask, answer)
+            return
+
         print "_____________________>", answer, incomingMsisdn
         if (answer[:2] == "ee" and (incomingMsisdn[11] == "xt01" or incomingMsisdn[11] == "xt02")):
             ask = lineNlp.spell_correctness3(ask)
