@@ -188,7 +188,7 @@
 
 > topic tinggal_kota
     + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]
-    - prf05 Wih asik! Gue punya temen baru dari <star> :D
+    - prf05 Wih asik! Gue punya temen baru dari <star> :D<br>
     ^ Yowes deh, sekarang apa yang bisa gue bantu nih?  <set city=<star>>{topic=random}
 
     + [*] (@nggak) [*]
