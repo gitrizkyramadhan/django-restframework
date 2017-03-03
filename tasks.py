@@ -949,6 +949,7 @@ def do_mgm(msisdn, ask, first_name, answer, incomingMsisdn):
 
 def do_profiling(msisdn, first_name, ask, answer) :
     # answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
+    answer = answer.strip()
     if answer[:5] == "prf00":
         sendMessageT2(msisdn, answer[5:], 0)
     elif answer[:5] == "prf01": #nama
@@ -1017,6 +1018,7 @@ def onMessage(msisdn, ask, first_name):
     if ask[:5] != "[LOC]":
 
         answer = lineNlp.doNlp(ask, msisdn, first_name)
+        answer = answer.strip()
         incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
 
         # check profiling user
