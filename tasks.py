@@ -68,6 +68,7 @@ from mgm import MGM
 from bjpay_service import BJPayService
 from weather import WeatherService
 from log_mongo import MongoLog
+from user_profiling import UserProfileService
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -135,6 +136,7 @@ mgm = MGM()
 bjp_service = BJPayService()
 weather_service = WeatherService()
 mongolog = MongoLog()
+userpservice = UserProfileService()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -197,7 +199,8 @@ def save_last10chat(dtm, msisdn, mesg, actor):
         lineNlp.redisconn.lpop(id)
     lineNlp.redisconn.rpush(id, chat)
 
-    record_answers(msisdn, str(mesg))
+    if actor == 'BJ':
+        record_answers(msisdn, str(mesg))
 
 def request(sql):
     try:
@@ -943,7 +946,48 @@ def do_mgm(msisdn, ask, first_name, answer, incomingMsisdn):
         sendMessageT2(msisdn, answer[5:], 0)
 # ---------- MGM MODULE END ----------
 
+
+def do_profiling(msisdn, first_name, ask, answer) :
+    # answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
+    if answer[:5] == "prf00":
+        sendMessageT2(msisdn, answer[5:], 0)
+    elif answer[:5] == "prf01": #nama
+        sendMessageT2(msisdn, answer[5:], 0)
+        userpservice.update_profile(msisdn, full_name=ask)
+    elif answer[:5] == "prf02": #dob
+        sendMessageT2(msisdn, answer[5:], 0)
+        userpservice.update_profile(msisdn, dob=ask)
+    elif answer[:6] == "prf03a": #gender cewek
+        sendMessageT2(msisdn, answer[6:], 0)
+        userpservice.update_profile(msisdn, gender=0)
+    elif answer[:6] == "prf03b": #gender cowok
+        sendMessageT2(msisdn, answer[6:], 0)
+        userpservice.update_profile(msisdn, gender=1)
+    elif answer[:5] == "prf04": #email
+        sendMessageT2(msisdn, answer[5:], 0)
+        userpservice.update_profile(msisdn, email=ask)
+    elif answer[:5] == "prf05": #kota
+        sendMessageT2(msisdn, answer[5:], 0)
+        userpservice.update_profile(msisdn, city=ask)
+    elif answer[:5] == "prf06": #phone
+        sendMessageT2(msisdn, answer[5:], 0)
+        userpservice.update_profile(msisdn, full_name=ask)
+    elif answer[:6] == "prf07a": #suka travelling
+        sendMessageT2(msisdn, answer[6:], 0)
+        userpservice.update_profile(msisdn, travelling=0)
+    elif answer[:6] == "prf07a": #g suka travelling
+        sendMessageT2(msisdn, answer[6:], 0)
+        userpservice.update_profile(msisdn, travelling=1)
+    else:
+        sendMessageT2(msisdn, answer, 0)
+
+
+
+
 def onMessage(msisdn, ask, first_name):
+    # if ask == 'userexittorandom' :
+    #     return
+
     if ask[:5] != "[LOC]":
         #ask = ask.translate(None, ",!.?$%").lower()
         #ask = ask.translate(None, "!?$%").lower()
@@ -974,6 +1018,15 @@ def onMessage(msisdn, ask, first_name):
 
         answer = lineNlp.doNlp(ask, msisdn, first_name)
         incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
+
+        # check profiling user
+        if not lineNlp.redisconn.exists("profiling/%s" % (msisdn)):
+            status = 0  # profiling in progress
+            lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
+            answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
+            do_profiling(msisdn, first_name, ask, answer)
+            return
+
         print "_____________________>", answer, incomingMsisdn
         if (answer[:2] == "ee" and (incomingMsisdn[11] == "xt01" or incomingMsisdn[11] == "xt02")):
             ask = lineNlp.spell_correctness3(ask)
@@ -994,7 +1047,7 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[11] == ""
             print "-->", answer
 
-        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co") and incomingMsisdn[1] != "TRANSLATOR_MODE":
+        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co" or answer[:3] == "prf") and incomingMsisdn[1] != "TRANSLATOR_MODE":
             if answer[:4] != "xt02":
                 temp_answer = answer[4:]
                 temp_answer = temp_answer.replace("xt01 ","")
@@ -1006,7 +1059,7 @@ def onMessage(msisdn, ask, first_name):
                 temp_answer = temp_answer.replace("ka01 ","")
                 temp_answer = temp_answer.replace("tr01 ","")
                 # ---------- DWP MODULE ADD EXCLUSION ----------
-                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co":
+                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] == "prf":
                     sendMessageT2(msisdn, temp_answer, 0)
                 if answer[:4] == "xt08":
                     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/payment_tiketux1', answer.replace('xt08 ',''), 'tiketux')
@@ -1031,6 +1084,8 @@ def onMessage(msisdn, ask, first_name):
                 do_skyscanner_event(msisdn, ask, first_name, answer, incomingMsisdn)
             if answer[:3] == "mgm":
                 do_mgm(msisdn, ask, first_name, answer, incomingMsisdn)
+            if answer[:3] == "prf":
+                do_profiling(msisdn, first_name, ask, answer)
         else:
             if incomingMsisdn[1] != "TRANSLATOR_MODE":
                 print "hola hola hola hola"

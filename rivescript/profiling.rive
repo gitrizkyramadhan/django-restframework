@@ -1,6 +1,6 @@
 > topic nama
     + [@namaku] (*) [*]
-    - Oke, jadi nama lo <get star2> ya? {topic=jawaban_nama} <set star2=name>
+    - prf01 Oke, jadi nama lo <get star2> ya? {topic=jawaban_nama} <set star2=name>
   < topic
 
   > topic jawaban_nama
@@ -27,11 +27,11 @@
 
   > topic cewekataucowok
     + [*] (@cowok) [*]
-    - Oke deh Bro! <br>
+    - prf03b Oke deh Bro! <br>
     ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
   
     + [*] (@cewek) [*]
-    - Oke deh Sis!
+    - prf03a Oke deh Sis!
     ^ Btw, lo suka travelling nggak? {topic=travellingsukanggak}
 
     + *
@@ -43,17 +43,17 @@
 
   > topic travellingsukanggak
     + [*] (@suka) [*]
-    - Wih sama dong! Gue juga suka banget travelling! <br>
+    - prf07a Wih sama dong! Gue juga suka banget travelling! <br>
     ^ Seru banget ya! Apa lagi kalo rame-rame bareng temen. <br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
-    - Tos! Sama banget! gue juga suka travelling. <br>
+    - prf07a Tos! Sama banget! gue juga suka travelling. <br>
     ^ Di Indonesia tuh ada 17.508 pulau! Banyak banget ya tempat yang bisa didatengin. <br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
 
     + [*] (@nggak) [*]
-    - Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
+    - prf07a Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
     ^ Mending uangnya ditabung deh buat masa depan :D
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
@@ -67,7 +67,7 @@
 
   > topic mintaemail
     + [@emailku] (*@mail*) [*] {weight=10}
-    - Oke, coba cek lagi deh, bener nih ya emailnya <get star>? {topic=jawabanemail}
+    - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <get star>? {topic=jawabanemail}
 
     + [*] (@buatapa) [*] {weight=10}
     - Buat kasih info kalo ada promo dong! Nggak bakal spamming kok ;)<br>
@@ -110,7 +110,7 @@
     ^ Jadi berapa nomer HP lo?
 
     + [*] (#) [*]
-    - Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <get star2>? {topic=jawaban_nomor}
+    - prf06 Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <get star2>? {topic=jawaban_nomor}
 
     + [*] (@nggak) [*]
     - Yah, padahal lo bisa dapet info promo-promo seru yang cuma bisa didapetin temen spesial Bang Joni loh. <br>
@@ -147,12 +147,12 @@
     ^ Yang lengkap dong jawabnya, tanggal berapa, bulan apa, tahun berapa, gitu loh.
 
     + [*] (@date@months@years|@date @months @years|@date*@months*@years|@date@months@years) [*]
-    - Sip! Nanti kalo lagi ada duit, gue kasih kado deh ;p <br>
+    - prf02 Sip! Nanti kalo lagi ada duit, gue kasih kado deh ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
     ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
 
     + [*] (@date@months|@date @months) [*]
-    - Tahunnya? {topic=tanggal_lahir_kurang_tahun}
+    - prf02 Tahunnya? {topic=tanggal_lahir_kurang_tahun}
 
     + *
     - Kenapa ngomongnya gitu? <br>
@@ -169,7 +169,7 @@
 
   > topic tanggal_lahir_kurang_tahun
     + [*] (@years) [*]
-    - Sip! Nanti kalo lagi ada duit, gue kasih kado deh pas lo ultah ;p <br>
+    - prf02 Sip! Nanti kalo lagi ada duit, gue kasih kado deh pas lo ultah ;p <br>
     ^ Ngomong-ngomong dari tadi udah kenalan tapi gue belom tau deh lo tinggal di mana. <br>
     ^ Emang sekarang lo tinggal di kota mana sih <get name>? {topic=tinggal_kota}
 
@@ -188,7 +188,7 @@
 
   > topic tinggal_kota
     + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]
-    - Wih asik! Gue punya temen baru dari <star2> :D <br>
+    - prf05 Wih asik! Gue punya temen baru dari <star2> :D <br>
     ^ gr01 Yowes deh, sekarang apa yang bisa gue bantu nih? {topic=random}
 
     + [*] (@nggak) [*]
