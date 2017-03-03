@@ -199,7 +199,8 @@ def save_last10chat(dtm, msisdn, mesg, actor):
         lineNlp.redisconn.lpop(id)
     lineNlp.redisconn.rpush(id, chat)
 
-    record_answers(msisdn, str(mesg))
+    if actor == 'BJ':
+        record_answers(msisdn, str(mesg))
 
 def request(sql):
     try:
@@ -947,7 +948,7 @@ def do_mgm(msisdn, ask, first_name, answer, incomingMsisdn):
 
 
 def do_profiling(msisdn, first_name, ask, answer) :
-    answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
+    # answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
     if answer[:5] == "prf00":
         sendMessageT2(msisdn, answer[5:], 0)
     elif answer[:5] == "prf01": #nama
@@ -977,6 +978,7 @@ def do_profiling(msisdn, first_name, ask, answer) :
     elif answer[:6] == "prf07a": #g suka travelling
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, travelling=1)
+
 
 
 
