@@ -889,6 +889,7 @@ class Nlp:
         print "ask :: "+mesg
         print "topic :: "+self.get_uservar(msisdn, "topic")
         print "answer :: "+answer
+        incomingMsisdn[29] = self.get_uservar(msisdn, "topic")
 
         # ---------- DWP MODULE START ----------
         if answer[:3] == "dwp":
@@ -1061,6 +1062,10 @@ class Nlp:
                 incomingMsisdn[14] = self.get_uservar(msisdn, "promo_lokasi")
                 incomingMsisdn[15] = self.get_uservar(msisdn, "promo_merchant")
         # ---------- ECOMM MODULE END ----------
+
+        if answer[:3] == "prf":
+            if answer[:5] == "prf04":
+                incomingMsisdn[14] = mesg
 
         print "NLP:", incomingMsisdn
         #print "------->>", bookingMsisdn

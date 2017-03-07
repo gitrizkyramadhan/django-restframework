@@ -54,6 +54,8 @@ class Bot(object):
         user_ids = user_ids.split(",")
         messages = text.split("<br>")
         for msg in messages:
+            if not msg :
+                continue
             self.__send_multicast(user_ids, TextSendMessage(text=msg.strip()))
 
     def send_image_message(self, user_ids, img_url, **params):
@@ -222,5 +224,10 @@ class Bot(object):
 
     def send_composed_confirm(self, user_ids, alt_text, text, option1, option2):
         payload = template_confirm.composeConfirm(alt_text, text, option1, option2)
+        user_ids = user_ids.split(",")
+        self.__send_multicast(user_ids, payload)
+
+    def send_composed_img_buttons(self, user_ids, alt_text, thumbnail_url, title, description, actions):
+        payload = template_img_buttons.compose_img_buttons(alt_text, thumbnail_url, title, description, actions)
         user_ids = user_ids.split(",")
         self.__send_multicast(user_ids, payload)

@@ -50,10 +50,11 @@ class UserProfileService():
         if row :
             data = ''
             for key, value in params.iteritems():
-                data += str(key) + " = '" + str(value) + "', "
+                data += str(key) + " = '" + str(value) + "',"
 
             data = data[:len(data) - 1]
             sql = "UPDATE user_profile SET " + data + " WHERE msisdn='"+msisdn+"'"
+            print sql
             self._insert(sql)
         else :
             sql = "INSERT INTO user_profile (msisdn) VALUES ('" + msisdn + "')"

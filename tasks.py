@@ -525,7 +525,7 @@ def record_conversation(msisdn, ask, end_conversation):
             answers = json.loads(lineNlp.redisconn.get("answers/%s" % (msisdn)))
         else:
             answers = []
-        mongolog.log_conversation(msisdn, ask, answers, 'service', 'topic', incomingMsisdn)
+        mongolog.log_conversation(msisdn, ask, answers, 'service', incomingMsisdn[29], incomingMsisdn)
         lineNlp.redisconn.delete("answers/%s" % (msisdn))
     else :
         incomingMsisdn
@@ -947,13 +947,14 @@ def do_mgm(msisdn, ask, first_name, answer, incomingMsisdn):
 # ---------- MGM MODULE END ----------
 
 
-def do_profiling(msisdn, first_name, ask, answer) :
+def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     # answer = lineNlp.doNlp("userexittorandom", msisdn, first_name)
+    answer = answer.strip()
     if answer[:5] == "prf00":
         sendMessageT2(msisdn, answer[5:], 0)
     elif answer[:5] == "prf01": #nama
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, full_name=ask)
+        userpservice.update_profile(msisdn, full_name=ask, display_name=first_name)
     elif answer[:5] == "prf02": #dob
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, dob=ask)
@@ -964,14 +965,16 @@ def do_profiling(msisdn, first_name, ask, answer) :
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, gender=1)
     elif answer[:5] == "prf04": #email
+        answer = answer.replace('<user_email>', incomingMsisdn[14])
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, email=ask)
+        userpservice.update_profile(msisdn, email=incomingMsisdn[14])
     elif answer[:5] == "prf05": #kota
+        linebot.send_carousel(msisdn, 'greetings')
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, city=ask)
     elif answer[:5] == "prf06": #phone
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, full_name=ask)
+        userpservice.update_profile(msisdn, phone=ask)
     elif answer[:6] == "prf07a": #suka travelling
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, travelling=0)
@@ -1017,6 +1020,7 @@ def onMessage(msisdn, ask, first_name):
     if ask[:5] != "[LOC]":
 
         answer = lineNlp.doNlp(ask, msisdn, first_name)
+        answer = answer.strip()
         incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
 
         # check profiling user
@@ -1024,7 +1028,7 @@ def onMessage(msisdn, ask, first_name):
             status = 0  # profiling in progress
             lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
             answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
-            do_profiling(msisdn, first_name, ask, answer)
+            do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
             return
 
         print "_____________________>", answer, incomingMsisdn
@@ -1059,7 +1063,7 @@ def onMessage(msisdn, ask, first_name):
                 temp_answer = temp_answer.replace("ka01 ","")
                 temp_answer = temp_answer.replace("tr01 ","")
                 # ---------- DWP MODULE ADD EXCLUSION ----------
-                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] == "prf":
+                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf":
                     sendMessageT2(msisdn, temp_answer, 0)
                 if answer[:4] == "xt08":
                     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/payment_tiketux1', answer.replace('xt08 ',''), 'tiketux')
@@ -1085,7 +1089,7 @@ def onMessage(msisdn, ask, first_name):
             if answer[:3] == "mgm":
                 do_mgm(msisdn, ask, first_name, answer, incomingMsisdn)
             if answer[:3] == "prf":
-                do_profiling(msisdn, first_name, ask, answer)
+                do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
         else:
             if incomingMsisdn[1] != "TRANSLATOR_MODE":
                 print "hola hola hola hola"
@@ -1769,7 +1773,12 @@ def onMessage(msisdn, ask, first_name):
                         s = s + item + " "
                     x = x + 1
                 sinfo_tol = "Dari Jasa marga, berikut info tol %s, jam %s WIB:" % (incomingMsisdn[2], jam_update)
-                sendMessageT2(msisdn.decode('utf-8'), sinfo_tol + "\n" + s, 0)
+                # sendMessageT2(msisdn.decode('utf-8'), sinfo_tol + "\n" + s, 0)
+                c_description = s
+                if (len(c_description) > 60):
+                    c_description = c_description[:57] + '...'
+
+                linebot.send_composed_img_buttons(msisdn, "Info Traffic", 'https://bangjoni.com/v2/carousel/images/traffic1.png', 'Info Lalu Lintas', c_description, [{'type' : 'message', 'label' : 'Say Thanks', 'text' : 'thanks Bang'}])
 
                 info_tol_media = ""
                 sqlstart = respAPI.find("<jasamarga_media>")
@@ -1965,13 +1974,13 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
             # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2035,13 +2044,13 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
             # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2595,17 +2604,17 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
                 #answer = "Berikut 9 penerbangan termurah sesuai kriteriamu.\nJika ada yang cocok sebut saja no pilihannya untuk Bang Joni booking.\nJika tidak ada yang cocok, Bang Joni bisa carikan jadwal lainnya."
                 ask = "fl01aa"
                 answer = lineNlp.doNlp(ask, msisdn, first_name)
                 #sendMessageT2(msisdn, answer, 0)
 
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
