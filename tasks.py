@@ -1969,13 +1969,13 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
             # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
