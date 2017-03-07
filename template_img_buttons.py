@@ -47,14 +47,20 @@ imgbuttons = [{
     )
 }]
 
-def compose_link_message(alt_text, thumbnail_url, title, description, label, uri):
+def compose_img_buttons(alt_text, thumbnail_url, title, description, actions):
+    img_actions = []
+    for action in actions :
+        if action['type'] == 'postback':
+            img_actions.append(PostbackTemplateAction(label=action['label'],text=action['text'], data=action['data']))
+        elif action['type'] == 'message':
+            img_actions.append(MessageTemplateAction(label=action['label'], text=action['text']))
+        elif action['type'] == 'uri':
+            img_actions.append(MessageTemplateAction(label=action['label'], uri=action['uri']))
     return TemplateSendMessage(
         alt_text=alt_text,
         template=ButtonsTemplate(
             thumbnail_image_url=thumbnail_url,
             title=title,
             text=description,
-            actions=[
-                URITemplateAction(label=label, uri=uri)
-            ]
+            actions=img_actions
         ))

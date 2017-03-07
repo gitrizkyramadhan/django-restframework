@@ -1773,7 +1773,12 @@ def onMessage(msisdn, ask, first_name):
                         s = s + item + " "
                     x = x + 1
                 sinfo_tol = "Dari Jasa marga, berikut info tol %s, jam %s WIB:" % (incomingMsisdn[2], jam_update)
-                sendMessageT2(msisdn.decode('utf-8'), sinfo_tol + "\n" + s, 0)
+                # sendMessageT2(msisdn.decode('utf-8'), sinfo_tol + "\n" + s, 0)
+                c_description = s
+                if (len(c_description) > 60):
+                    c_description = c_description[:57] + '...'
+
+                linebot.send_composed_img_buttons(msisdn, "Info Traffic", 'https://bangjoni.com/v2/carousel/images/traffic1.png', 'Info Lalu Lintas', c_description, [{'type' : 'message', 'label' : 'Say Thanks', 'text' : 'thanks Bang'}])
 
                 info_tol_media = ""
                 sqlstart = respAPI.find("<jasamarga_media>")
@@ -2039,13 +2044,13 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
             # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2599,17 +2604,17 @@ def onMessage(msisdn, ask, first_name):
             }
             try:
                 # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/var/www/html/line_images/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
                 # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
                 #answer = "Berikut 9 penerbangan termurah sesuai kriteriamu.\nJika ada yang cocok sebut saja no pilihannya untuk Bang Joni booking.\nJika tidak ada yang cocok, Bang Joni bisa carikan jadwal lainnya."
                 ask = "fl01aa"
                 answer = lineNlp.doNlp(ask, msisdn, first_name)
                 #sendMessageT2(msisdn, answer, 0)
 
-                outfile = '/var/www/html/line_images/%s_cari.pdf' % (msisdn)
+                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
