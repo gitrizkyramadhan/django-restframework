@@ -228,6 +228,6 @@ class Bot(object):
         self.__send_multicast(user_ids, payload)
 
     def send_composed_img_buttons(self, user_ids, alt_text, thumbnail_url, title, description, actions):
-        payload = template_img_buttons.compose_link_message(alt_text, thumbnail_url, title, description, actions)
+        payload = template_img_buttons.compose_img_buttons(alt_text, thumbnail_url, title, description, actions)
         user_ids = user_ids.split(",")
         self.__send_multicast(user_ids, payload)
