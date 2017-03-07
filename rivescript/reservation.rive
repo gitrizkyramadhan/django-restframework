@@ -71,10 +71,12 @@
 
 + [*] (@cari) [*] (@pesawat) [*] {weight=20}
 - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 
 + [*] (@pesawat) [*] {weight=10}
 - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 
 + [*] (@xtrans) [*] {weight=11}

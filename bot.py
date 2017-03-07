@@ -54,6 +54,8 @@ class Bot(object):
         user_ids = user_ids.split(",")
         messages = text.split("<br>")
         for msg in messages:
+            if not msg :
+                continue
             self.__send_multicast(user_ids, TextSendMessage(text=msg.strip()))
 
     def send_image_message(self, user_ids, img_url, **params):
