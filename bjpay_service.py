@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import MySQLdb
 import logging
 from nlp_rivescript import Nlp
+from log_mongo import MongoLog
 
 
 class BJPayService() :
@@ -21,6 +22,7 @@ class BJPayService() :
         self._setup_logger('F_BJPTRX', '/home/bambangs/LOGBJ/F_BJPTRX.log')
         self.F_BJPAY = logging.getLogger('F_BJPAY')
         self.F_BJPTRX = logging.getLogger('F_BJPTRX')
+        self.mongo_log = MongoLog()
 
         self._min_balance = 0
 
@@ -36,7 +38,7 @@ class BJPayService() :
 
     def _write_log(self, logger, message):
         print message
-        logger.info(message)
+        # logger.info(message)
 
     def _request(self, sql):
         try:
@@ -97,6 +99,7 @@ class BJPayService() :
             sql = "INSERT INTO bjpay_account (va_no, msisdn, phone_number, amount, register_date, update_time, status) VALUES ('"+va_number+"', '"+msisdn+"', '"+phone+"', '0', now(), now(), 1)"
             self._insert(sql)
             self._write_log(self.F_BJPAY, "Register BJPAY :: msisdn="+str(msisdn)+", va_number="+str(va_number)+", phone="+str(phone)+", initial_amount=0, log_dtm="+str(logDtm))
+            self.mongo_log.log_bjpay_register(msisdn, phone, va_number)
 
             if int(initial_amount) != 0:
                 self._set_redis(msisdn, initial_amount, va_number, phone)
@@ -148,6 +151,7 @@ class BJPayService() :
             logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
             sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'D', '"+str(msisdn)+"', '"+str(redis_phone)+"', '"+str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
             self._write_log(self.F_BJPTRX, "DEBIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(redis_phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
+            self.mongo_log.log_debit(msisdn, redis_phone, transaction_amount, transaction_id, description)
 
             (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
 
@@ -160,6 +164,7 @@ class BJPayService() :
         logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
         sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'D', '" + str(msisdn) + "', '" + str(phone) + "', '" + str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
         self._write_log(self.F_BJPTRX, "CREDIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
+        self.mongo_log.log_credit(msisdn, phone, transaction_amount, transaction_id, description)
 
         (current_balance, va_no, redis_phone) = self._get_redis(msisdn)
         total_amount = int(current_balance) + int(transaction_amount)

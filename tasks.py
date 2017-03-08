@@ -146,6 +146,24 @@ F_PAID = None
 F_NOREPLY = None
 F_ADDFRIENDS = None
 
+when = ['hari ini|hr ini|siang ini|malam ini|pagi ini|sore ini','besok|bsok|bsk','lusa','januari|jan','februari|feb|pebruari','maret|mar','april|apr','mei','juni|jun','juli|jul','agustus|aug|agus','september|sept|sep','oktober|okt|october|oct','november|nov|nop','desember|des|december|dec']
+
+def search_string(mesg, dict):
+    idx = 0
+    found = 0
+    for item in dict:
+        for subitem in item.split('|'):
+            if subitem in mesg.lower():
+                found = 1
+        if found == 1:
+            return idx
+        idx += 1
+    if found == 1:
+        return idx
+    else:
+        return -1
+
+
 def _log_print(message, log_level = None) :
     if DEBUG_MODE == "V" : #highest
         level = 0
@@ -385,6 +403,8 @@ def get_line_username(msisdn):
             insert(sql)
             return profile_obj.display_name
         except:
+            sql = "insert into line_users values('" + msisdn + "','" + "bro/sis" + "')"
+            insert(sql)
             return "bro/sis"
 
 def onEmailReceived(filename, filetype):
@@ -957,7 +977,11 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
         userpservice.update_profile(msisdn, full_name=ask, display_name=first_name)
     elif answer[:5] == "prf02": #dob
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, dob=ask)
+        idx = search_string(ask, when)
+        if idx in range(3, 15):
+            str_date = re.findall(r'\d+', ask)
+            res = "%04s-" % (str_date[1]) + "%02d" % (idx - 2) + "-" + str_date[0].zfill(2)
+            userpservice.update_profile(msisdn, dob=res)
     elif answer[:6] == "prf03a": #gender cewek
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, gender=0)

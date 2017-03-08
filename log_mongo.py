@@ -9,6 +9,12 @@ class MongoLog(object):
         self.client = MongoClient("mongodb://139.59.96.133:27017")
         self.db = self.client['bangjoni']
 
+    def log_service(self, msisdn, service_name):
+        result = self.db.logservice.insert_one({
+            "msisdn": msisdn,
+            "datetime": datetime.now(),
+            "service_name": service_name
+        })
 
     def log_pulsa(self, msisdn, denom, phone):
         result = self.db.logpulsa.insert_one({
@@ -17,7 +23,6 @@ class MongoLog(object):
             "denom" : denom,
             "phone" : phone
         })
-        print ""
 
 
     def log_token(self, msisdn, denom, no_listrik, watt):
@@ -29,6 +34,14 @@ class MongoLog(object):
             "watt" : watt
         })
 
+    def log_zomato(self, msisdn, latitude, longitude, cuisine):
+        result = self.db.logzomato.insert_one({
+            "msisdn": msisdn,
+            "datetime": datetime.now(),
+            "latitude": latitude,
+            "longitude": longitude,
+            "cuisine": cuisine
+        })
 
     def log_conversation(self, msisdn, question, answer, service, topic, incoming_msisdn):
         result = self.db.conversation.insert_one({
@@ -39,4 +52,34 @@ class MongoLog(object):
             "service" : service,
             "topic" : topic,
             "incomingmsisdn" : incoming_msisdn
+        })
+
+    def log_debit(self, msisdn, phone, amount, transaction_id, description):
+        result = self.db.bjpay_transactions.insert_one({
+            "msisdn": msisdn,
+            "datetime": datetime.now(),
+            "phone": phone,
+            "amount": amount,
+            "transaction_id": transaction_id,
+            "description": description,
+            "type": "DEBIT"
+        })
+
+    def log_credit(self, msisdn, phone, amount, transaction_id, description):
+        result = self.db.bjpay_transactions.insert_one({
+            "msisdn": msisdn,
+            "datetime": datetime.now(),
+            "phone": phone,
+            "amount": amount,
+            "transaction_id": transaction_id,
+            "description": description,
+            "type": "CREDIT"
+        })
+
+    def log_bjpay_register(self, msisdn, phone, va_number):
+        result = self.db.bjpay_register.insert_one({
+            "msisdn": msisdn,
+            "datetime": datetime.now(),
+            "phone": phone,
+            "va_number": va_number
         })
