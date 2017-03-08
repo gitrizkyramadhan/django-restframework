@@ -122,7 +122,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel.png',
                     title='Transportasi & Travel',
-                    text='buat yg suka travelling',
+                    text='Buat yg suka travelling',
                     actions=[
                         MessageTemplateAction(
                             label='Pesawat',
@@ -141,7 +141,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay.png',
                     title='BJPay',
-                    text='carousel buat BJPAY',
+                    text='Dompet virtual Bang Joni punya nih!',
                     actions=[
                         MessageTemplateAction(
                             label='Top Up',
@@ -160,7 +160,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa.png',
                     title='Pulsa',
-                    text='deskripsi pulsa',
+                    text='Pulsamu habis? Beli aja sini!',
                     actions=[
                         MessageTemplateAction(
                             label='Pulsa',
@@ -179,7 +179,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/info.png',
                     title='Info',
-                    text='blah',
+                    text='Mending tanya Bang Joni aja sini',
                     actions=[
                         MessageTemplateAction(
                             label='Cuaca',
@@ -198,7 +198,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other.png',
                     title='Others',
-                    text='blah',
+                    text='Layanan lain dari Bang Joni',
                     actions=[
                         MessageTemplateAction(
                             label='Matahari Mall',
