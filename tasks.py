@@ -1799,10 +1799,14 @@ def onMessage(msisdn, ask, first_name):
                 sinfo_tol = "Dari Jasa marga, berikut info tol %s, jam %s WIB:" % (incomingMsisdn[2], jam_update)
                 # sendMessageT2(msisdn.decode('utf-8'), sinfo_tol + "\n" + s, 0)
                 c_description = s
+                need_detail = False
                 if (len(c_description) > 60):
                     c_description = c_description[:57] + '...'
+                    need_detail = True
 
                 linebot.send_composed_img_buttons(msisdn, "Info Traffic", 'https://bangjoni.com/v2/carousel/images/traffic1.png', 'Info Lalu Lintas', c_description, [{'type' : 'message', 'label' : 'Say Thanks', 'text' : 'thanks Bang'}])
+                if need_detail :
+                    sendMessageT2(msisdn, sinfo_tol + "\n" + s, 0)
 
                 info_tol_media = ""
                 sqlstart = respAPI.find("<jasamarga_media>")
