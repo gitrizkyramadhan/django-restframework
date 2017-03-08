@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-  > topic nama
+> topic nama
     + [*] [@namaku] (*) [*]
     - Oke deh! Jadi gue manggilnya <star2> ya? {topic=jawaban_nama} <set star2=name>
 
@@ -65,9 +64,9 @@
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
-  < topic
+< topic
 
-  > topic jawaban_nama
+> topic jawaban_nama
     + [*] (@betul) [*]
     - Oke deh <get name>! <br>
     ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
@@ -95,7 +94,6 @@
 
     + [*] (@hahaha|@wk) [*] {weight=10}
     - Ih kok malah ketawa? Serius nih, nama lo siapa? Kan gue mau kenal. {topic=nama}
-<<<<<<< HEAD
 
     + [*] (@pesawat) [*]
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
@@ -136,15 +134,11 @@
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
-  < topic
-=======
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic cewekataucowok
     + [*] (@cowok) [*]
     - prf03b Oke deh Bro! <br>
-<<<<<<< HEAD
     ^ Btw, lo suka travelling atau jalan-jalan gitu nggak sih? {topic=travellingsukanggak}
   
     + [*] (@cewek) [*]
@@ -161,20 +155,13 @@
     + [*] (@nggak) [*]
     - Ih kan biar nggak salah manggil gitu loohh.. <br>
     ^ Masa nanya gitu aja nggak boleh? Boleh laahh.. :D <br> {topic=nama}
-=======
     ^ Btw, lo suka travelling nggak? <set gender=<star>>{topic=travellingsukanggak}
-
-    + [*] (@cewek) [*]
-    - prf03a Oke deh Sis!
-    ^ Btw, lo suka travelling nggak? <set gender=<star>>{topic=travellingsukanggak}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
     + *
     - Kenapa gitu?
     ^ Masa nanya gitu aja nggak boleh? Boleh dong ;) <br>
     ^ Biar nggak salah manggil gue, hehehe..
     - Kok gitu?
-<<<<<<< HEAD
     ^ Masa nanya gitu aja nggak boleh? Boleh dong ;) <br>
     ^ Biar nggak salah manggil gue, hehehe..
 
@@ -221,34 +208,12 @@
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
-  < topic
-=======
     ^ Gue kan cuma pengen tau lo cewek apa cowok?
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic travellingsukanggak
     + [*] (@suka) [*]
     - prf07a Wih sama dong! Gue juga suka banget travelling! <br>
-<<<<<<< HEAD
-    ^ Kalo gitu gue boleh minta nomer HP lo nggak <get name>? <br>
-    ^ Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) {topic=nomor_hp}
-    - prf07a Setuju! Di Indonesia tuh ada 17.508 pulau loh! Banyak banget ya tempat yang bisa didatengin. <br>
-    ^ Kalo gitu gue boleh minta nomer HP lo nggak <get name>? <br>
-    ^ Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) {topic=nomor_hp}
-
-    + [*] (@nggak) [*]
-    - prf07a Oh nggak suka ya? Emang kadang males sih jalan-jalan. Mending uangnya ditabung deh ;) <br>
-    ^ Eh kalo gitu gue boleh minta nomer HP lo nggak <get name>? <br>
-    ^ Buat kasih info kalo lagi ada promo-promo seru gitu. Gue kan hobby juga bagi-bagi rezeki ;) {topic=nomor_hp}
-
-    + [*] (@makian) [*]
-    - Ish jangan gitu ah.. <br>
-    ^ Masa nanya gitu aja nggak boleh? Boleh dong :D
-
-    + [*] (@buatapa) [*]
-    - Hmm.. Nggak papa sih, gue mau tau aja. Siapa tau ntar kita bisa travelling bareng :) <br>
-=======
     ^ Seru banget ya! Apa lagi kalo rame-rame bareng temen. <br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo tiket nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. <set travelling=<star>>{topic=mintaemail}
@@ -258,30 +223,34 @@
     ^ Langsung tulis aja alamat email lo. <set travelling=<star>>{topic=mintaemail}
 
     + [*] (@nggak) [*]
-    - prf07a Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
+    - prf07b Oh nggak suka ya? Emang kadang males sih jalan-jalan. <br>
     ^ Mending uangnya ditabung deh buat masa depan :D<br>
     ^ Oiya, gue minta alamat email lo dong. Buat kasih info kalo ada promo nih! Gue kan hobby juga bagi-bagi rezeki ;) <br>
     ^ Langsung tulis aja alamat email lo. {topic=mintaemail}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
+
+    + [*] (@makian) [*]
+    - Ish jangan gitu ah.. <br>
+    ^ Masa nanya gitu aja nggak boleh? Boleh dong :D
+
+    + [*] (@buatapa) [*]
+    - Hmm.. Nggak papa sih, gue mau tau aja. Siapa tau ntar kita bisa travelling bareng :)
+
+    + [*] (@pesawat) [*]
+    - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
+    ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
+    ^ Gue kan cuma pengen tau lo suka travelling apa nggak?
 
     + *
     - Kenapa gitu?
     ^ Gue kan cuma pengen tau lo suka travelling apa nggak? Siapa tau ntar kita bisa travelling bareng :)
     - Kok gitu?
-<<<<<<< HEAD
     ^ Gue kan cuma pengen tau lo suka travelling apa nggak? Siapa tau ntar kita bisa travelling bareng :)
 
-    + [*] (@pesawat) [*]
-    - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
-    ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
-=======
-    ^ Gue kan cuma pengen tau lo suka travelling apa nggak?
 < topic
 
 > topic mintaemail
     + [@emailku] (*@mail*) [*] {weight=10}
     - prf04 Oke, coba cek lagi deh, bener nih ya emailnya <user_email>? <set email=<star>> {topic=jawabanemail}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
     + [*] (@xtrans) [*]
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
@@ -291,7 +260,6 @@
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
 
-<<<<<<< HEAD
     + [*] (@token) [*]
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
@@ -299,7 +267,7 @@
     + [*] (@uber) [*]
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
-=======
+
     + *
     - Kenapa gitu?
     ^ Gue kan cuma minta email lo buat kasih info promo-promo seru. <br>
@@ -314,13 +282,11 @@
     - Oke deh, udah gue catet! Janji gak spamming kok :) <br>
     ^ Nah terus kalo nomor HP lo berapa <get name>? <br>
     ^ Buat info-info nih kalo ada promo eksklusif buat temen-temen gue! {topic=nomor_hp}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
     + [*] (@cuaca) [*]
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
 
-<<<<<<< HEAD
     + [*] (@zomato) [*]
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
@@ -336,14 +302,12 @@
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong lo suka travelling apa nggak? Siapa tau kita bisa travelling bareng :)
-  < topic
-=======
+
     + *
     - Kenapa gitu? <br>
     ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
     ^ Jadi apa nih alamat emailnya? ;) {topic=mintaemail}
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic nomor_hp
     + [*] (@buatapa) [*]
@@ -353,11 +317,7 @@
     ^ Ya.. ya.. Boleh ya gue save nomer lo ya? :D 
 
     + [*] (#) [*]
-<<<<<<< HEAD
-    - prf06 Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <star2>? {topic=jawaban_nomor}
-=======
     - prf06 Sip! Coba cek dulu deh bener nih ya ini nomor HP lo <star>? <set nohp=<star>>{topic=jawaban_nomor}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
     + [*] (@nggak) [*]
     - Yah, padahal lo bisa dapet info promo-promo seru yang cuma bisa didapetin sama temen spesial gue loh. <br>
@@ -374,29 +334,19 @@
 
     + [*] (@hahaha|@wk) [*] {weight=10}
     - Ih kok malah ketawa? Serius nih gue, nomer HP lo berapa?
-<<<<<<< HEAD
 
     + [*] (@makian) [*]
     - Ish jangan gitu ah.. <br>
     ^ Bakal banyak promo-promo seru tau! Sayang banget kalo gak ikutan. <br>
     ^ Ya.. ya.. Boleh ya gue save nomer lo ya? :D
-  < topic
-=======
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic jawaban_nomor
     + [*] (@betul) [*]
     - Oke deh <get name>. Tunggu tanggal mainnya ya! <br>
-<<<<<<< HEAD
     ^ Gue bakal kasih info-info promo eksklusif buat lo! Temen spesial Bang Joni! ;) <br>
     ^ Eh iya mau kepo deh. Lo ulang tahunnya kapan sih <get name>? <br>
     ^ Biar gue siapin kado nanti ;) {topic=tanggal_lahir}
-=======
-    ^ Gue bakal kasih info-info promo khusus buat lo! Temen spesial Bang Joni! ;) <br>
-    ^ Eh mau kepo deh :) <br>
-    ^ Lo ulang tahunnya kapan sih <get name>? {topic=tanggal_lahir}
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
     + [*] (@salah) [*]
     - Terus jadinya nomor HP lo berapa dong? {topic=nomor_hp}
@@ -439,7 +389,6 @@
     + [*] (@nggak) [*]
     - Jiee...takut ketauan umurnya ya? Tenang aja, rahasia lo aman kok sama gue! <br>
     ^ Jadi lo ulang tahunnya kapan nih? :)
-<<<<<<< HEAD
 
     + [*] (@pesawat) [*]
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
@@ -480,10 +429,8 @@
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong lo lahirnya tanggal berapa? :)
-  < topic
-=======
+
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic tanggal_lahir_kurang_tahun
     + [*] (@years) [*]
@@ -510,13 +457,8 @@
 
     + [*] (@buatapa) [*]
     - Ya nggak papa sih, namanya juga temen kan wajar pengen tau tentang temennya. <br>
-<<<<<<< HEAD
-    ^ Jadi lo lahirnya tahun berapa nih? :)
-  < topic
-=======
     ^ Jadi lo lahirnya tahun berapa nih?
 < topic
->>>>>>> 83a8fcbb4ebeeb84c9a4d6295c955a7238dee122
 
 > topic tinggal_kota
     + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]

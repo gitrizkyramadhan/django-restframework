@@ -978,7 +978,7 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     elif answer[:6] == "prf07a": #suka travelling
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, travelling=0)
-    elif answer[:6] == "prf07a": #g suka travelling
+    elif answer[:6] == "prf07b": #g suka travelling
         sendMessageT2(msisdn, answer[6:], 0)
         userpservice.update_profile(msisdn, travelling=1)
     else:
