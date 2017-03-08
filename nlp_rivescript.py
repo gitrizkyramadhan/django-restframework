@@ -889,6 +889,10 @@ class Nlp:
         print "ask :: "+mesg
         print "topic :: "+self.get_uservar(msisdn, "topic")
         print "answer :: "+answer
+        if len(incomingMsisdn) < 28:
+            incomingMsisdn[28] = []
+            incomingMsisdn[29] = ""
+
         incomingMsisdn[29] = self.get_uservar(msisdn, "topic")
 
         # ---------- DWP MODULE START ----------

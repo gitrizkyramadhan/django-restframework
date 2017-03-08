@@ -3434,7 +3434,7 @@ def doworker(req):
                 elif contentType == "location":
                     longitude = event["message"]["longitude"]
                     latitude = event["message"]["latitude"]
-                    address = event["message"]["address"]
+                    # address = event["message"]["address"]
                 elif contentType == "sticker":
                     sticker = event["message"]["packageId"]
                     stickerid = event["message"]["stickerId"]
