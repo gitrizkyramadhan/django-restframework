@@ -44,11 +44,11 @@
 + [*] (@bosen) [*] {weight=10}
 - Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying {topic=bioskop}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing
+^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing {topic=bioskop}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx {topic=bioskop}
 
 + *
 - Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
@@ -59,11 +59,11 @@
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying {topic=bioskop}
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing
+^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing {topic=bioskop}
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx {topic=bioskop}
 
 + [*] (@cari) [*] (@tiket) [*] {weight=10}
 - Tiket apa nih?
