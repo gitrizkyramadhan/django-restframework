@@ -2206,7 +2206,7 @@ def onMessage(msisdn, ask, first_name):
             #answer = answer + "Click url berikut untuk memberikan ijin BangJoni menggunakan uber accountmu:\n"
             #answer = answer + auth_url
             #sendMessageT2(msisdn, answer, 0)
-            sendLinkMessageT2(msisdn, 'belum terhubung dengan account Ubermu\nUntuk memberikan ijin Bang Joni terhubung account Ubermu tap Ijin Uber', 'Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
+            sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
         else:
             #answer = "Share lokasimu dengan cara click tombol PIN dan tap Location"
             # answer = "Mau naik uberX atau uberMotor?"
