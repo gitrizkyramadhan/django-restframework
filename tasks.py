@@ -1922,7 +1922,7 @@ def onMessage(msisdn, ask, first_name):
         #sendMessageT2(msisdn, "Ok, Bang Joni sudah tahu lokasimu, sekarang kamu pingin masakan apa?", 0)
         #photo = open('/home/ubuntu/telegram/images/zomato_cuisines.png', 'rb')
         #sendPhotoT2(msisdn, 'images/zomato_cuisines.png')
-        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Ok, Bang Joni sudah tahu lokasimu, sekarang kamu pingin masakan apa?")
+        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Oke deh, gue udah tau lokasi lo. <br>Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..")
 
 
     if answer[:4] == "zo01" or answer[:4] == "zo02":
