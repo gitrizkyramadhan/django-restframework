@@ -2206,11 +2206,11 @@ def onMessage(msisdn, ask, first_name):
             #answer = answer + "Click url berikut untuk memberikan ijin BangJoni menggunakan uber accountmu:\n"
             #answer = answer + auth_url
             #sendMessageT2(msisdn, answer, 0)
-            sendLinkMessageT2(msisdn, 'belum terhubung dengan account Ubermu\nUntuk memberikan ijin Bang Joni terhubung account Ubermu tap Ijin Uber', 'Uber', 'Ijin Uber', auth_url, 'http://128.199.88.72/line_images/uber.JPG')
+            sendLinkMessageT2(msisdn, 'belum terhubung dengan account Ubermu\nUntuk memberikan ijin Bang Joni terhubung account Ubermu tap Ijin Uber', 'Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
         else:
             #answer = "Share lokasimu dengan cara click tombol PIN dan tap Location"
-            answer = "Mau naik uberX atau uberMotor?"
-            sendMessageT2(msisdn, answer, 0)
+            # answer = "Mau naik uberX atau uberMotor?"
+            sendMessageT2(msisdn, answer[4:], 0)
 
     if ask[:5] == "[LOC]" and incomingMsisdn[11] == "ub01":
         incomingMsisdn[11] = "ub01"
