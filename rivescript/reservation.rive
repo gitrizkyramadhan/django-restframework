@@ -468,10 +468,10 @@
 
 ///////////////////////////////////START UBER
 + [*] [tolong|mau] [order|pesen|psn|booking] (taksi|taxi|uber|uberbj) [*]
-//- ub01 {topic=uber}  <set mycontext=uber>
-- Yah maaf ya <first_name>, gue belom bisa panggilin Uber buat lo nih. <br>
-^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa ;)
+- ub01 Mau naik uberX atau uberMotor? {topic=uber}  <set mycontext=uber>
+//- Yah maaf ya <first_name>, gue belom bisa panggilin Uber buat lo nih. <br>
+//^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
+//^ Tungguin yaa ;)
 
 > topic uber inherits global
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
