@@ -104,7 +104,7 @@
 
 ! array pesawat = pesawat|psw|pswt|pesawar|psawat|pswat|pesawt
 
-! array tiket = tiket|tket|ticket
+! array tiket = tiket|tket|ticket|tiketnya|tketnya|ticketnya|tiketny|tketny|ticketny
 
 ! array salah = salah|slah|slh|bukan|bkan|bkn
 
@@ -383,3 +383,7 @@
 ! array bener = bener|beneran|betul|betulan|bneran|bnran|btulan|btul
 
 ! array ujan = ujan|hujan|ujn|hjan|hjn
+
+! array males = males|mles|malas|mlas|mls|malez|mlez|mlz|mlas|selam|mger|mager|magr
+
+! array punya = punya|pnya|pny

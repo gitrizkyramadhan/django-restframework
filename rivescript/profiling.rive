@@ -33,43 +33,43 @@
     ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya?
 
-    + [*] (@pesawat) [*]
+    + [*] (@pesawat) [*] {weight=10}
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@xtrans) [*]
+    + [*] (@xtrans) [*] {weight=10}
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@pulsa) [*]
+    + [*] (@pulsa) [*] {weight=10}
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@token) [*]
+    + [*] (@token) [*] {weight=10}
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@uber) [*]
+    + [*] (@uber) [*] {weight=10}
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@cuaca) [*]
+    + [*] (@cuaca) [*] {weight=10}
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@zomato) [*]
+    + [*] (@zomato) [*] {weight=10}
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@jalantol) [*]
+    + [*] (@jalantol) [*] {weight=10}
     - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@ingetin) [*]
+    + [*] (@ingetin) [*] {weight=10}
     - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
-    + [*] (@terjemahin) [*]
+    + [*] (@terjemahin) [*] {weight=10}
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
     ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 < topic
@@ -109,39 +109,39 @@
 
     + [*] (@xtrans) [*]
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@pulsa) [*]
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@token) [*]
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@uber) [*]
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@cuaca) [*]
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@zomato) [*]
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@jalantol) [*]
     - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@ingetin) [*]
     - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :) {topic=nama}
 < topic
 
 > topic cewekataucowok
@@ -162,7 +162,7 @@
 
     + [*] (@nggak) [*]
     - Ih kan biar nggak salah manggil gitu loohh.. <br>
-    ^ Masa nanya gitu aja nggak boleh? Boleh laahh.. :D <br> {topic=nama}
+    ^ Masa nanya gitu aja nggak boleh? Boleh laahh.. :D <br>
 
     + *
     - Kenapa gitu?
@@ -233,4 +233,48 @@
 
     + [*] (@hahaha|@wk) [*] {weight=10}
     - Ih kok malah ketawa? Serius nih gue, emang lo tinggalnya sekarang di kota mana sih? :)
+
+        + [*] (@makian) [*]
+    - Ish jangan gitu ah.. <br>
+    ^ Masa nanya gitu aja nggak boleh? Boleh dong :D <br>
+
+    + [*] (@pesawat) [*]
+    - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@xtrans) [*]
+    - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@pulsa) [*]
+    - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@token) [*]
+    - Iya nanti lo bisa kok beli token listrik sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@uber) [*]
+    - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@cuaca) [*]
+    - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@zomato) [*]
+    - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@jalantol) [*]
+    - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@ingetin) [*]
+    - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
+
+    + [*] (@terjemahin) [*]
+    - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
+    ^ Tapi jawab dulu dong lo tinggal di kota mana sekarang? Kali aja kita tetanggaan :p
 <topic
