@@ -40,7 +40,7 @@ from utils import success_print
 from utils import import_app_credentials
 
 from uber_rides.auth import AuthorizationCodeGrant
-from uber_rides.client import UberRidesClient
+from uber_rides.client import UberRidesClient, SurgeError
 from uber_rides.errors import ClientError
 from uber_rides.errors import ServerError
 from uber_rides.errors import UberIllegalState
@@ -69,6 +69,7 @@ from bjpay_service import BJPayService
 from weather import WeatherService
 from log_mongo import MongoLog
 from user_profiling import UserProfileService
+from uber_module import UberService
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -137,6 +138,7 @@ bjp_service = BJPayService()
 weather_service = WeatherService()
 mongolog = MongoLog()
 userpservice = UserProfileService()
+uber = UberService()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -606,6 +608,44 @@ def create_recommended_carousell(msisdn):
         column['text'] = column['text'][:57] + '...'
     column['actions'] = actions
     columns.append(column)
+
+    return columns
+
+def create_uber_products(msisdn, products):
+    columns = []
+    for product in products:
+        column = {}
+        actions = []
+
+        actions.append({'type': 'message', 'label': 'Pilih', 'text': str(product['localized_display_name'])})
+        # actions.append({'type': 'postback', 'label': 'Pilih','data': 'evt=uber_payment&pmt_desc=' + payment['description'] + '&pmt_id=' + str(payment['payment_method_id'])})
+        if product['product_id'] == "89da0988-cb4f-4c85-b84f-aac2f5115068" :
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+        elif product['product_id'] == "776ea734-1404-4a40-bf09-ebcb2acf6f2b" :
+            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+        column['title'] = str(product['localized_display_name'])
+        column['text'] = str(product['formatted_amt'])
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
+        column['actions'] = actions
+        columns.append(column)
+
+    return columns
+
+def create_uber_payments(msisdn, payments):
+    columns = []
+    for payment in payments['payment_methods']:
+        column = {}
+        actions = []
+
+        actions.append({'type': 'postback', 'label': 'Pilih', 'data': 'evt=uber_payment&pmt_desc='+payment['description']+'&pmt_id='+str(payment['payment_method_id'])})
+        column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+        column['title'] = str(payment['type'])
+        column['text'] = str(payment['description'])
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
+        column['actions'] = actions
+        columns.append(column)
 
     return columns
 
@@ -1713,10 +1753,8 @@ def onMessage(msisdn, ask, first_name):
             print answer
 
         #Cancel uber request ride
-        if answer[:4] == "ch02" and incomingMsisdn[6] != -1 and incomingMsisdn[7] != -1:
-            print "http://128.199.88.72/uber/cancel_ride.php?request_id=%s&access_token=%s" % (incomingMsisdn[6], incomingMsisdn[7])
-            respAPI = fetchHTML("http://128.199.88.72/uber/cancel_ride.php?request_id=%s&access_token=%s" % (incomingMsisdn[6], incomingMsisdn[7]))
-            print respAPI
+        if answer[:4] == "ch02" and incomingMsisdn[6] != -1:
+            uber.cancel_current_ride(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))))
 
         incomingMsisdn = create_incoming_msisdn()
     ###########################################################
@@ -2183,29 +2221,17 @@ def onMessage(msisdn, ask, first_name):
         token_uber = ""
         for row in sqlout:
             token_uber = row[2]
+
         if token_uber == "" or token_uber == "X":
-            credentials = import_app_credentials()
-            incomingMsisdn[1] = AuthorizationCodeGrant(
-                credentials.get('client_id'),
-                credentials.get('scopes'),
-                credentials.get('client_secret'),
-                credentials.get('redirect_url'),
-            )
-            print "---------->>>>>>>>>>>",incomingMsisdn[1]
-            auth_url = incomingMsisdn[1].get_authorization_url()
-            state = auth_url.split('&')[1].split('=')[1]
+            auth_flow = uber.get_auth(msisdn)
+            auth_url = auth_flow.get_authorization_url()
+            state = auth_flow.state_token
             print ">>>>", auth_url, state
             insert("delete from token_uber where msisdn = '%s'" % (msisdn))
             #sql = "insert into token_uber(msisdn, state, access_token, platform, AuthorizationCodeGrant) values('" + msisdn + "','" + state + "','X','line','" + incomingMsisdn[1] + "')"
             sql = "insert into token_uber(msisdn, state, access_token, platform) values('" + msisdn + "','" + state + "','X','line')"
             insert(sql)
-            incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
-
-            answer = "Bang Joni belum terhubung dengan account Ubermu\n"
-            answer = answer + "Untuk memberikan ijin Bang Joni terhubung account Ubermu <a href=\"" + auth_url + "\">click disini</a> ya"
-            #answer = answer + "Click url berikut untuk memberikan ijin BangJoni menggunakan uber accountmu:\n"
-            #answer = answer + auth_url
-            #sendMessageT2(msisdn, answer, 0)
+            # incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
             sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
         else:
             #answer = "Share lokasimu dengan cara click tombol PIN dan tap Location"
@@ -2214,196 +2240,47 @@ def onMessage(msisdn, ask, first_name):
 
     if ask[:5] == "[LOC]" and incomingMsisdn[11] == "ub01":
         incomingMsisdn[11] = "ub01"
-        if incomingMsisdn[2] == -1:
+        if incomingMsisdn[2] == -1: #asal
             incomingMsisdn[2]  = ask[5:].split(';')[0]
             incomingMsisdn[3]  = ask[5:].split(';')[1]
-            sendMessageT2(msisdn, "Sekarang share lokasi tujuanmu dengan cara click tombol + sebelah tombol smile dan tap Share Location", 0)
-        elif incomingMsisdn[2] != -1:
+            answer = lineNlp.doNlp("ub02a", msisdn, first_name)
+            sendMessageT2(msisdn, answer, 0)
+        elif incomingMsisdn[2] != -1: #tujuan
             answer = lineNlp.doNlp("ub02", msisdn, first_name)
             incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
             #sendMessageT2(msisdn, answer, 0)
             print ">>>>", incomingMsisdn
             incomingMsisdn[4]  = ask[5:].split(';')[0]
             incomingMsisdn[5]  = ask[5:].split(';')[1]
-            sql = "select * from token_uber where msisdn = '%s'" % (msisdn)
-            print sql
-            sqlout = request(sql)
-            access_token = ""
-            refresh_token = ""
-            for row in sqlout:
-                access_token = row[2]
-                refresh_token = row[1]
-            if access_token != "":
-                incomingMsisdn[8] = access_token
-                incomingMsisdn[9] = refresh_token
-                print "http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6])
-                respAPI = fetchHTML("http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6]))
-                print "REQUEST_RIDE:", respAPI
-                sqlstart = respAPI.find("access_token")
-                if sqlstart > -1:
-                    new_access_token = ""
-                    new_refresh_token = ""
-                    new_expires_in = ""
 
-                    content = json.loads(respAPI)
-                    print ">>>>>",content
-                    new_access_token = content['access_token']
-                    new_refresh_token = content['refresh_token']
-                    new_expires_in = content['expires_in']
-                    access_token = new_access_token
-                    refresh_token = new_refresh_token
-                    incomingMsisdn[8] = new_access_token
-                    incomingMsisdn[9] = new_refresh_token
+            products = uber.get_products({incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]})
+            # columns = create_uber_products(msisdn, products)
+            linebot.send_composed_carousel(msisdn, "Uber Product", create_uber_products(msisdn, products))
+            sendMessageT2(msisdn, answer, 0)
 
-                    sql = "update token_uber set access_token='%s', refresh_token='%s', expires_in_sec='%s' where msisdn='%s'" % (new_access_token, new_refresh_token, new_expires_in, msisdn)
-                    print sql
-                    insert(sql)
-
-                    sql = "select * from token_uber where msisdn = '%s'" % (msisdn)
-                    print sql
-                    sqlout = request(sql)
-                    email = ""
-                    for row in sqlout:
-                        email = row[6]
-                    if email != "":
-                        sql = "update token_uber set access_token='%s', refresh_token='%s', expires_in_sec='%s' where email='%s'" % (new_access_token, new_refresh_token, new_expires_in, email)
-                        print sql
-                        insert(sql)
-
-                    print "http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6])
-                    respAPI = fetchHTML("http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6]))
-                    print "REQUEST_RIDE_NEW_TOKEN:", respAPI
-
-                sqlstart = respAPI.find("<estimate>")
-                sqlstop = respAPI.find("</estimate>")
-                if sqlstart > -1:
-                    estimate_price = respAPI[sqlstart+10:sqlstop]
-                    sqlstart = respAPI.find("<distance>")
-                    sqlstop = respAPI.find("</distance>")
-                    distance = respAPI[sqlstart+10:sqlstop]
-                    sqlstart = respAPI.find("<surge_multiplier>")
-                    sqlstop = respAPI.find("</surge_multiplier>")
-                    surge_multiplier = respAPI[sqlstart+18:sqlstop]
-                    if surge_multiplier == "1":
-                        sendMessageT2(msisdn, "Bang Joni dapat %s dengan estimasi harga %s dan jauh perjalanan %s km\nMau lanjut? (ok/cancel)" % (incomingMsisdn[6], estimate_price, distance), 0)
-                    else:
-                        sendMessageT2(msisdn, "Waktu peak, bang Joni dapat %s dengan estimasi harga %s, naik %s kali lapat dengan jauh perjalanan %s km\nMau lanjut? (ok/cancel)" % (incomingMsisdn[6], estimate_price, surge_multiplier, distance), 0)
-                else:
-                    x = "uberX"
-                    if incomingMsisdn[6] == "uberX": x = "uberMotor"
-                    if incomingMsisdn[6] == "uberMotor": x = "uberX"
-                    incomingMsisdn[6] = x
-
-                    print "http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, x)
-                    respAPI = fetchHTML("http://128.199.88.72/uber/estimate_price.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, x))
-                    print "REQUEST_RIDE_OTHERS:", respAPI
-
-                    sqlstart = respAPI.find("<estimate>")
-                    sqlstop = respAPI.find("</estimate>")
-                    if sqlstart > -1:
-                        estimate_price = respAPI[sqlstart+10:sqlstop]
-                        sqlstart = respAPI.find("<distance>")
-                        sqlstop = respAPI.find("</distance>")
-                        distance = respAPI[sqlstart+10:sqlstop]
-                        sqlstart = respAPI.find("<surge_multiplier>")
-                        sqlstop = respAPI.find("</surge_multiplier>")
-                        surge_multiplier = respAPI[sqlstart+18:sqlstop]
-                        if surge_multiplier == "1":
-                            sendMessageT2(msisdn, "%s nggak ada di sekitarmu, bang joni dapat %s dengan estimasi harga %s dan jauh perjalanan %s km\nMau lanjut? (ok/cancel)" % (incomingMsisdn[6], x, estimate_price, distance), 0)
-                        else:
-                            sendMessageT2(msisdn, "Waktu peak, %s nggak ada di sekitarmu, bang Joni dapat %s dengan estimasi harga %s, naik %s kali lapat dengan jauh perjalanan %s km\nMau lanjut? (ok/cancel)" % (incomingMsisdn[6], x, estimate_price, surge_multiplier, distance), 0)
-                    else:
-                        # respAPIJson = json.loads(respAPI)
-                        # print respAPIJson["message"]
-                        if (respAPI.find("No authentication provided") > 1 and respAPI.find("invalid_grant") > 1):
-                            print "kayanya token kamu udah abis, coba ulangi lagi"
-                            insert("delete from token_uber where msisdn = '%s'" % (msisdn))
-                            credentials = import_app_credentials()
-                            incomingMsisdn[1] = AuthorizationCodeGrant(
-                                credentials.get('client_id'),
-                                credentials.get('scopes'),
-                                credentials.get('client_secret'),
-                                credentials.get('redirect_url'),
-                            )
-                            auth_url = incomingMsisdn[1].get_authorization_url()
-                            sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
-                            incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
-                        else :
-                            sendMessageT2(msisdn, "Bang Joni nggak dapat %s, coba ulangi dari awal ya..." % (incomingMsisdn[6]), 0)
-                            answer = lineNlp.doNlp("exittorandom", msisdn, first_name)
 
     if answer[:4] == "ub03":
-        access_token = incomingMsisdn[8]
-        print "http://128.199.88.72/uber/check_payment.php?access_token=%s" % (access_token)
-        respAPI = fetchHTML("http://128.199.88.72/uber/check_payment.php?access_token=%s" % (access_token))
-        print "REQUEST_RIDE_LIST_PAYMENTS:", respAPI
-        sqlstart = respAPI.find("<payments>")
-        sqlstop = respAPI.find("</payments>")
-        if sqlstart > -1:
-            incomingMsisdn[7] = respAPI[sqlstart+10:sqlstop]
-            incomingMsisdn[7] = incomingMsisdn[7][:-1]
-            answer = ""
-            for subitem in incomingMsisdn[7].split(';'):
-                answer = answer + subitem.split('|')[0] + " atau "
-            answer = answer[:-6] + "?"
-            sendMessageT2(msisdn, answer, 0)
-        else: sendMessageT2(msisdn, "Bang Joni nggak dapat response dari Uber, ketik cancel untuk ulang", 0)
+        methods = uber.get_payment_methods(msisdn, lineNlp.redisconn.get("cred/%s" % (msisdn)))
+        linebot.send_composed_carousel(msisdn, "Uber Payments", create_uber_payments(msisdn, methods))
+        sendMessageT2(msisdn, answer, 0)
+
 
     if answer[:4] == "ub04":
-        access_token = incomingMsisdn[8]
-        refresh_token = incomingMsisdn[9]
-        payment_method_id = ""
-        for subitem in incomingMsisdn[7].split(';'):
-            if subitem.split('|')[0] == incomingMsisdn[10]: payment_method_id = subitem.split('|')[1]
-        if payment_method_id != "":
+        # access_token = incomingMsisdn[8]
+        # refresh_token = incomingMsisdn[9]
+        # payment_method_id = ""
 
-            print "http://128.199.88.72/uber/request_ride.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s&payment_method_id=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6], payment_method_id)
-            respAPI = fetchHTML("http://128.199.88.72/uber/request_ride.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&refresh_token=%s&product=%s&payment_method_id=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, refresh_token, incomingMsisdn[6], payment_method_id))
-            print "REQUEST_RIDE:", respAPI
-
-            request_id = ""
-            status = ""
-            sqlstart = respAPI.find("<status>")
-            sqlstop = respAPI.find("</status>")
-            status = respAPI[sqlstart+8:sqlstop]
-            sqlstart = respAPI.find("<request_id>")
-            sqlstop = respAPI.find("</request_id>")
-            request_id = respAPI[sqlstart+12:sqlstop]
-
-            if sqlstart > -1:
-                incomingMsisdn[6] = request_id
-                incomingMsisdn[7] = access_token
-                #insert("delete from booking_uber where msisdn = '%s'" % (msisdn))
-                sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + request_id + "','" + status + "','" + logDtm +  "','" + access_token + "','line')"
-                print sql
-                insert(sql)
-                incomingMsisdn[11] = ""
-            else:
-                surge = ""
-                multiplier = ""
-                surge_confirmation_id = ""
-                request_id = "surge"
-
-                sqlstart = respAPI.find("<surge_confirmation_id>")
-                sqlstop = respAPI.find("</surge_confirmation_id>")
-                surge_confirmation_id = respAPI[sqlstart+23:sqlstop]
-                sqlstart = respAPI.find("<multiplier>")
-                sqlstop = respAPI.find("</multiplier>")
-                multiplier = respAPI[sqlstart+12:sqlstop]
-                sqlstart = respAPI.find("<surge>")
-                sqlstop = respAPI.find("</surge>")
-                surge = respAPI[sqlstart+7:sqlstop]
-                if sqlstart > -1:
-                    sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + request_id + "','" + surge_confirmation_id + "','" + logDtm +  "','" + access_token + "','line')"
-                    print sql
-                    insert(sql)
-                    answer = first_name + ", jam sekarang Uber lagi penuh, naik " + multiplier + " kali lipat tarif normal, jika tetep order, <a href=\"" + surge + "\">click disini</a>"
-                    #answer = answer + surge
-                    #sendMessageT2(msisdn, answer, 0)
-                    sendLinkMessageT2(msisdn, "dapat info Uber jam sekarang lagi penuh, naik " + multiplier + " kali lipat tarif normal, jika tetep order", 'Uber', 'Tetap Pesan', surge, 'http://128.199.88.72/line_images/uber.JPG')
-                else:
-                    sendMessageT2(msisdn, "Bang Joni, nggak dapat response dari Uber, coba lagi ya...", 0)
-        else: sendMessageT2(msisdn, "Bang Joni nggak dapat response dari Uber, ketik cancel untuk ulang", 0)
+        try:
+            request_ride = uber.request_ride(msisdn, pickle.loads(incomingMsisdn[1]), {incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare')
+            sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + 'x' + "','line')"
+            print sql
+            insert(sql)
+            sendMessageT2(msisdn, answer[4:], 0)
+        except SurgeError as e:
+            sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + 'surge' + "','" + e.surge_confirmation_id + "','" + logDtm + "','" + 'x' + "','line')"
+            print sql
+            insert(sql)
+            sendLinkMessageT2(msisdn, 'Uber', 'Uber lagi naik tarifnya', 'Tetap pesan', e.surge_confirmation_href, 'https://bangjoni.com/v2/carousel/images/uber.png')
 
 
     ####################TRAIN MODULE START####################
@@ -2944,30 +2821,12 @@ def uber_request_ride_surge(surge_confirmation_id):
         access_token = row[5]
         first_name = row[1]
     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-    if access_token != "" and incomingMsisdn[2] != -1 and incomingMsisdn[3] != -1:
-        print "http://128.199.139.105/uber/request_ride_surge.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&surge_id=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, surge_confirmation_id, incomingMsisdn[6])
-        respAPI = fetchHTML("http://128.199.139.105/uber/request_ride_surge.php?slatitude=%s&slongitude=%s&elatitude=%s&elongitude=%s&access_token=%s&surge_id=%s&product=%s" % (incomingMsisdn[2], incomingMsisdn[3], incomingMsisdn[4], incomingMsisdn[5], access_token, surge_confirmation_id, incomingMsisdn[6]))
-        print respAPI
-        request_id = ""
-        status = ""
-        sqlstart = respAPI.find("<status>")
-        sqlstop = respAPI.find("</status>")
-        status = respAPI[sqlstart+8:sqlstop]
-        sqlstart = respAPI.find("<request_id>")
-        sqlstop = respAPI.find("</request_id>")
-        request_id = respAPI[sqlstart+12:sqlstop]
-
-        if sqlstart > -1:
-            sendMessageT2(msisdn_uber, "Ok, Bang Joni order Uber dengan tarif peak...", 0)
-            incomingMsisdn[6] = request_id
-            incomingMsisdn[7] = access_token
-            #insert("delete from booking_uber where msisdn = '%s'" % (msisdn))
-            sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_id + "','" + status + "','" + logDtm +  "','" + access_token + "','line')"
-            print sql
-            insert(sql)
-            incomingMsisdn[11] = ""
-        else:
-            sendMessageT2(msisdn_uber, "Bang Joni, nggak dapat response dari Uber, coba lagi ya...", 0)
+    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {incomingMsisdn[2], incomingMsisdn[3]}, {incomingMsisdn[4], incomingMsisdn[5]}, 'fare', incomingMsisdn[6], surge_confirmation_id)
+    sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + access_token + "','line')"
+    print sql
+    insert(sql)
+    incomingMsisdn[11] = ""
+    sendMessageT2(msisdn_uber, "Ok, Bang Joni order Uber dengan tarif peak...", 0)
     lineNlp.redisconn.set("inc/%s" % (msisdn_uber), json.dumps(incomingMsisdn))
 
 
@@ -2982,136 +2841,40 @@ def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_
         first_name = row[1]
         access_token = row[5]
     if msisdn_uber != "":
-        incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-        sql = "update booking_uber set status = '%s' where msisdn = '%s' and request_id = '%s'" % (meta_status, msisdn_uber, meta_resource_id)
-        print sql
-        insert(sql)
-        if meta_status == "accepted":
-            print "http://128.199.139.105/uber/get_notified.php?status=accepted&access_token=%s&resourcehref=%s" % (access_token, urllib.quote_plus(resource_href))
-            respAPI = fetchHTML("http://128.199.139.105/uber/get_notified.php?status=accepted&access_token=%s&resourcehref=%s" % (access_token, urllib.quote_plus(resource_href)))
-            print respAPI
-            driver_phone = ""
-            driver_rating = ""
-            driver_name = ""
-            vehicle_make = ""
-            vehicle_model = ""
-            license_plate = ""
-            driver_picture = ""
-            vehicle_picture = ""
-            eta = ""
+        ride_detail = uber.get_ride_detail(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))))
 
-            sqlstart = respAPI.find("<driver_phone>")
-            sqlstop = respAPI.find("</driver_phone>")
-            driver_phone = respAPI[sqlstart+14:sqlstop]
-            sqlstart = respAPI.find("<driver_rating>")
-            sqlstop = respAPI.find("</driver_rating>")
-            driver_rating = respAPI[sqlstart+15:sqlstop]
-            sqlstart = respAPI.find("<vehicle_make>")
-            sqlstop = respAPI.find("</vehicle_make>")
-            vehicle_make = respAPI[sqlstart+14:sqlstop]
-            sqlstart = respAPI.find("<vehicle_model>")
-            sqlstop = respAPI.find("</vehicle_model>")
-            vehicle_model = respAPI[sqlstart+15:sqlstop]
-            sqlstart = respAPI.find("<license_plate>")
-            sqlstop = respAPI.find("</license_plate>")
-            license_plate = respAPI[sqlstart+15:sqlstop]
-            sqlstart = respAPI.find("<eta>")
-            sqlstop = respAPI.find("</eta>")
-            eta = respAPI[sqlstart+5:sqlstop]
+        if ride_detail['status'] == 'accepted' :
+            answer = "Bang Joni udah dapet Uber nih, kira-kira datang " + ride_detail['pickup']['eta'] + " menit lagi, berikut data driver-nya"
+            sendMessageT2(msisdn_uber, answer, 0)
+            answer = "Driver: " + ride_detail['driver']['name'] + "\nHP: " + ride_detail['driver']['phone_number'] + "\nRating: " + ride_detail['driver']['rating'] + "\nKendaraan: " + ride_detail['vehicle']['make'] + " " + ride_detail['vehicle']['model'] + "\nNopol: " + ride_detail['vehicle']['license_plate']
+            sendMessageT2(msisdn_uber, answer, 0)
+            linebot.send_image_message(msisdn_uber, ride_detail['driver']['picture_url'])
 
-            sqlstart = respAPI.find("<driver_picture>")
-            sqlstop = respAPI.find("</driver_picture>")
-            driver_picture = respAPI[sqlstart+16:sqlstop]
-            sqlstart = respAPI.find("<vehicle_picture>")
-            sqlstop = respAPI.find("</vehicle_picture>")
-            vehicle_picture = respAPI[sqlstart+17:sqlstop]
+            logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
+            log_book(logDtm, msisdn_uber, get_line_username(msisdn_uber), "UBER", ride_detail['driver']['name'] + "-" + ride_detail['driver']['phone_number'] + "-" + ride_detail['vehicle']['license_plate'])
 
-            sqlstart = respAPI.find("<driver_name>")
-            sqlstop = respAPI.find("</driver_name>")
-            driver_name = respAPI[sqlstart+13:sqlstop]
-            if sqlstart > -1:
-                answer = "Bang Joni sudah mendapatkan Uber buatmu, estimasi kedatangan " + eta + " menit, berikut data driver-nya:"
-                #sendMessageT2(msisdn_uber, answer, 0)
-                f = open('/usr/share/nginx/html/line_images/' + driver_picture.split('/')[-1],'wb')
-                f.write(urllib.urlopen(driver_picture).read())
-                f.close()
-                answer = "Driver: " + driver_name + "\nHP: " + driver_phone + "\nRating: " + driver_rating + "\nKendaraan: " + vehicle_make + " " + vehicle_model + "\nNopol: " + license_plate
-                #sendPhotoT2(msisdn_uber, '/tmp/' + driver_picture.split('/')[-1], answer)
-                sendPhotoCaptionT2(msisdn_uber, 'http://128.199.88.72/line_images/%s' % (driver_picture.split('/')[-1]), 'http://128.199.88.72/line_images/%s' % (driver_picture.split('/')[-1]), answer)
-                logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-                displayname = get_line_username(msisdn_uber)
-                log_book(logDtm, msisdn_uber, displayname, "UBER", driver_name + "-" + driver_phone + "-" + license_plate)
-
-                #f = open('/tmp/' + vehicle_picture.split('/')[-1],'wb')
-                #f.write(urllib.urlopen(vehicle_picture).read())
-                #f.close()
-                #answer = vehicle_model + ", Nopol " + license_plate
-                #sendPhotoT2(msisdn_uber, '/tmp/' + vehicle_picture.split('/')[-1], answer)
-
-
-        if meta_status == "ready":
-            print "http://128.199.139.105/uber/receipt_ride.php?access_token=%s&request_id=%s" % (access_token, meta_resource_id)
-            respAPI = fetchHTML("http://128.199.139.105/uber/receipt_ride.php?access_token=%s&request_id=%s" % (access_token, meta_resource_id))
-            print respAPI
-            total_charged = ""
-            duration = ""
-            distance = ""
-            distance_label = ""
-            currency_code = ""
-
-            sqlstart = respAPI.find("<duration>")
-            sqlstop = respAPI.find("</duration>")
-            duration = respAPI[sqlstart+10:sqlstop]
-            sqlstart = respAPI.find("<distance>")
-            sqlstop = respAPI.find("</distance>")
-            distance = respAPI[sqlstart+10:sqlstop]
-            sqlstart = respAPI.find("<distance_label>")
-            sqlstop = respAPI.find("</distance_label>")
-            distance_label = respAPI[sqlstart+16:sqlstop]
-            sqlstart = respAPI.find("<currency_code>")
-            sqlstop = respAPI.find("</currency_code>")
-            currency_code = respAPI[sqlstart+15:sqlstop]
-            sqlstart = respAPI.find("<total_charged>")
-            sqlstop = respAPI.find("</total_charged>")
-            total_charged = respAPI[sqlstart+15:sqlstop]
-            if sqlstart > -1:
-                #answer = first_name + ", total charge Uber %s %s, dengan jarak %s %s dan lama kamu perjalanan %s" % (currency_code, total_charged, distance, distance_label, duration)
-                answer = first_name + ", total charge Uber kamu %s, dengan jarak %s %s dan lama perjalanan kamu %s" % (total_charged, distance, distance_label, duration)
-                sendMessageT2(msisdn_uber, answer, 0)
-            else:
-                sendMessageT2(msisdn_uber, "Info charge, Bang Joni nggak dapat dari Uber", 0)
-                logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-                displayname = get_line_username(msisdn_uber)
-                log_paid(logDtm, msisdn_uber, displayname, "UBER", "")
-
-        if meta_status == "arriving":
+        elif ride_detail['status'] == 'arriving' :
             answer = "Uber-mu sudah mau sampe, siap-siap..."
             sendMessageT2(msisdn_uber, answer, 0)
 
-        if meta_status == "in_progress":
+        elif ride_detail['status'] == 'in_progress':
             answer = "Safe trip ya, pangggil bang Joni lagi klo butuh uber"
             sendMessageT2(msisdn_uber, answer, 0)
             answer = lineNlp.doNlp("exittorandom", msisdn_uber, first_name)
             try:
                 incomingMsisdn = create_incoming_msisdn()
+                lineNlp.redisconn.set("inc/%s" % (msisdn_uber), json.dumps(incomingMsisdn))
             except:
                 print "Error cancel order"
 
-        if meta_status == "no_drivers_available":
-            answer = "Bang Joni nggak nemu driver, kemungkinan lagi penuh.\nCoba lagi ntar ya.."
-            sendMessageT2(msisdn_uber, answer, 0)
-            answer = lineNlp.doNlp("exittorandom", msisdn_uber, first_name)
-
-        if meta_status == "driver_canceled":
+        elif ride_detail['status'] == 'driver_canceled':
             answer = "Driver-nya batalin pesenanmu.\nCoba lagi ntar ya.."
             sendMessageT2(msisdn_uber, answer, 0)
             answer = lineNlp.doNlp("exittorandom", msisdn_uber, first_name)
 
-        if meta_status == "completed":
+        elif ride_detail['status'] == 'completed':
             answer = "Bang Joni dapat pesen dari Uber: Terima Kasih telah memilih Uber dan sampai ketemu di perjalanan yg akan datang"
             sendMessageT2(msisdn_uber, answer, 0)
-            answer = lineNlp.doNlp("exittorandom", msisdn_uber, first_name)
-    lineNlp.redisconn.set("inc/%s" % (msisdn_uber), json.dumps(incomingMsisdn))
 
 
 @app.task(ignore_result=True)
@@ -3134,38 +2897,37 @@ def uber_authorization(msisdn, code):
         result_redirect = "https://www.bangjoni.com/uber_token?state=%s&code=%s" % (msisdn, code)
         print ">>>", result_redirect
         try:
-            #session = incomingMsisdn[1].get_session(result_redirect)
-            xx = pickle.loads(incomingMsisdn[1])
-            session = xx.get_session(result_redirect)
-
+            auth_flow = pickle.loads(incomingMsisdn[1])
+            session = auth_flow.get_session(result_redirect)
+            print uber.create_client(msisdn_uber, msisdn, code)
         except (ClientError, UberIllegalState), error:
             print ">>>", error
             return
 
         credential = session.oauth2credential
 
-        credential_data = {
-            'client_id': credential.client_id,
-            'redirect_url': credential.redirect_url,
-            'access_token': credential.access_token,
-            'expires_in_seconds': credential.expires_in_seconds,
-            'scopes': list(credential.scopes),
-            'grant_type': credential.grant_type,
-            'client_secret': credential.client_secret,
-            'refresh_token': credential.refresh_token,
-        }
+        # credential_data = {
+        #     'client_id': credential.client_id,
+        #     'redirect_url': credential.redirect_url,
+        #     'access_token': credential.access_token,
+        #     'expires_in_seconds': credential.expires_in_seconds,
+        #     'scopes': list(credential.scopes),
+        #     'grant_type': credential.grant_type,
+        #     'client_secret': credential.client_secret,
+        #     'refresh_token': credential.refresh_token,
+        # }
         print "1>>>>", credential.access_token, credential.refresh_token, credential.expires_in_seconds
 
-        myUber = UberRidesClient(session, sandbox_mode=False)
-        try:
-            response = myUber.get_user_profile()
-            profile = response.json
-            first_name = profile.get('first_name')
-            email = profile.get('email')
-            print ">>>>", first_name, email
-        except (ClientError, ServerError), error:
-            print ">>>", error
-            return
+        # myUber = UberRidesClient(session, sandbox_mode=False)
+        # try:
+        #     response = myUber.get_user_profile()
+        #     profile = response.json
+        #     first_name = profile.get('first_name')
+        #     email = profile.get('email')
+        #     print ">>>>", first_name, email
+        # except (ClientError, ServerError), error:
+        #     print ">>>", error
+        #     return
 
         sql = "update token_uber set access_token='%s', refresh_token='%s', expires_in_sec='%s', email='%s' where msisdn='%s'" % (credential.access_token, credential.refresh_token, credential.expires_in_seconds, email, msisdn_uber)
         print sql
@@ -3542,6 +3304,13 @@ def doworker(req):
 
                     answer = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
+            if postback_event == 'uber_payment':
+                method_id = urlparse.parse_qs(parsed.query)['pmt_id'][0]
+                desc = urlparse.parse_qs(parsed.query)['pmt_desc'][0]
+                incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
+                incomingMsisdn[7] = {'payment_method_id':method_id, 'description':desc}
+                lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
+                onMessage(msisdn, 'ub04', get_line_username(msisdn))
 
 # ---------- DWP MODULE START ----------
 @app.task

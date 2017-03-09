@@ -473,17 +473,23 @@
 
 ///////////////////////////////////START UBER
 + [*] [tolong|mau] [order|pesen|psn|booking] (taksi|taxi|uber|uberbj) [*]
-- ub01 Mau naik uberX atau uberMotor? {topic=uber}  <set mycontext=uber>
-//- Yah maaf ya <first_name>, gue belom bisa panggilin Uber buat lo nih. <br>
-//^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-//^ Tungguin yaa ;)
+//- ub01 Sip, sekarang share lokasi lo dengan cara click tombol + (sebelah tombol emoticon) {topic=uber}  <set mycontext=uber>
+- Yah maaf ya <first_name>, gue belom bisa panggilin Uber buat lo nih. <br>
+^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
+^ Tungguin yaa ;)
+
++ ubertest
+- ub01 TEST Sip, sekarang share lokasi lo dengan cara click tombol + (sebelah tombol emoticon) {topic=uber}  <set mycontext=uber>
 
 > topic uber inherits global
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
   - ch02 Oke, gue batalin nih ya Uber-nya.{topic=random}
 
+  + ub02a
+  - Sekarang share lokasi tujuanmu dengan cara click tombol + sebelah tombol smile dan tap Share Location
+
   + ub02
-  - ub02 Oke, gue cariin dulu ya driver-nya, nanti gue kasih tau kalo udah dapet...
+  - ub02 Tuh udah Bang Joni cariin Uber, cuma buat kamu. Tinggal pilih aja mau naik motor apa mobil...
 
   + exittorandom
   - exittorandom {topic=random}
@@ -493,13 +499,17 @@
   ^ Gue perlu itu untuk pertama kali pesen Uber, nanti setelahnya bisa langsung kok, nggak harus login lagi. {topic=random}
 
   + [*] (ubermotor|uberx|uber x|ubermobil|uber mobil|uber motor) [*]
-  - Sip, sekarang share lokasi lo dengan cara click tombol + (sebelah tombol emoticon) <set uber_product=<star1>>
+  - ub03 Oke, pilih metode pembayaran di atas yak <set uber_product=<star1>>
 
   + [*] (yes|ok|lanjut|oke|ya) [*]
   - ub03 Oke, pilih metode pembayaran-nya:
 
   + [*] (cash|mastercard|visa) [*]
   - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. <set uber_payment=<star1>>
+
+  + ub04
+  - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. {topic=random}<set uber_payment=<star1>>
+
 < topic
 
 ///////////////////////////////////START ZOMATO

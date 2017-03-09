@@ -142,11 +142,11 @@ class Nlp:
             bookingMsisdn = {}
 
         #add uber
-        if answer[:4] == "ub02" :
+        if answer[:4] == "ub03" :
             x = self.get_uservar(msisdn,"uber_product")
-            incomingMsisdn[6] = "uberX"
+            incomingMsisdn[6] = {'product':'uberX', 'id':'89da0988-cb4f-4c85-b84f-aac2f5115068'}
             if x == "ubermotor":
-                incomingMsisdn[6] = "uberMotor"
+                incomingMsisdn[6] = {'product':'uberX', 'id':'776ea734-1404-4a40-bf09-ebcb2acf6f2b'}
 
 
         if answer[:4] == "ub04" :
