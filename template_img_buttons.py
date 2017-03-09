@@ -55,7 +55,7 @@ def compose_img_buttons(alt_text, thumbnail_url, title, description, actions):
         elif action['type'] == 'message':
             img_actions.append(MessageTemplateAction(label=action['label'], text=action['text']))
         elif action['type'] == 'uri':
-            img_actions.append(MessageTemplateAction(label=action['label'], uri=action['uri']))
+            img_actions.append(URITemplateAction(label=action['label'], uri=action['uri']))
     return TemplateSendMessage(
         alt_text=alt_text,
         template=ButtonsTemplate(
