@@ -2223,6 +2223,7 @@ def onMessage(msisdn, ask, first_name):
             token_uber = row[2]
 
         if token_uber == "" or token_uber == "X":
+            lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
             auth_flow = uber.get_auth(msisdn)
             auth_url = auth_flow.get_authorization_url()
             state = auth_flow.state_token
@@ -2233,6 +2234,7 @@ def onMessage(msisdn, ask, first_name):
             insert(sql)
             # incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
             sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
+            incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
         else:
             #answer = "Share lokasimu dengan cara click tombol PIN dan tap Location"
             # answer = "Mau naik uberX atau uberMotor?"
