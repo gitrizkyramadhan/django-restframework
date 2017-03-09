@@ -361,7 +361,7 @@ def sendRichCaptionT2(msisdn, link_url, message, keyboard):
 def sendLinkMessageT2(msisdn, message1, message2, message3, link_url, previewImageUrl):
     # print "-x-x-x-x-x-x-", message1, message2, message3, link_url
     # linebot.send_link_message(msisdn, message1.strip(), message2, message3, link_url, previewImageUrl)
-    linebot.send_link_message(msisdn, previewImageUrl, message1, message2, message3, link_url)
+    linebot.send_link_message(msisdn, 'Link Message', previewImageUrl, message1, message2, message3, link_url)
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
     save_last10chat(logDtm, msisdn, message1.strip(), 'BJ')
 
