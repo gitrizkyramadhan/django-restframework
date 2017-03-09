@@ -2260,7 +2260,7 @@ def onMessage(msisdn, ask, first_name):
 
 
     if answer[:4] == "ub03":
-        methods = uber.get_payment_methods(msisdn, lineNlp.redisconn.get("cred/%s" % (msisdn)))
+        methods = uber.get_payment_methods(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))))
         linebot.send_composed_carousel(msisdn, "Uber Payments", create_uber_payments(msisdn, methods))
         sendMessageT2(msisdn, answer, 0)
 
@@ -2271,7 +2271,7 @@ def onMessage(msisdn, ask, first_name):
         # payment_method_id = ""
 
         try:
-            request_ride = uber.request_ride(msisdn, pickle.loads(incomingMsisdn[1]), {incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare')
+            request_ride = uber.request_ride(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))), {incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare')
             sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + 'x' + "','line')"
             print sql
             insert(sql)
@@ -2821,7 +2821,7 @@ def uber_request_ride_surge(surge_confirmation_id):
         access_token = row[5]
         first_name = row[1]
     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {incomingMsisdn[2], incomingMsisdn[3]}, {incomingMsisdn[4], incomingMsisdn[5]}, 'fare', incomingMsisdn[6], surge_confirmation_id)
+    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {incomingMsisdn[2], incomingMsisdn[3]}, {incomingMsisdn[4], incomingMsisdn[5]}, 'fare', incomingMsisdn[6]['id'], surge_confirmation_id)
     sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + access_token + "','line')"
     print sql
     insert(sql)
