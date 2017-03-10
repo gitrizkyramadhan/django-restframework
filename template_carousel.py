@@ -251,7 +251,7 @@ carousels = [{
 },{
     "id" : "info_other",
     "payload" : TemplateSendMessage(
-        alt_text='Other transportation',
+        alt_text='Other information',
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
