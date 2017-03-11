@@ -2326,7 +2326,8 @@ def onMessage(msisdn, ask, first_name):
                                 credentials.get('redirect_url'),
                             )
                             auth_url = incomingMsisdn[1].get_authorization_url()
-                            sendLinkMessageT2(msisdn, 'belum terhubung dengan account Ubermu\nUntuk memberikan ijin Bang Joni terhubung account Ubermu tap Ijin Uber', 'Uber', 'Ijin Uber', auth_url, 'http://128.199.88.72/line_images/uber.JPG')
+                            sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
+                            incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
                         else :
                             sendMessageT2(msisdn, "Bang Joni nggak dapat %s, coba ulangi dari awal ya..." % (incomingMsisdn[6]), 0)
                             answer = lineNlp.doNlp("exittorandom", msisdn, first_name)

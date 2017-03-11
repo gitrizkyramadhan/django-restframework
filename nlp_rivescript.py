@@ -42,7 +42,7 @@ class Nlp:
         #[cmd,service,2015-10-10,CGK,DPS,date,yes,no,GARUDA,adult,child,infant,logDtm,token,block reply,phase,with_paspor,with_baggage,flight_number,airlines_name,departure_time,CGK_str,DPS_str,pagi,langsung,reset/termurah,tahun]
 
         #self.redisconn = redis.StrictRedis(password="1ee5f1d25745de4d5ccc09a69119da6c82636cdb20bed280e595ed16cee6301a")
-        self.redisconn = redis.StrictRedis()
+        self.redisconn = redis.StrictRedis(host="139.59.224.156")
 
         #self.incomingMsisdn = {}
 
