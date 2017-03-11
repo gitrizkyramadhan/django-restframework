@@ -1,5 +1,4 @@
 
-
 + [*] (@test) [*]
 - {@halo}
 
@@ -31,6 +30,10 @@
 - Ok!
 - Okeee..
 - Sip!
+
++ [*] (@makian) [*] {weight=5}
+- Ish jangan gitu ah ngomongnya.. :/
+- Busyettt.. Jangan ngomong kasar ah, gak keren :/
 
 + [*] iseng [*] {weight=10}
 - Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
@@ -580,7 +583,7 @@
 
 
 + [*] transportasi lainnya [*]
-- gr02 Pilih jenis transportasi
+- gr02 Oke deh! Silakan pilih jenis transportasi lain di bawah ini yaa..
 
 + [*] info lainnya [*]
-- gr03 Pilih informasi lainnya
+- gr03 Oke deh! Silakan pilih informasi lain di bawah ini yaa..
