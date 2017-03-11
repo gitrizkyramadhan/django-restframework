@@ -1,10 +1,3 @@
-! version 2 = reservation
-! version 2 = reservation
-
-
-+ usertoprofiling
-- Halo <first_name>, apa kabar? Gue Bang Joni, temen virtual yang hidup di Line Messenger.<br>
-^ Eh iya, namanya bener <first_name> ya? Atau ada panggilan lain nih? {topic=nama}
 
 
 + [*] (@test) [*]
@@ -12,27 +5,27 @@
 
 + [*] (@halo) [*]
 - gr01 Halo, <first_name>! <br>
-^ Apa yang bisa gue bantu nih? 0x100005
-- gr01 Ya? Mau gue bantu apa nih, <first_name>? 0x100005
+^ Apa yang bisa gue bantu nih? ;)
+- gr01 Ya? Mau gue bantu apa nih, <first_name>? ;)
 - gr01 Halo juga! <br>
-^ Ada yang bisa gue bantu, <first_name>? 0x100005
+^ Ada yang bisa gue bantu, <first_name>? ;)
 
 + [*] (@assalamualaikum) [*] {weight=10}
-- gr01 Wa'alaikumsalam, <first_name>! 0x100002 <br>
+- gr01 Wa'alaikumsalam, <first_name>! :) <br>
 ^ Apa yang bisa gue bantu nih?
 
 + [*] (@salam kenal) [*] {weight=10}
 - gr01 Yooo... <first_name>, salam kenal juga ya! <br>
-^ Apa yang bisa gue bantu nih? 0x100002
+^ Apa yang bisa gue bantu nih? :)
 
 + @test
 - gr01 Yuhuu.. Tes.. Tes.. <br>
-^ Apa yang bisa gue bantu nih? 0x100002
+^ Apa yang bisa gue bantu nih? :)
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa 0x100002
+- Sip! Sama-sama yaa :)
 - You're welcome!
-- Sama-sama yaa 0x100002
+- Sama-sama yaa :)
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -40,10 +33,10 @@
 - Sip!
 
 + [*] iseng [*] {weight=10}
-- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan}
+- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 
 + [*] (@bosen) [*] {weight=10}
-- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan}
+- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
@@ -52,13 +45,13 @@
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx
 
 + *
-- Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu 0x100011 <br>
+- Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
 ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
-- Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu 0x100011 <br>
+- Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
 ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
 
 + [*] (@gakada) [*]
-- Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan} 
+- Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
@@ -80,7 +73,7 @@
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 - Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 ^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa 0x100005
+^ Tungguin yaa ;)
 
 + [*] (@pesawat) [*] {weight=10}
 //- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
@@ -88,7 +81,7 @@
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 - Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 ^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa 0x100005
+^ Tungguin yaa ;)
 
 + [*] (@xtrans) [*] {weight=11}
 - xt01 Oke 0x100033! Itu daftar pool keberangkatan Xtrans. <br>
@@ -99,9 +92,9 @@
 - {topic=random}
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa 0x100002
+- Sip! Sama-sama yaa :)
 - You're welcome!
-- Sama-sama yaa 0x100002
+- Sama-sama yaa :)
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -148,7 +141,7 @@
   - Sama-sama <first_name>
   - You're welcome <first_name>
   - Anytime <first_name>!
-  - Yoi sama-sama 0x100002
+  - Yoi sama-sama :)
 
   + (*)
   - {topic=random}{@ <star>}
@@ -156,7 +149,7 @@
 
   + [*] (menu|bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
   - gr01 Loh, waktu itu kan udah kenalan. <br>
-  ^ Gue tuh temen virtual yang hidup di Line messenger lo 0x100001 <br>
+  ^ Gue tuh temen virtual yang hidup di Line messenger lo :D <br>
   ^ Btw, ada apa nih? Apa yang bisa gue bantu?  {topic=random}
 
   + userexittorandom
@@ -230,7 +223,7 @@
 
 + kamus off
 - tr02 Sip! Mode translator-nya udah gue matiin. <br>
-^ Lumayan lah yaa bahasa asing gue, boleh juga 0x100001
+^ Lumayan lah yaa bahasa asing gue, boleh juga :D
 
 
 ///////////////////////////////////SALDO CHECK BJPAY
@@ -260,7 +253,7 @@
 
 + bj05
 - <first_name>, sori ya ini gue cek kayaknya pulsa yang lo beli buat nomer <phone_number> gak masuk nih, gue refund saldo BJPay-nya ya Rp <bjpay_refund> <br>
-^ Coba 15 menit lagi deh kalo mau beli pulsa, mudah-mudahan udah bisa nanti 0x100002 <br>
+^ Coba 15 menit lagi deh kalo mau beli pulsa, mudah-mudahan udah bisa nanti :) <br>
 ^ Sorry yaa..
 
 

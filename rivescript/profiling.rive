@@ -1,4 +1,3 @@
-
 > topic nama
     + [*] [@namaku] (*) [*]
     - Oke deh! Jadi gue manggilnya <star2> ya? {topic=jawaban_nama} <set star2=name>
@@ -8,7 +7,7 @@
 
     + [*] (@betul) [*] {weight=5}
     - Oke deh <get name>! <br>
-    ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih 0x100010 {topic=cewekataucowok}
+    ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 
     + [*] (@panggilan) (*) [*] {weight=5}
     - Sip! Berarti gue manggilnya <star3> aja nih ya? <set star3=name> {topic=jawaban_nama}
@@ -17,88 +16,88 @@
     - Siapa tuh namanya?
 
     + [*] (@salah) [*] {weight=5}
-    - Loh? Terus jadinya nama lo siapa dong? 0x10000E
+    - Loh? Terus jadinya nama lo siapa dong? -_-"
 
     + [*] (@nggak) [*] {weight=5}
     - Ih kan biar akrab gitu loohh.. <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya?
 
     + [*] (ada deh|adadeh|adade|ada de|ada d|ad deh|ad de) [*] {weight=7}
     - Ih kan biar akrab gitu loohh.. <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya?
 
     + [*] (@makian) [*] {weight=5}
     - Ish jangan gitu ah.. 0x10001C <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya?
 
     + [*] (@pesawat) [*]
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@xtrans) [*]
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@pulsa) [*]
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@token) [*]
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@uber) [*]
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@cuaca) [*]
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@zomato) [*]
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@jalantol) [*]
     - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@ingetin) [*]
     - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 < topic
 
 > topic jawaban_nama
     + [*] (@betul) [*]
     - Oke deh <get name>! <br>
-    ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih 0x100010 {topic=cewekataucowok}
+    ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 
     + [*] (@salah) [*]
-    - Loh? Terus jadinya nama lo siapa dong? 0x10000E {topic=nama}
+    - Loh? Terus jadinya nama lo siapa dong? -_-" {topic=nama}
 
     + [*] (@jangan) [*]
-    - Loh? Terus jadinya nama lo siapa dong? 0x10000E {topic=nama}
+    - Loh? Terus jadinya nama lo siapa dong? -_-" {topic=nama}
 
     + [*] (@nggak) [*]
     - Ih kan biar akrab gitu loohh.. <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya? {topic=nama}
 
     + [*] (@makian) [*]
     - Ish jangan gitu ah.. <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya?
 
     + *
     - Kenapa gitu? <br>
-    ^ Masa mau tau namanya aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa mau tau namanya aja nggak boleh? Boleh dong :D <br>
     ^ Siapa coba namanya? {topic=nama}
 
     + [*] (@hahaha|@wk) [*] {weight=10}
@@ -106,43 +105,43 @@
 
     + [*] (@pesawat) [*]
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@xtrans) [*]
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@pulsa) [*]
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@token) [*]
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@uber) [*]
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@cuaca) [*]
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@zomato) [*]
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@jalantol) [*]
     - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@ingetin) [*]
     - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
-    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. 0x100005
+    ^ Tapi jawab dulu dong namanya siapa, biar kenal gituu.. :)
 < topic
 
 > topic cewekataucowok
@@ -163,75 +162,75 @@
 
     + [*] (@nggak) [*]
     - Ih kan biar nggak salah manggil gitu loohh.. <br>
-    ^ Masa nanya gitu aja nggak boleh? Boleh laahh.. 0x10000B <br> {topic=nama}
+    ^ Masa nanya gitu aja nggak boleh? Boleh laahh.. :D <br> {topic=nama}
 
     + *
     - Kenapa gitu?
-    ^ Masa nanya gitu aja nggak boleh? Boleh dong 0x100005 <br>
+    ^ Masa nanya gitu aja nggak boleh? Boleh dong :) <br>
     ^ Biar nggak salah manggil gue, hehehe..
     - Kok gitu?
-    ^ Masa nanya gitu aja nggak boleh? Boleh dong 0x100005 <br>
+    ^ Masa nanya gitu aja nggak boleh? Boleh dong :) <br>
     ^ Biar nggak salah manggil gue, hehehe..
 
     + [*] (@makian) [*]
     - Ish jangan gitu ah.. <br>
-    ^ Masa nanya gitu aja nggak boleh? Boleh dong 0x10000B <br>
+    ^ Masa nanya gitu aja nggak boleh? Boleh dong :D <br>
 
     + [*] (@pesawat) [*]
     - Iya nanti lo bisa kok cari tiket pesawat yang murah sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@xtrans) [*]
     - Iya nanti lo bisa kok booking tiket Xtrans sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@pulsa) [*]
     - Iya nanti lo bisa kok isi pulsa HP lo sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@token) [*]
     - Iya nanti lo bisa kok beli token listrik sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@uber) [*]
     - Iya nanti lo bisa kok minta panggilin Uber sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@cuaca) [*]
     - Iya nanti lo bisa kok cek-cek info cuaca sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@zomato) [*]
     - Iya nanti lo bisa kok cek-cek info restoran yang enak sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@jalantol) [*]
     - Iya nanti lo bisa kok cek-cek info jalan tol sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@ingetin) [*]
     - Iya nanti lo bisa kok bikin notes reminder sama gue. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 
     + [*] (@terjemahin) [*]
     - Iya nanti gue bisa kok jadi translator pribadi lo. <br>
-    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. 0x100005
+    ^ Tapi jawab dulu dong lo cewek apa cowok, biar nggak salah manggil nih gue.. :)
 < topic
 
 > topic tinggal_kota inherits
     + [*] (@city1|@city2|@city3|@city4|@city5|@city6|@city7|@city8|@city9|@city10) [*]
-    - prf05 Wih asik! Gue punya temen baru dari <star> 0x100033 <br>
+    - prf05 Wih asik! Gue punya temen baru dari <star> :) <br>
     ^ Yowes deh, sekarang apa yang bisa gue bantu nih?  <set city=<star>>{topic=random}
 
     + [*] (@nggak) [*]
     - Yah kok gitu? Siapa tau kita tetanggaan? <br>
-    ^ Emang lo tinggalnya sekarang di kota mana sih? 0x100002
+    ^ Emang lo tinggalnya sekarang di kota mana sih? :)
 
     + *
     - Kok gitu? <br>
     ^ Gue kan cuma mau tau aja, masa gak boleh? <br>
-    ^ Emang lo tinggalnya sekarang di kota mana sih? 0x100002
+    ^ Emang lo tinggalnya sekarang di kota mana sih? :)
 
     + [*] (@hahaha|@wk) [*] {weight=10}
-    - Ih kok malah ketawa? Serius nih gue, emang lo tinggalnya sekarang di kota mana sih? 0x100002
+    - Ih kok malah ketawa? Serius nih gue, emang lo tinggalnya sekarang di kota mana sih? :)
 <topic
