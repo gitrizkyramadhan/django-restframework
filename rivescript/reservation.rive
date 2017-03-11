@@ -22,9 +22,9 @@
 ^ Apa yang bisa gue bantu nih? :)
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :)
-- You're welcome!
-- Sama-sama yaa :)
+- Sip! Sama-sama yaa :) {topic=random}
+- You're welcome! {topic=random}
+- Sama-sama yaa :) {topic=random}
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -68,7 +68,11 @@
 + [*] (@pulsa) [*] {weight=11}
  - Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
-
++ [*] [@hariini|@besok] (@ujan) [*] {weight=10}
+- we01 Nggak tau juga deh, coba gue cek ya!\n\n
+^ Pake fitur share location lo ya untuk menentukan lokasinya (tombol + samping tombol emoticon)\n\n
+^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain.<br>
+^ Nanti gue kasih info perkiraan cuaca berdasarkan lokasi yang lo pilih ;)
 
 + [*] (@cari) [*] (@pesawat) [*] {weight=20}
 //- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
@@ -95,9 +99,9 @@
 - {topic=random}
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :)
-- You're welcome!
-- Sama-sama yaa :)
+- Sip! Sama-sama yaa :) {topic=random}
+- You're welcome! {topic=random}
+- Sama-sama yaa :) {topic=random}
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -141,10 +145,10 @@
   - okee
 
   + [*] (thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih) [*]
-  - Sama-sama <first_name>
-  - You're welcome <first_name>
-  - Anytime <first_name>!
-  - Yoi sama-sama :)
+  - Sama-sama <first_name> {topic=random}
+  - You're welcome <first_name> {topic=random}
+  - Anytime <first_name>! {topic=random}
+  - Yoi sama-sama :) {topic=random}
 
   + (*)
   - {topic=random}{@ <star>}
@@ -521,7 +525,7 @@
 ^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain.<br>
 ^ Nanti gue kasih info perkiraan cuaca berdasarkan lokasi yang lo pilih ;)
 
-+ [*] (hari ini bakal ujan gak ya bang|hari ini ujan gak bang|hari ini ujan gak ya|hari ini bakal ujan gak ya|hari ini ujan gak|hari ini bakal ujan nggak ya bang|hari ini ujan nggak bang|hari ini ujan nggak ya|hari ini bakal ujan nggak ya|hari ini ujan nggak|hari ini bakal ujan ngga ya bang|hari ini ujan ngga bang|hari ini ujan ngga ya|hari ini bakal ujan ngga ya|hari ini ujan ngga|hari ini bakal ujan ga ya bang|hari ini ujan ga bang|hari ini ujan ga ya|hari ini bakal ujan ga ya|hari ini ujan ga) [*]
++ [*] [@hariini|@besok] (@ujan) [*] {weight=10}
 - we01 Nggak tau juga deh, coba gue cek ya!\n\n
 ^ Pake fitur share location lo ya untuk menentukan lokasinya (tombol + samping tombol emoticon)\n\n
 ^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain.<br>
