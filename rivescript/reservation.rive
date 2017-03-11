@@ -94,7 +94,7 @@
 ^ Tungguin yaa ;)
 
 + [*] (@xtrans) [*] {weight=11}
-- xt01 Oke 0x100033! Itu daftar pool keberangkatan Xtrans. <br>
+- xt01 Oke! Itu daftar pool keberangkatan Xtrans. <br>
 ^ Lo mau berangkat dari mana, <first_name>?\n
 ^ Ketik aja nama poolnya (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
 

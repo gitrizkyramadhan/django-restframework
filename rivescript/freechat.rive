@@ -23,6 +23,22 @@
 //+ [*] (@beli) (@pesawat) [*] {weight=11}
 - co00 Kamu mau beli tiket pesawat di Bang Joni? <set res_topic=pesawat> {topic=askservice}
 
+> topic bioskop inherits random
+    
+    + [*] (@nggak|@males) [*]
+    - zo00 Hmm.. Yaudah kalo gitu jangan nonton deh.. Jajan-jajan aja gimana? <br>
+    ^ Gue punya info soal restoran atau cafe-cafe yang enak loh.. <br>
+    ^ Lo tentuin dulu lokasinya mau di mana, pake fitur share location (tombol + samping tombol emoticon). <br>
+    ^ Nanti gue kasih tau deh tempat-tempat yang bisa jajan-jajan enak :9 {topic=zomato} <set mycontext=zomato>
+    - Yaudah kalo gitu tidur aja deh dari pada bingung mau ngapain :D
+    
+
+    + [*] (@beli|@cari) [*] (@tiket) [*]
+    - Yahh.. Kalo sementara ini gue belom bisa beliin tiket bioskop buat lo nih. <br>
+    ^ Tapi kalo lo mau beli tiket bioskop, coba cek di sini deh >> https://id.bookmyshow.com/film/ <br>
+    ^ Semoga membantu yaa.. ;) {topic=random}
+
+< topic
 
 > topic freechatservice inherits random
 
