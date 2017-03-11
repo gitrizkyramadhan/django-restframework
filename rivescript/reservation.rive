@@ -6,32 +6,33 @@
 - Halo <first_name>, apa kabar? Gue Bang Joni, temen virtual yang hidup di Line Messenger.<br>
 ^ Eh iya, namanya bener <first_name> ya? Atau ada panggilan lain nih? {topic=nama}
 
+
 + [*] (@test) [*]
 - {@halo}
 
 + [*] (@halo) [*]
 - gr01 Halo, <first_name>! <br>
-^ Apa yang bisa gue bantu nih? :)
-- gr01 Ya? Mau gue bantu apa nih, <first_name>?
+^ Apa yang bisa gue bantu nih? 0x100005
+- gr01 Ya? Mau gue bantu apa nih, <first_name>? 0x100005
 - gr01 Halo juga! <br>
-^ Ada yang bisa gue bantu, <first_name>?
+^ Ada yang bisa gue bantu, <first_name>? 0x100005
 
 + [*] (@assalamualaikum) [*] {weight=10}
-- gr01 Wa'alaikumsalam, <first_name>! <br>
-^ Apa yang bisa gue bantu nih? :)
+- gr01 Wa'alaikumsalam, <first_name>! 0x100002 <br>
+^ Apa yang bisa gue bantu nih?
 
 + [*] (@salam kenal) [*] {weight=10}
 - gr01 Yooo... <first_name>, salam kenal juga ya! <br>
-^ Apa yang bisa gue bantu nih? :)
+^ Apa yang bisa gue bantu nih? 0x100002
 
 + @test
 - gr01 Yuhuu.. Tes.. Tes.. <br>
-^ Apa yang bisa gue bantu nih? :)
+^ Apa yang bisa gue bantu nih? 0x100002
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :)
+- Sip! Sama-sama yaa 0x100002
 - You're welcome!
-- Sama-sama yaa ;)
+- Sama-sama yaa 0x100002
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -39,10 +40,10 @@
 - Sip!
 
 + [*] iseng [*] {weight=10}
-- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+- Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan}
 
 + [*] (@bosen) [*] {weight=10}
-- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
+- Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
@@ -50,8 +51,14 @@
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx
 
++ *
+- Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu 0x100011 <br>
+^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
+- Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu 0x100011 <br>
+^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
+
 + [*] (@gakada) [*]
-- Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan} 
+- Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? 0x100003 {topic=tebak_tebakan} 
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying
 - Gak ada kerjaan ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
@@ -63,7 +70,7 @@
 - Tiket apa nih?
 
 + [*] (@pulsa) [*] {weight=11}
- - Mau isi pulsa? Mana sini nomernya.  {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+ - Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 
 
@@ -73,7 +80,7 @@
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 - Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 ^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa ;)
+^ Tungguin yaa 0x100005
 
 + [*] (@pesawat) [*] {weight=10}
 //- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
@@ -81,10 +88,10 @@
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 - Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 ^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa ;)
+^ Tungguin yaa 0x100005
 
 + [*] (@xtrans) [*] {weight=11}
-- xt01 Oke! Itu daftar pool keberangkatan Xtrans <br>
+- xt01 Oke 0x100033! Itu daftar pool keberangkatan Xtrans. <br>
 ^ Lo mau berangkat dari mana, <first_name>?\n
 ^ Ketik aja nama poolnya (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
 
@@ -92,9 +99,9 @@
 - {topic=random}
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :)
+- Sip! Sama-sama yaa 0x100002
 - You're welcome!
-- Sama-sama yaa ;)
+- Sama-sama yaa 0x100002
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -110,18 +117,18 @@
 ^ Apa yang bisa gue bantu nih?
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
-- co00 Yakin banget nih gak jadi? {topic=cancelconfirm}
+- co00 Oke, mau di-cancel nih ya? {topic=cancelconfirm}
 //- ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
 
 > topic cancelconfirm
 
     + [*] (@mau) [*]
-    * <get mycontext> == uber => ch02 Oke, bang joni batalin uber-mu{topic=random}
+    * <get mycontext> == uber => ch02 Oke, gue batalin uber-nya nih.{topic=random}
     - ca01 Yaudah deh, udah gue batalin nih {topic=random}
     - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random}
 
     + [*] (@nggak) [*]
-    - Okee lanjut {topic=<get mycontext>}
+    - Okee {topic=<get mycontext>}
 
     + *
     - Gue gak ngerti dah, seriusan. Yakin banget nih gak jadi?
@@ -141,14 +148,15 @@
   - Sama-sama <first_name>
   - You're welcome <first_name>
   - Anytime <first_name>!
-  - Yoi sama-sama :D
+  - Yoi sama-sama 0x100002
 
   + (*)
   - {topic=random}{@ <star>}
 
+
   + [*] (menu|bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
   - gr01 Loh, waktu itu kan udah kenalan. <br>
-  ^ Gue tuh temen virtual yang hidup di Line messenger lo :D <br>
+  ^ Gue tuh temen virtual yang hidup di Line messenger lo 0x100001 <br>
   ^ Btw, ada apa nih? Apa yang bisa gue bantu?  {topic=random}
 
   + userexittorandom
@@ -181,16 +189,16 @@
 - OK
 
 + [*] lihat reminder [*]
-- re02 Okay, berikut daftar remindermu:
+- re02 Oke, ini list reminder lo yaa:
 
 + [*] hapus reminder [*]
 - Sorry, layanan penghapusan reminder masih belom ada ya.
 
 + [*] (set|ubah|ganti) [*] (kota|lokasi) [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
-- sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star3>> <get sholat_kota>
+- sc01 Ok <first_name>, gue set reminder-nya dengan waktu kota <set sholat_kota=<star3>> <get sholat_kota>
 
 + [*] (set|ubah|ganti) [*] (kota|lokasi) [*]
-- Ok <first_name>, kamu sekarang di kota mana? {topic=setcity3}
+- Ok <first_name>, lo sekarang di kota mana? {topic=setcity3}
 
 
 
@@ -222,7 +230,7 @@
 
 + kamus off
 - tr02 Sip! Mode translator-nya udah gue matiin. <br>
-^ Semoga translator-nya ngebantu yaa..
+^ Lumayan lah yaa bahasa asing gue, boleh juga 0x100001
 
 
 ///////////////////////////////////SALDO CHECK BJPAY
@@ -252,7 +260,7 @@
 
 + bj05
 - <first_name>, sori ya ini gue cek kayaknya pulsa yang lo beli buat nomer <phone_number> gak masuk nih, gue refund saldo BJPay-nya ya Rp <bjpay_refund> <br>
-^ Coba 15 menit lagi deh kalo mau beli pulsa, mudah-mudahan udah bisa nanti :) <br>
+^ Coba 15 menit lagi deh kalo mau beli pulsa, mudah-mudahan udah bisa nanti 0x100002 <br>
 ^ Sorry yaa..
 
 
@@ -272,7 +280,7 @@
 
 ///////////////////////////////////START PULSA HP
 + [*] (@pulsa) [*] {weight=10}
-- Mau isi pulsa? Mana sini nomernya. {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+- Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 
 
@@ -290,7 +298,7 @@
 ^ Kalo iya, langsung ketik aja nomernya (contoh 0812xxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=1>
 
 > topic deposit inherits global
-  + (bank permata|bca)
+  + (bank permata|transfer bca)
   - bj03 Okee, lo mau deposit berapa <first_name>? <br>
   ^ Isi nominalnya nggak usah pake titik ya, misalnya 100000. <br>
   ^ Oiya, pastiin nominal depositnya cukup buat beli pulsanya yaa.. <set deposit_bank=<star>>
@@ -320,12 +328,6 @@
   + bjpay register
   - Oke! Ketik nomer HP yang mau lo daftarin buat akun BJPay <br>
   ^ Formatnya gini ya, 08xxxxxx {topic=registerbjpay} <set mycontext=registerbjpay>
-
-  + *
-  - Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :/ <br>
-  ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti..
-  - Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :/ <br>
-  ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti..
   
 < topic
 
@@ -566,9 +568,9 @@
 - mgm03 Eittss.. Sebelom ikutan promo ini, lo mesti punya akun BJPay dulu. Ketik BJPAY REGISTER, sekarang!
 
 
-+ ref (*)
-- mgm03 Selamat, lo dapet saldo BJPay sebesar Rp 5000 dari invitation code yang lo input. Untuk mengaktifkan akun BJPay lo, silakan ketik BJPAY REGISTER.\n\n
-^ Mau tambahan saldo lagi? Lo bisa dapetin saldo BJPay Rp 500 tiap ajak temen lo buat add gue di Line. Info lebih lengkapnya bisa lo cek di http://line.me/R/home/public/post?id=bangjoni&postId=1148515416806026326 <set ref_code=<star>>
+//+ ref (*)
+//- mgm03 Selamat, lo dapet saldo BJPay sebesar Rp 5000 dari invitation code yang lo input. Untuk mengaktifkan akun BJPay lo, silakan ketik BJPAY REGISTER.\n\n
+//^ Mau tambahan saldo lagi? Lo bisa dapetin saldo BJPay Rp 500 tiap ajak temen lo buat add gue di Line. Info lebih lengkapnya bisa lo cek di http://line.me/R/home/public/post?id=bangjoni&postId=1148515416806026326 <set ref_code=<star>>
 
 + mgmsuccessref
 - Selamat, lo mendapatkan tambahan saldo BJPay Rp 500,-
