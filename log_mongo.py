@@ -83,3 +83,28 @@ class MongoLog(object):
             "phone": phone,
             "va_number": va_number
         })
+
+    def log_pulsa_migrate(self, msisdn, denom, date, phone):
+        result = self.db.logpulsa.insert_one({
+            "msisdn" : msisdn,
+            "datetime" : date,
+            "denom" : denom,
+            "phone" : phone
+        })
+
+    def reminder(self, msisdn, type_reminder, value, date_execution):
+        result = self.db.reminder.insert_one({
+            "data_date" : datetime.now(),
+            "msisdn" : msisdn,
+            "type_reminder" : type_reminder,
+            "value" : value,
+            "date_execution" : date_execution
+        })
+
+    def log_location(self, msisdn, location, date_location):
+        result = self.db.loglocation.insert_one({
+            "data_date" : datetime.now(),
+            "msisdn" : msisdn,
+            "location" : location,
+            "date_location" : date_location
+        })
