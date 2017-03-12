@@ -30,7 +30,7 @@
     ^ Gue punya info soal restoran atau cafe-cafe yang enak loh.. <br>
     ^ Lo tentuin dulu lokasinya mau di mana, pake fitur share location (tombol + samping tombol emoticon). <br>
     ^ Nanti gue kasih tau deh tempat-tempat yang bisa jajan-jajan enak :9 {topic=zomato} <set mycontext=zomato>
-    - Yaudah kalo gitu tidur aja deh dari pada bingung mau ngapain :D
+    - Yaudah kalo gitu tidur aja deh dari pada bingung mau ngapain :D {topic=random}
     
 
     + [*] (@beli|@cari) [*] (@tiket) [*]
