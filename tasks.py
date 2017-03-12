@@ -2255,7 +2255,7 @@ def onMessage(msisdn, ask, first_name):
             incomingMsisdn[4]  = ask[5:].split(';')[0]
             incomingMsisdn[5]  = ask[5:].split(';')[1]
 
-            products = uber.get_products({incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]})
+            products = uber.get_products({'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]})
             # columns = create_uber_products(msisdn, products)
             linebot.send_composed_carousel(msisdn, "Uber Product", create_uber_products(msisdn, products))
             sendMessageT2(msisdn, answer, 0)
@@ -2273,7 +2273,7 @@ def onMessage(msisdn, ask, first_name):
         # payment_method_id = ""
 
         try:
-            request_ride = uber.request_ride(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))), {incomingMsisdn[2], incomingMsisdn[3]},{incomingMsisdn[4], incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare')
+            request_ride = uber.request_ride(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare')
             sql = "insert into booking_uber values('" + msisdn + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + 'x' + "','line')"
             print sql
             insert(sql)
@@ -2823,7 +2823,7 @@ def uber_request_ride_surge(surge_confirmation_id):
         access_token = row[5]
         first_name = row[1]
     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {incomingMsisdn[2], incomingMsisdn[3]}, {incomingMsisdn[4], incomingMsisdn[5]}, 'fare', incomingMsisdn[6]['id'], surge_confirmation_id)
+    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, 'fare', incomingMsisdn[6]['id'], surge_confirmation_id)
     sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + access_token + "','line')"
     print sql
     insert(sql)

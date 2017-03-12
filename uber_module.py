@@ -50,8 +50,8 @@ class UberService():
     def get_products(self, origin, destination, filters=""):
         session = Session(server_token=SERVER_TOKEN)
         client = UberRidesClient(session, sandbox_mode=SANDBOX_MODE)
-        response = client.get_products(origin['lat'], origin['lng'])
-        products = response.json.get('products')
+        # response = client.get_products(origin['lat'], origin['lng'])
+        # products = response.json.get('products')
         # print json.dumps(products)
 
         response = client.get_price_estimates(
