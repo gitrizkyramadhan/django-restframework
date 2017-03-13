@@ -51,9 +51,10 @@
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx {topic=bioskop}
 
 + *
-- Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
+- ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
 ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
-- Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+- ee01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
 ^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
 
 + [*] (@gakada) [*]
@@ -80,7 +81,7 @@
 + [*] (@cari) [*] (@pesawat) [*] {weight=20}
 - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
 ^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
-^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
+//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 //- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 //^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
 //^ Tungguin yaa ;)
@@ -88,7 +89,7 @@
 + [*] (@pesawat) [*] {weight=10}
 - fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
 ^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
-^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
+//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
 //- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
 //^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
 //^ Tungguin yaa ;)
@@ -527,6 +528,9 @@
 
 + [*] [masakan|makanan] (@cuisine1|@cuisine2|@cuisine3) [di|daerah] (@location1|@location2|@location3)
 - zo01 Ini nih 3 tempat makan dengan rating tertinggi <set zomato_cuisine=<star1>> <set zomato_location=<star2>>
+
++ zomato lainnya
+- zo03 Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..
 
 > topic zomato inherits global
   + [*] (@cuisine1|@cuisine2|@cuisine3) [*]

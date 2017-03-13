@@ -107,6 +107,8 @@ WEB_HOOK=""
 EMAIL_NOTIF=""
 LINE_TOKEN=""
 
+LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
+
 DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
 
 ##########OPEN CONFIGURATION#######################
@@ -308,11 +310,13 @@ def sendMessageTX(msisdn, message, keyboard):
     save_last10chat(logDtm, msisdn, message.strip(), 'BJ')
 
 def sendPhotoTX(msisdn, file_path, caption, keyboard):
-    print "---------->", file_path.split('/')[6]
-    file_path = file_path.split('/')[6]
-    img_url = "http://128.199.88.72/line_images/%s" % (file_path)
+    # print "---------->", file_path.split('/')[6]
+    # file_path = file_path.split('/')[6]
+    # img_url = "http://128.199.88.72/line_images/%s" % (file_path)
     # linebot.send_images(msisdn,"http://128.199.88.72/line_images/%s" % (file_path), "http://128.199.88.72/line_images/%s" % (file_path.split('/')[6]))
-    linebot.send_image_message(msisdn, img_url)
+    if file_path.find('') < 0:
+        file_path = LINE_IMAGES_ROUTE+file_path
+    linebot.send_image_message(msisdn, file_path)
 
 def sendMessageT2(msisdn, message, keyboard = 0):
     sendMessageTX(msisdn, message, keyboard)
@@ -646,6 +650,46 @@ def create_uber_payments(msisdn, payments):
             column['text'] = column['text'][:57] + '...'
         column['actions'] = actions
         columns.append(column)
+
+    return columns
+
+def create_zomato_recommendations(msisdn):
+    columns = []
+
+    column_1 = {}
+    column_1['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/zomato/indonesia.png'
+    column_1['title'] = 'Indonesian'
+    column_1['text'] = "Selamat makan!"
+    column_1['actions'] = [{'type': 'message', 'label': 'Pilih', 'text': 'indonesian'}]
+    columns.append(column_1)
+
+    column_2 = {}
+    column_2['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/zomato/italian.png'
+    column_2['title'] = 'Italian'
+    column_2['text'] = "Buon appetito!"
+    column_2['actions'] = [{'type': 'message', 'label': 'Pilih', 'text': 'italian'}]
+    columns.append(column_2)
+
+    column_3 = {}
+    column_3['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/zomato/japanese.png'
+    column_3['title'] = 'Japanese'
+    column_3['text'] = "Itadakimasu!"
+    column_3['actions'] = [{'type': 'message', 'label': 'Pilih', 'text': 'japanese'}]
+    columns.append(column_3)
+
+    column_4 = {}
+    column_4['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/zomato/coffee.png'
+    column_4['title'] = 'Coffee & Tea'
+    column_4['text'] = "Ngopi yuk!"
+    column_4['actions'] = [{'type': 'message', 'label': 'Pilih', 'text': 'cafe'}]
+    columns.append(column_4)
+
+    column_5 = {}
+    column_5['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/zomato/others.png'
+    column_5['title'] = 'Lainnya'
+    column_5['text'] = "Cari yang lain aja yuk!"
+    column_5['actions'] = [{'type': 'message', 'label': 'Pilih', 'text': 'zomato lainnya'}]
+    columns.append(column_5)
 
     return columns
 
@@ -1882,17 +1926,17 @@ def onMessage(msisdn, ask, first_name):
         # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
 
 
-        now_column = {}
-        now_column['thumbnail_image_url'] = w_now['image']
-        now_column['title'] = 'Cuaca hari ini'
-        now_column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
-        if (len(now_column['text']) > 60):
-            now_column['text'] = now_column['text'][:57] + '...'
+        column_1 = {}
+        column_1['thumbnail_image_url'] = w_now['image']
+        column_1['title'] = 'Cuaca hari ini'
+        column_1['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+        if (len(column_1['text']) > 60):
+            column_1['text'] = column_1['text'][:57] + '...'
         w_now.pop('image')
         encoded_url = urllib.urlencode(w_now, doseq=True)
         now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
-        now_column['actions'] = now_actions
-        columns.append(now_column)
+        column_1['actions'] = now_actions
+        columns.append(column_1)
 
         tom_column = {}
         # tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
@@ -1920,11 +1964,15 @@ def onMessage(msisdn, ask, first_name):
         incomingMsisdn[11] == "";
         incomingMsisdn[2]  = ask[5:].split(';')[0]
         incomingMsisdn[3]  = ask[5:].split(';')[1]
-        #sendMessageT2(msisdn, "Ok, Bang Joni sudah tahu lokasimu, sekarang kamu pingin masakan apa?", 0)
-        #photo = open('/home/ubuntu/telegram/images/zomato_cuisines.png', 'rb')
-        #sendPhotoT2(msisdn, 'images/zomato_cuisines.png')
-        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Oke deh, gue udah tau lokasi lo. <br>Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..")
 
+        linebot.send_composed_carousel(msisdn, "Restaurants", create_zomato_recommendations(msisdn))
+        # sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Oke deh, gue udah tau lokasi lo. <br>Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..")
+
+    if answer[:4] == "zo03":
+        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/v2/carousel/zomato/result.png",
+                           "https://www.bangjoni.com/v2/carousel/zomato/result.png",
+                           "Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..")
+        incomingMsisdn[11] = "zo00"
 
     if answer[:4] == "zo01" or answer[:4] == "zo02":
         if answer[:4] == "zo01":
@@ -2196,7 +2244,7 @@ def onMessage(msisdn, ask, first_name):
 
             if incomingMsisdn[5] == "fin195":
                 sendMessageT2(msisdn, "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via ATM secepatnya sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
-                sendPhotoT2(msisdn, '/usr/share/nginx/html/line_images/tiketux_atm.jpg')
+                sendPhotoT2(msisdn, 'https://bangjoni.com/v2/tiketux_atm.jpg')
             elif incomingMsisdn[5] == "indomaret":
                 sendMessageT2(msisdn, "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran ke Indomaret terdekat secepatnya sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
             else:

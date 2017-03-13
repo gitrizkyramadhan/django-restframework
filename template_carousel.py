@@ -122,7 +122,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel.png',
                     title='Transportasi & Travel',
-                    text='Buat yg suka travelling',
+                    text='Jalan-jalan yuk!',
                     actions=[
                         MessageTemplateAction(
                             label='Pesawat',
@@ -160,7 +160,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa3.png',
                     title='Pulsa',
-                    text='Pulsamu habis? Beli aja sini!',
+                    text='Pulsa habis? Beli aja di sini!',
                     actions=[
                         MessageTemplateAction(
                             label='Pulsa',
@@ -179,7 +179,7 @@ carousels = [{
                 CarouselColumn(
                     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/info2.png',
                     title='Info',
-                    text='Mending tanya Bang Joni aja sini',
+                    text='Mau tau info apa nih?',
                     actions=[
                         MessageTemplateAction(
                             label='Cuaca',
@@ -194,26 +194,27 @@ carousels = [{
                             text='info lainnya'
                         )
                     ]
-                ),
-                CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other2.png',
-                    title='Others',
-                    text='Layanan lain dari Bang Joni',
-                    actions=[
-                        MessageTemplateAction(
-                            label='Matahari Mall',
-                            text='matahari mall'
-                        ),
-                        MessageTemplateAction(
-                            label='Lovidovi',
-                            text='lovidovi'
-                        ),
-                        MessageTemplateAction(
-                            label='Polka',
-                            text='polka'
-                        )
-                    ]
                 )
+                # ,
+                # CarouselColumn(
+                #     thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other2.png',
+                #     title='Others',
+                #     text='Layanan lain dari Bang Joni',
+                #     actions=[
+                #         MessageTemplateAction(
+                #             label='Matahari Mall',
+                #             text='matahari mall'
+                #         ),
+                #         MessageTemplateAction(
+                #             label='Lovidovi',
+                #             text='lovidovi'
+                #         ),
+                #         MessageTemplateAction(
+                #             label='Polka',
+                #             text='polka'
+                #         )
+                #     ]
+                # )
             ]
         )
     )
