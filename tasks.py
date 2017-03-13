@@ -2243,17 +2243,17 @@ def onMessage(msisdn, ask, first_name):
                 harga = harga.replace(",",".")
 
             if incomingMsisdn[5] == "fin195":
-                sendMessageT2(msisdn, "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via ATM secepatnya sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
+                sendMessageT2(msisdn, "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s<br>Lakukan pembayaran via ATM secepatnya sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
                 sendPhotoT2(msisdn, 'https://bangjoni.com/v2/tiketux_atm.jpg')
             elif incomingMsisdn[5] == "indomaret":
-                sendMessageT2(msisdn, "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran ke Indomaret terdekat secepatnya sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
+                sendMessageT2(msisdn, "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s<br>Lakukan pembayaran ke Indomaret terdekat secepatnya sebelum %s supaya tiket lo nggak dibatalin.<br>Bilang ke kasir Indomaret untuk pembayaran TIKETUX ya. Nanti E-ticketnya gue kirim kalo pembayarannya udah diterima." % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
             else:
-                print "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran)
-                #sendMessageT2(msisdn, "Bang Joni sudah berhasil booking pesananmu, berikut detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s agar tiket kamu tidak dibatalkan.\nBang Joni akan kirim tiket jika pembayaran telah diterima." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran), 0)
-                sendLinkMessageT2(msisdn, 'berhasil booking, detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nBang Joni kirim tiket jika pembayaran diterima' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
+                print "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran)
+                #sendMessageT2(msisdn, "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran), 0)
+                sendLinkMessageT2(msisdn, 'berhasil booking, detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
 
         if len(errormsg) > 2:
-            sendMessageT2(msisdn, "Bang joni dapat info dari xtrans: %s" % (errormsg), 0)
+            sendMessageT2(msisdn, "Eh, gue dapet info dari Xtrans nih: %s" % (errormsg), 0)
             #sendMessageT2(msisdn, "Pilih kursi yang kosong aja ya..", 0)
 
 
