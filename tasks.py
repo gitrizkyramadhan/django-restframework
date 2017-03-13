@@ -1264,7 +1264,8 @@ def onMessage(msisdn, ask, first_name):
         if bjp_service.is_exist(msisdn) :
             _print_debug("USER HAS BJPAY")
 
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) is None:
+            # if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) is None:
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])) is None:
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
@@ -1417,8 +1418,8 @@ def onMessage(msisdn, ask, first_name):
     ####################TOKEN START####################
     if answer[:4] == "pl01":
         log_service(logDtm, msisdn, first_name, "PLN")
-        reply = "Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700\n200K Rp. 200.700\n500K Rp. 500.700\n1M Rp. 1.000.700\n5M Rp. 5.000.700\n10M Rp. 10.000.700\n50M Rp. 50.000.700\n\nUntuk memilih tap menu berikut ya"
-        sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/token_pln1', reply, 'tokenpln')
+        # reply = "Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700\n\nUntuk memilih tap menu berikut ya"
+        sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/token_pln1', answer[4:], 'tokenpln')
 
 
     if answer[:4] == "pl02":
@@ -1842,7 +1843,7 @@ def onMessage(msisdn, ask, first_name):
                     c_description = c_description[:57] + '...'
                     need_detail = True
 
-                linebot.send_composed_img_buttons(msisdn, "Info Traffic", 'https://bangjoni.com/v2/carousel/images/traffic1.png', 'Info Lalu Lintas', c_description, [{'type' : 'message', 'label' : 'Say Thanks', 'text' : 'thanks Bang'}])
+                linebot.send_composed_img_buttons(msisdn, "Info Traffic", 'https://bangjoni.com/v2/carousel/images/traffic1.png', 'Info Lalu Lintas', c_description, [{'type' : 'postback', 'label' : 'Detail', 'data' : '&evt=tol_traffic&value='+str(s)}])
                 if need_detail :
                     sendMessageT2(msisdn, sinfo_tol + "\n" + s, 0)
 
@@ -1922,7 +1923,7 @@ def onMessage(msisdn, ask, first_name):
         #sendMessageT2(msisdn, "Ok, Bang Joni sudah tahu lokasimu, sekarang kamu pingin masakan apa?", 0)
         #photo = open('/home/ubuntu/telegram/images/zomato_cuisines.png', 'rb')
         #sendPhotoT2(msisdn, 'images/zomato_cuisines.png')
-        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Ok, Bang Joni sudah tahu lokasimu, sekarang kamu pingin masakan apa?")
+        sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "https://www.bangjoni.com/line_images/zomato_cuisines.jpg", "Oke deh, gue udah tau lokasi lo. <br>Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..")
 
 
     if answer[:4] == "zo01" or answer[:4] == "zo02":
@@ -1967,7 +1968,7 @@ def onMessage(msisdn, ask, first_name):
         ####################XTRANS MODULE START####################
     if answer[:4] == "xt01":
         log_service(logDtm, msisdn, first_name, "XTRANS")
-        sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/Pool_Xtrans.jpg', 'http://128.199.88.72/line_images/Pool_Xtrans.jpg', answer.replace("xt01 ",""))
+        sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/v2/images/xtrans.png', 'https://bangjoni.com/v2/images/xtrans.png', answer.replace("xt01 ",""))
         incomingMsisdn[11] = "xt01"
 
 
@@ -2258,13 +2259,13 @@ def onMessage(msisdn, ask, first_name):
             products = uber.get_products({'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]})
             # columns = create_uber_products(msisdn, products)
             linebot.send_composed_carousel(msisdn, "Uber Product", create_uber_products(msisdn, products))
-            sendMessageT2(msisdn, answer, 0)
+            sendMessageT2(msisdn, answer[4:], 0)
 
 
     if answer[:4] == "ub03":
         methods = uber.get_payment_methods(msisdn, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn))))
         linebot.send_composed_carousel(msisdn, "Uber Payments", create_uber_payments(msisdn, methods))
-        sendMessageT2(msisdn, answer, 0)
+        sendMessageT2(msisdn, answer[4:], 0)
 
 
     if answer[:4] == "ub04":
@@ -2283,6 +2284,9 @@ def onMessage(msisdn, ask, first_name):
             print sql
             insert(sql)
             sendLinkMessageT2(msisdn, 'Uber', 'Uber lagi naik tarifnya', 'Tetap pesan', e.surge_confirmation_href, 'https://bangjoni.com/v2/carousel/images/uber.png')
+        except (ClientError, ServerError) as e:
+            traceback.print_exc()
+            sendMessageT2(msisdn, "Maaf banget nih, Bang Joni gak bisa pesenin Uber buat kamu<br>Coba di cancel dulu trus diulang lagi ya", 0)
 
 
     ####################TRAIN MODULE START####################
@@ -3306,13 +3310,16 @@ def doworker(req):
 
                     answer = "Besok kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
-            if postback_event == 'uber_payment':
+            elif postback_event == 'uber_payment':
                 method_id = urlparse.parse_qs(parsed.query)['pmt_id'][0]
                 desc = urlparse.parse_qs(parsed.query)['pmt_desc'][0]
                 incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
                 incomingMsisdn[7] = {'payment_method_id':method_id, 'description':desc}
                 lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
                 onMessage(msisdn, 'ub04', get_line_username(msisdn))
+            elif postback_event == 'tol_traffic':
+                value_str = urlparse.parse_qs(parsed.query)['value'][0]
+                sendMessageT2(msisdn, value_str, 0)
 
 # ---------- DWP MODULE START ----------
 @app.task

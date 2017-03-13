@@ -133,13 +133,13 @@ carousels = [{
                             text='xtrans'
                         ),
                         MessageTemplateAction(
-                            label='Lainnya',
-                            text='transportasi lainnya'
+                            label='Uber',
+                            text='ubertest'
                         )
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/bjpay2.png',
                     title='BJPay',
                     text='Dompet virtual Bang Joni punya nih!',
                     actions=[
@@ -158,7 +158,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa3.png',
                     title='Pulsa',
                     text='Pulsamu habis? Beli aja sini!',
                     actions=[
@@ -177,7 +177,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/info.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/info2.png',
                     title='Info',
                     text='Mending tanya Bang Joni aja sini',
                     actions=[
@@ -196,7 +196,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other2.png',
                     title='Others',
                     text='Layanan lain dari Bang Joni',
                     actions=[

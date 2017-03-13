@@ -51,7 +51,7 @@ def compose_img_buttons(alt_text, thumbnail_url, title, description, actions):
     img_actions = []
     for action in actions :
         if action['type'] == 'postback':
-            img_actions.append(PostbackTemplateAction(label=action['label'],text=action['text'], data=action['data']))
+            img_actions.append(PostbackTemplateAction(label=action['label'], data=action['data']))
         elif action['type'] == 'message':
             img_actions.append(MessageTemplateAction(label=action['label'], text=action['text']))
         elif action['type'] == 'uri':

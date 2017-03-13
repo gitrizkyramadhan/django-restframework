@@ -47,7 +47,7 @@ class UberService():
         return UberRidesClient(session, sandbox_mode=SANDBOX_MODE)
 
 
-    def get_products(self, origin, destination, filters=""):
+    def get_products(self, origin, destination, filters=PRODUCT_FILTER):
         session = Session(server_token=SERVER_TOKEN)
         client = UberRidesClient(session, sandbox_mode=SANDBOX_MODE)
         # response = client.get_products(origin['lat'], origin['lng'])
@@ -155,6 +155,7 @@ class UberService():
         client = self.create_uber_client(credential.access_token, credential.expires_in_seconds, credential.grant_type, credential.refresh_token)
         result = client.get_payment_methods()
         print json.dumps(result.json)
+        return result.json
 
 
     def request_ride(self, msisdn, credential, origin, destination, product_id, fare_id, surge_id=None):
