@@ -624,9 +624,9 @@ def create_uber_products(msisdn, products):
         actions.append({'type': 'message', 'label': 'Pilih', 'text': str(product['localized_display_name'])})
         # actions.append({'type': 'postback', 'label': 'Pilih','data': 'evt=uber_payment&pmt_desc=' + payment['description'] + '&pmt_id=' + str(payment['payment_method_id'])})
         if product['product_id'] == "89da0988-cb4f-4c85-b84f-aac2f5115068" :
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/uber/ubermotor.png'
         elif product['product_id'] == "776ea734-1404-4a40-bf09-ebcb2acf6f2b" :
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/uber/uberx.png'
         column['title'] = str(product['localized_display_name'])
         column['text'] = str(product['formatted_amt'])
         if (len(column['text']) > 60):
@@ -643,7 +643,12 @@ def create_uber_payments(msisdn, payments):
         actions = []
 
         actions.append({'type': 'postback', 'label': 'Pilih', 'data': 'evt=uber_payment&pmt_desc='+payment['description']+'&pmt_id='+str(payment['payment_method_id'])})
-        column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/xx.jpg'
+        if str(payment['type']) == 'visa':
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/uber/visa.png'
+        elif str(payment['type']) == 'cash':
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/uber/cash.png'
+        elif str(payment['type']) == 'mastercard':
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/uber/mastercard.png'
         column['title'] = str(payment['type'])
         column['text'] = str(payment['description'])
         if (len(column['text']) > 60):
