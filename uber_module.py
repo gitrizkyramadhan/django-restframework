@@ -161,23 +161,23 @@ class UberService():
     def request_ride(self, msisdn, credential, origin, destination, product_id, fare_id, surge_id=None):
         # cred = pickle.loads(self.redis.get('cred/123'))
         client = self.create_uber_client(credential.access_token, credential.expires_in_seconds, credential.grant_type, credential.refresh_token)
-        estimate = client.estimate_ride(
-            product_id=product_id,
-            start_latitude=origin['lat'],
-            start_longitude=origin['lng'],
-            end_latitude=destination['lat'],
-            end_longitude=destination['lng']
-        )
-        fare = estimate.json.get('fare')
-        print json.dumps(estimate.json.get('fare'))
+        # estimate = client.estimate_ride(
+        #     product_id=product_id,
+        #     start_latitude=origin['lat'],
+        #     start_longitude=origin['lng'],
+        #     end_latitude=destination['lat'],
+        #     end_longitude=destination['lng']
+        # )
+        # fare = estimate.json.get('fare')
+        # print json.dumps(estimate.json.get('fare'))
         request = client.request_ride(
             product_id=product_id,
             start_latitude=origin['lat'],
             start_longitude=origin['lng'],
             end_latitude=destination['lat'],
             end_longitude=destination['lng'],
-            seat_count=1,
-            fare_id=fare['fare_id'],
+            # seat_count=1,
+            # fare_id=fare['fare_id'],
             surge_confirmation_id=surge_id
         )
         print json.dumps(request.json)

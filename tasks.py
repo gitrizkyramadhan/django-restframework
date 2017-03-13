@@ -3293,7 +3293,10 @@ def doworker(req):
                     sendMessageT2(msisdn, "Makasih sharing fotonya ya..", 0)
             else:
                 opType = event["type"]
-                msisdn = str(event["source"]["userId"])
+                if event["source"].has_key('userId'):
+                    msisdn = str(event["source"]["userId"])
+                elif event["source"].has_key('groupId'):
+                    msisdn = str(event["source"]["groupId"])
                 print "-->", opType, msisdn
         except:
             opType = content["result"][0]["content"]["opType"]
