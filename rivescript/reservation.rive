@@ -530,11 +530,11 @@
 - zo01 Ini nih 3 tempat makan dengan rating tertinggi <set zomato_cuisine=<star1>> <set zomato_location=<star2>>
 
 + zomato lainnya
-- zo03 Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa..
+- zo03 Sekarang, pilih jenis masakan yang lo mau. Langsung ketik ajaa.. <set mycontext=zomato>
 
 > topic zomato inherits global
   + [*] (@cuisine1|@cuisine2|@cuisine3) [*]
-  - zo02 Oke <first_name>! Ini nih tempat makan dengan review tertinggi di Zomato. <set zomato_cuisine=<star1>>{topic=random}
+  - zo02 Oke <first_name>! Ini nih tempat makan dengan review tertinggi di Zomato. <set zomato_cuisine=<star1>>
 < topic
 
 ///////////////////////////////////START CUACA
