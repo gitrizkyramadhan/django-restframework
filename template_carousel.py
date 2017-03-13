@@ -158,7 +158,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa2.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/pulsa3.png',
                     title='Pulsa',
                     text='Pulsamu habis? Beli aja sini!',
                     actions=[
@@ -196,7 +196,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/other2.png',
                     title='Others',
                     text='Layanan lain dari Bang Joni',
                     actions=[

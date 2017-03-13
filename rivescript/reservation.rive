@@ -78,20 +78,20 @@
 ^ Nanti gue kasih info perkiraan cuaca berdasarkan lokasi yang lo pilih ;)
 
 + [*] (@cari) [*] (@pesawat) [*] {weight=20}
-//- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
-//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
-//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
-- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
-^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa ;)
+- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
+//- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
+//^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
+//^ Tungguin yaa ;)
 
 + [*] (@pesawat) [*] {weight=10}
-//- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
-//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
-//^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
-- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
-^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
-^ Tungguin yaa ;)
+- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang.
+^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang. {topic flight_reservation}
+//- Duh sorry ya <first_name>, gue belom bisa pesenin lo tiket pesawat nih. <br>
+//^ Sistem gue masih di-upgrade ke versi baru supaya nanti mesenya lebih gampang. <br>
+//^ Tungguin yaa ;)
 
 + [*] (@xtrans) [*] {weight=11}
 - xt01 Oke! Itu daftar pool keberangkatan Xtrans. <br>
@@ -355,7 +355,7 @@
 > topic token inherits global
   + [*] # [*] {weight=10}
   //- pl01 Ok, gue cek dulu nomor meter-nya ya... <set id_pln=<star>>
-  - pl01 Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
+  - pl01 Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700\n200K Rp. 200.700<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
 
   + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
   - pl02 <set nominal_token=<star>> Ok, token yang lo pilih nominalnya <get nominal_token> <br>
