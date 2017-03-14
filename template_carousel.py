@@ -134,7 +134,7 @@ carousels = [{
                         ),
                         MessageTemplateAction(
                             label='Uber',
-                            text='ubertest'
+                            text='uber'
                         )
                     ]
                 ),

@@ -398,12 +398,12 @@ def get_line_username(msisdn):
     if first_name != "":
         return first_name
     else:
-        profile_obj = linebot.get_profile(msisdn)
 
         # r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
         #
         # rjson = json.loads(r.content)
         try:
+            profile_obj = linebot.get_profile(msisdn)
             sql = "insert into line_users values('" + msisdn + "','" + profile_obj.display_name + "')"
             print sql
             insert(sql)
@@ -2880,7 +2880,7 @@ def uber_request_ride_surge(surge_confirmation_id):
         access_token = row[5]
         first_name = row[1]
     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, 'fare', incomingMsisdn[6]['id'], surge_confirmation_id)
+    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare', surge_confirmation_id)
     sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + access_token + "','line')"
     print sql
     insert(sql)
@@ -2900,12 +2900,12 @@ def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_
         first_name = row[1]
         access_token = row[5]
     if msisdn_uber != "":
-        ride_detail = uber.get_ride_detail(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))))
+        ride_detail = uber.get_ride_detail(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), meta_resource_id)
 
         if ride_detail['status'] == 'accepted' :
             answer = "Bang Joni udah dapet Uber nih, kira-kira datang " + ride_detail['pickup']['eta'] + " menit lagi, berikut data driver-nya"
             sendMessageT2(msisdn_uber, answer, 0)
-            answer = "Driver: " + ride_detail['driver']['name'] + "\nHP: " + ride_detail['driver']['phone_number'] + "\nRating: " + ride_detail['driver']['rating'] + "\nKendaraan: " + ride_detail['vehicle']['make'] + " " + ride_detail['vehicle']['model'] + "\nNopol: " + ride_detail['vehicle']['license_plate']
+            answer = "Driver: " + str(ride_detail['driver']['name']) + "\nHP: " + str(ride_detail['driver']['phone_number']) + "\nRating: " + str(ride_detail['driver']['rating']) + "\nKendaraan: " + str(ride_detail['vehicle']['make']) + " " + str(ride_detail['vehicle']['model']) + "\nNopol: " + str(ride_detail['vehicle']['license_plate'])
             sendMessageT2(msisdn_uber, answer, 0)
             linebot.send_image_message(msisdn_uber, ride_detail['driver']['picture_url'])
 
@@ -2956,14 +2956,14 @@ def uber_authorization(msisdn, code):
         result_redirect = "https://www.bangjoni.com/uber_token?state=%s&code=%s" % (msisdn, code)
         print ">>>", result_redirect
         try:
-            auth_flow = pickle.loads(incomingMsisdn[1])
-            session = auth_flow.get_session(result_redirect)
+            # auth_flow = pickle.loads(incomingMsisdn[1])
+            # session = auth_flow.get_session(result_redirect)
             print uber.create_client(msisdn_uber, msisdn, code)
         except (ClientError, UberIllegalState), error:
             print ">>>", error
             return
 
-        credential = session.oauth2credential
+        credential = pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber)))
 
         # credential_data = {
         #     'client_id': credential.client_id,
@@ -2994,7 +2994,8 @@ def uber_authorization(msisdn, code):
         sql = "update token_uber set access_token='%s', refresh_token='%s', expires_in_sec='%s', email='%s' where email='%s'" % (credential.access_token, credential.refresh_token, credential.expires_in_seconds, email, email)
         print sql
         insert(sql)
-        sendMessageT2(msisdn_uber, "Account ubermu sudah terhubung dengan BangJoni\nSekarang share lokasimu dengan cara click tombol PIN dan tap Location", 0)
+        linebot.send_image_button(msisdn_uber, "uber_after_auth")
+        # sendMessageT2(msisdn_uber, "Account ubermu sudah terhubung dengan BangJoni\nSekarang share lokasimu dengan cara click tombol PIN dan tap Location", 0)
         #return "Y"
 
 
@@ -3258,6 +3259,8 @@ def doworker(req):
     print "================================NEW LINE REQUEST============================================="
     print content
 
+    if not content.has_key('events'):
+        return
     for event in content["events"] :
         msisdn = ""
         ask = ""

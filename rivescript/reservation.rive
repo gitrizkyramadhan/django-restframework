@@ -481,7 +481,7 @@
 ^ Tungguin yaa ;)
 
 + ubertest
-- ub01 TEST Sip, sekarang share lokasi lo dengan cara click tombol + (sebelah tombol emoticon) {topic=uber}  <set mycontext=uber>
+- ub01 Sip, sekarang share lokasi lo dengan cara click tombol + (sebelah tombol emoticon) {topic=uber}  <set mycontext=uber>
 
 > topic uber inherits global
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
