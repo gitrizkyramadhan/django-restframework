@@ -8,8 +8,12 @@ import requests
 import urllib
 import time
 from decimal import Decimal
+from bjpay_service import BJPayService
+from bot import Bot
 
 lineNlp = Nlp()
+bjp = BJPayService()
+bot = Bot()
 
 def update_saldo(msisdn, amount):
     print "=============================================================================================="
@@ -78,10 +82,23 @@ if __name__ == '__main__':
     # print "50K "+lineNlp.redisconn.get("promo50")
     # print "100K "+lineNlp.redisconn.get("promo100")
 
-    lineNlp.redisconn.delete("bjpay/U6fb98eb0f44be13523bbabd566e47dc4")
+    # lineNlp.redisconn.delete("bjpay/U6fb98eb0f44be13523bbabd566e47dc4")
 
     # update_saldo('ub08121f3935f74d2f685acc9b2b425ad', 25000) #193
 
     # print "ALL DONE"
 
-    check_saldo('u107ce3c78d864298a8aff1824dfdcc61')
+    # check_saldo('u107ce3c78d864298a8aff1824dfdcc61')
+
+
+def topup_manual(msisdn, phone, amount):
+    bjp.credit(msisdn, phone, amount, 1007, 'Topup saldo BJPAY (Manual)')
+    (current_balance, va_no, phone) = bjp.get(msisdn)
+    bot.send_text_message(msisdn, 'Mohon maaf ya, Bang Joni telat masukin saldo BJPAY kamu, saldo kamu sekarang Rp '+str(current_balance))
+
+def register(msisdn, va_number, phone):
+    bjp.register(msisdn, va_number, phone, 0)
+    bot.send_text_message(msisdn, 'Mohon maaf ya, Bang Joni udah register lagi BJPAY kamu, sekarang kamu bisa bertransaksi pakai BJPAY')
+
+
+topup_manual('U6fb98eb0f44be13523bbabd566e47dc4', '085790888409', 10)
