@@ -13,7 +13,7 @@ from bot import Bot
 
 lineNlp = Nlp()
 bjp = BJPayService()
-bot = Bot()
+bot = Bot('4NzXHLlCrtqIyNkIizW7Bte1pys9WNUb4Nl1Uv7c2pZNrPZB/D9e2HsbXsUzPyXrcfwzA163oT9a4HkcmkomJwCI6Xn0Rlv/2bmd3numlH2vkosW7TbXZAGFR84/jEn79jiq/hF20HQ5HN0E/x0PPn6Nfd2Y6SKCxBWg7Cr7O3c=')
 
 def update_saldo(msisdn, amount):
     print "=============================================================================================="
@@ -102,3 +102,4 @@ def register(msisdn, va_number, phone):
 
 
 topup_manual('U6fb98eb0f44be13523bbabd566e47dc4', '085790888409', 10)
+register('U6fb98eb0f44be13523bbabd566e47dc4','8650105790888409','085790888409')
