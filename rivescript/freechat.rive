@@ -25,18 +25,29 @@
 
 > topic bioskop inherits random
     
-    + [*] (@nggak|@males) [*]
+    + [*] (@males) [*] {weight=5}
     - zo00 Hmm.. Yaudah kalo gitu jangan nonton deh.. Jajan-jajan aja gimana? <br>
     ^ Gue punya info soal restoran atau cafe-cafe yang enak loh.. <br>
     ^ Lo tentuin dulu lokasinya mau di mana, pake fitur share location (tombol + samping tombol emoticon). <br>
     ^ Nanti gue kasih tau deh tempat-tempat yang bisa jajan-jajan enak :9 {topic=zomato} <set mycontext=zomato>
     - Yaudah kalo gitu tidur aja deh dari pada bingung mau ngapain :D {topic=random}
-    
 
+    + [*] (@nggak) [*]
+    - Oke deh kalo gitu ;) {topic=random}
+    - Sip lah :D {topic=random}
+    
     + [*] (@beli|@cari) [*] (@tiket) [*]
     - Yahh.. Kalo sementara ini gue belom bisa beliin tiket bioskop buat lo nih. <br>
     ^ Tapi kalo lo mau beli tiket bioskop, coba cek di sini deh >> https://id.bookmyshow.com/film/ <br>
     ^ Semoga membantu yaa.. ;) {topic=random}
+
+    + *
+    * <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+    - ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+    - ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic
 
@@ -84,19 +95,12 @@
 < topic
 
 + *
-- Eh bentar-bentar.. Lagi ada yang mau beli pulsa nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Btw, kalo lo mau beli pulsa sama gue juga bisa loh, ketik aja PULSA :)
-- Wait-wait.. Gue lagi ngurusin tiket pesawat orang dulu nih <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Btw, kalo lo mau beli tiket pesawat sama gue juga bisa loh, ketik aja TIKET PESAWAT :)
-//- Eh bentar-bentar.. Lagi ada yang minta dipesenin Uber nih <br>
-//^ Nanti kita lanjut chatting lagi yaa.. <br>
-//^ Jangan lupa ikutan foto di photobooth gue tuh <br>
-//^ Banyak hadiah seru loh! {topic=hadiahnyaapa}
-- Wait-wait.. Lagi ada yang mau beli token listrik nih, kasian rumahnya mati lampu <br>
-^ Nanti kita lanjut chatting lagi yaa.. <br>
-^ Btw, kalo lo mau beli token listrik sama gue juga bisa loh, ketik aja TOKEN LISTRIK :)
+* <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+- ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+- ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 
 > topic ngupil
@@ -109,6 +113,14 @@
     + [*] (@idih) [*]
     - gr01 Hahaha, nggak lah bercanda <br>
     ^ Btw, apa yang bisa gue bantu nih? {topic=random}
+
+    + *
+    * <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+    - ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+    - ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic
 
@@ -148,7 +160,7 @@
 //- Okay
 
 > topic tebak_tebakan
-    + [*] (@nggak) [*]
+    + [*] (@nggak) [*] {weight=5}
     - Ih yakin nih nggak mau? Coba dulu dong.
     - Masa sih nggak mau? Tebak-tebakannya seru loh!
 

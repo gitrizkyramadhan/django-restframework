@@ -44,18 +44,22 @@
 + [*] (@bosen) [*] {weight=10}
 - Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying {topic=bioskop}
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying <br>
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing {topic=bioskop}
+^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
-^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx {topic=bioskop}
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 
 + *
-* <get mycontext> != random => ee01 Kata/kalimat yang kamu ketik belum Bang Joni kenali.\n\nKetik informasi sesuai yang Bang Joni tanyakan.\nKetik 'cancel' untuk melakukan pembatalan.\nKetik 'menu' untuk kembali ke menu awal.\n {topic=<get mycontext>}
-- ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
-- ee01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba ganti kata atau kalimatnya deh.. Mungkin gue bisa ngerti.. {topic=random}
+* <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+- ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+- ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
@@ -123,6 +127,11 @@
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
 - co00 Oke, mau di-cancel nih ya? {topic=cancelconfirm}
 //- ca01 Sip! Pesenannya udah gue cancel yaa {topic=cancelconfirm}
+
++ [*] (@kamu) [*] (@siapa|@apa) [*]
+- gr01 Gue tuh temen virtual yang hidup di LINE messenger, hehehe :D <br>
+^ Lahirnya dari teknologi artificial intelligence, atau bisa dibilang kecerdasan buatan. <br>
+^ Anyway, apa yang bisa gue bantu nih?
 
 > topic cancelconfirm
 
