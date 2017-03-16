@@ -1546,9 +1546,9 @@ def onMessage(msisdn, ask, first_name):
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
                         answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
                     else :
-                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
+                        answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
-                    answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+                    answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
             else:
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label': 'Topup aja', 'type': 'message', 'text': 'topup'}, {'label': 'Nggak', 'type': 'message', 'text': 'gak jadi topup'})
