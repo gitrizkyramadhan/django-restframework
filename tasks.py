@@ -1545,12 +1545,12 @@ def onMessage(msisdn, ask, first_name):
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
                         answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
                     else :
-                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
+                        answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
-                    answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+                    answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
             else:
-                sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
+                sendMessageT2(msisdn, "Oops.. Saldo BJPAY lo nggak cukup nih, kalo mau top up, langsung aja ketik TOPUP yaa..", 0)
 
         else:
             # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
