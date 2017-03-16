@@ -5,6 +5,9 @@
 + [*] (@test) [*]
 - {@halo}
 
++ [*] (menu) [*]
+- gr01 Oke deh, apa yang bisa gue bantu nih? :)
+
 + [*] (@halo) [*]
 - gr01 Halo, <first_name>! <br>
 ^ Apa yang bisa gue bantu nih? ;)
@@ -54,11 +57,11 @@
 ^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 
 + *
-* <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+* <get mycontext> != random => gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
 ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-- ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
 ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-- ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
 ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 + [*] (@gakada) [*]
