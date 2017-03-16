@@ -162,7 +162,7 @@ class BJPayService() :
 
     def credit(self, msisdn, phone, transaction_amount, transaction_id, description):
         logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-        sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'D', '" + str(msisdn) + "', '" + str(phone) + "', '" + str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
+        sql = "INSERT INTO account_statement (id, trx_date, type, user_id, va_no, amount, description, trx_id) VALUES ('', now(), 'C', '" + str(msisdn) + "', '" + str(phone) + "', '" + str(transaction_amount) + "', '" + str(description) + "', '" + str(transaction_id) + "')"
         self._write_log(self.F_BJPTRX, "CREDIT TRX :: msisdn=" + str(msisdn) +", phone=" + str(phone) +", amount=" + str(transaction_amount) + ", transaction_id=" + str(transaction_id) + ", log_dtm=" + str(logDtm))
         self.mongo_log.log_credit(msisdn, phone, transaction_amount, transaction_id, description)
 
