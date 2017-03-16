@@ -1379,7 +1379,8 @@ def onMessage(msisdn, ask, first_name):
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
             else :
-                sendMessageT2(msisdn, "Oops.. Saldo BJPAY lo nggak cukup nih, kalo mau top up, langsung aja ketik TOPUP yaa..", 0)
+                linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, kalo mau lanjut tap TOPUP", {'label' : 'Topup aja', 'type' : 'message', 'text' : 'topup'}, {'label' : 'Nggak', 'type' : 'message', 'text' : 'gak jadi topup'})
+                # sendMessageT2(msisdn, "Oops.. Saldo BJPAY lo nggak cukup nih, kalo mau top up, langsung aja ketik TOPUP yaa..", 0)
         else:
             # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
             answer = lineNlp.doNlp("bj01", msisdn, first_name)
