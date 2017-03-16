@@ -3143,7 +3143,7 @@ def docloudmailin(content):
 
             print "--->", kodebooking, kodepembayaran, bataspembayaran, jumlahbayar
             filename = "TIKETTUX." + kodebooking + ".html"
-            resp = "Bang Joni sekedar mengingatkan, kamu belum melakukan pembayaran reservasi xtrans.\nBatas pembayaran sampai %s, lebih dari itu Bang Joni batalin ya." % (bataspembayaran)
+            resp = "Hei <first_name>, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
             print resp
             onEmailReceived(filename, resp)
 
