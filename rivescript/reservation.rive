@@ -25,9 +25,9 @@
 ^ Apa yang bisa gue bantu nih? :)
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :) {topic=random}
-- You're welcome! {topic=random}
-- Sama-sama yaa :) {topic=random}
+- Sip! Sama-sama yaa :) {topic=random} <set mycontext=random>
+- You're welcome! {topic=random} <set mycontext=random>
+- Sama-sama yaa :) {topic=random} <set mycontext=random>
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -57,9 +57,9 @@
 * <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
 ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
 - ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
 - ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
 
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
@@ -104,12 +104,12 @@
 ^ Ketik aja nama poolnya (Contoh: Bale Xtrans) {topic=xtrans} <set mycontext=xtrans>
 
 + userexittorandom
-- {topic=random}
+- {topic=random} <set mycontext=random>
 
 + [*] (@thanks) [*] {weight=10}
-- Sip! Sama-sama yaa :) {topic=random}
-- You're welcome! {topic=random}
-- Sama-sama yaa :) {topic=random}
+- Sip! Sama-sama yaa :) {topic=random} <set mycontext=random>
+- You're welcome! {topic=random} <set mycontext=random>
+- Sama-sama yaa :) {topic=random} <set mycontext=random>
 
 + [*] (@ok) [*] {weight=10}
 - Ok!
@@ -136,9 +136,9 @@
 > topic cancelconfirm
 
     + [*] (@mau) [*]
-    * <get mycontext> == uber => ch02 Oke, gue batalin uber-nya nih.{topic=random}
-    - ca01 Yaudah deh, udah gue batalin nih {topic=random}
-    - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random}
+    * <get mycontext> == uber => ch02 Oke, gue batalin uber-nya nih.{topic=random} <set mycontext=random>
+    - ca01 Yaudah deh, udah gue batalin nih {topic=random} <set mycontext=random>
+    - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random} <set mycontext=random>
 
     + [*] (@nggak) [*]
     - Okee {topic=<get mycontext>}
@@ -158,10 +158,10 @@
   - okee
 
   + [*] (thanks|tks|makasih|makasij|makash|makasi|terima kasih|trm ksh|trimakasih|trima kasih|trima ksih|tq|thx|trims|tengs|thank|terimakasih) [*]
-  - Sama-sama <first_name> {topic=random}
-  - You're welcome <first_name> {topic=random}
-  - Anytime <first_name>! {topic=random}
-  - Yoi sama-sama :) {topic=random}
+  - Sama-sama <first_name> {topic=random} <set mycontext=random>
+  - You're welcome <first_name> {topic=random} <set mycontext=random>
+  - Anytime <first_name>! {topic=random} <set mycontext=random>
+  - Yoi sama-sama :) {topic=random} <set mycontext=random>
 
   + (*)
   - {topic=random}{@ <star>}
@@ -170,10 +170,10 @@
   + [*] (menu|bisa apa|bisa ap|bisa ngapain|bisa ngpain|bsa apa|bsa ap|bsa ngapain|bsa ngpain|bs apa|bs ap|bs ngapain|bs ngpain|bisa bantu apa|bsa bantu apa|bs bantu apa|bisa bntu apa|bsa bntu apa|bs bntu apa|bisa bantu ap|bsa bantu ap|bs bantu ap|bs bntu ap|bsa bntu ap|menu|help|robot|kamu robot) [aja|aj|ya|sih] [*]
   - gr01 Loh, waktu itu kan udah kenalan. <br>
   ^ Gue tuh temen virtual yang hidup di Line messenger lo :D <br>
-  ^ Btw, ada apa nih? Apa yang bisa gue bantu?  {topic=random}
+  ^ Btw, ada apa nih? Apa yang bisa gue bantu?  {topic=random} <set mycontext=random>
 
   + userexittorandom
-  - {topic=random}
+  - {topic=random} <set mycontext=random>
 
 < topic
 
@@ -382,21 +382,21 @@
   ^ Sekarang, ketik kata atau kalimat yang mau diterjemahin.. <set translate_lang=<star>>
 
   + kamus off
-  - tr02 Sip! Mode translator udah gue matiin yaa.. {topic=random}
+  - tr02 Sip! Mode translator udah gue matiin yaa.. {topic=random} <set mycontext=random>
 < topic
 
 
 > topic waktusholat inherits global
   + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
-  - sh01 Siap, gue cariin dulu infonya ya... <set sholat_kota=<star>> {topic=random}
+  - sh01 Siap, gue cariin dulu infonya ya... <set sholat_kota=<star>> {topic=random} <set mycontext=random>
 
   //+ [*] (@kotashol) [*]
-  //- sh01 Siap, gue cariin dulu infonya ya... <set sholat_kota=<star>> {topic=random}
+  //- sh01 Siap, gue cariin dulu infonya ya... <set sholat_kota=<star>> {topic=random} <set mycontext=random>
 < topic
 
 > topic remindsholat inherits global
   + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
-  - rs01 <set sholat_kota=<star>>Siap, gue bakal ingetin lo waktu sholat dan imsakiyah untuk kota <get sholat_kota>  {topic=random}
+  - rs01 <set sholat_kota=<star>>Siap, gue bakal ingetin lo waktu sholat dan imsakiyah untuk kota <get sholat_kota>  {topic=random} <set mycontext=random>
 < topic
 
 > topic setcity1 inherits global
@@ -405,17 +405,17 @@
   ^ - Ingetin ada resepsi nikah lusa\n
   ^ - Ingetin bangun pagi tiap jam 5\n
   ^ - Ingetin bayar listrik tiap tanggal 5 juli\n
-  ^ - Ingetin meeting sama sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random}
+  ^ - Ingetin meeting sama sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random} <set mycontext=random>
 < topic
 
 > topic setcity2 inherits global
   + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
-  - re01 OK <first_name>. <set sholat_kota=<star>> {topic=random}
+  - re01 OK <first_name>. <set sholat_kota=<star>> {topic=random} <set mycontext=random>
 < topic
 
 > topic setcity3 inherits global
   + [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
-  - sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star1>> <get sholat_kota>  {topic=random}
+  - sc01 Ok <first_name>, Bang Joni akan sesuaikan reminder-mu dengan waktu kota <set sholat_kota=<star1>> <get sholat_kota>  {topic=random} <set mycontext=random>
 < topic
 
 ///////////////////////////////////START XTRANS
@@ -477,7 +477,7 @@
   - xt09 <set xtrans_payment=<star>>
 
   + xt07aa
-  - OK. {topic=random}
+  - OK. {topic=random} <set mycontext=random>
 
 
 < topic
@@ -575,13 +575,13 @@
 //- fl00 Nyari tiket pesawat murah? Emang paling bener deh nanya sama gue :D <br>
 //^ Nah ini nih destinasi yang paling banyak dicari sama orang-orang
 
-+ get a friend
-- mgm00 URL: https://line.me/R/ti/p/%40bangjoni <br>
-^ Invitation code: <invitation_code> <br>
-^ Copy-paste URL dan invitation code di atas terus share ke temen-temen lo, sebanyak-banyaknya!\n\n
-^ Tiap satu temen yang add gue pake invitation code dari lo, lo bakal dapet saldo BJPay sebesar Rp 500. Lumayan banget kan!<br>
-^ Kumpulin saldo BJPay sebanyak-banyaknya biar bisa lo beliin pulsa.\n\n
-^ Jangan lupa loh! Sebelum ikutan promo ini lo udah harus punya akun BJPay. Buat yang belum punya, langsung chat gue dan ketik BJPAY REGISTER, cuss!
+//+ get a friend
+//- mgm00 URL: https://line.me/R/ti/p/%40bangjoni <br>
+//^ Invitation code: <invitation_code> <br>
+//^ Copy-paste URL dan invitation code di atas terus share ke temen-temen lo, sebanyak-banyaknya!\n\n
+//^ Tiap satu temen yang add gue pake invitation code dari lo, lo bakal dapet saldo BJPay sebesar Rp 500. Lumayan banget kan!<br>
+//^ Kumpulin saldo BJPay sebanyak-banyaknya biar bisa lo beliin pulsa.\n\n
+//^ Jangan lupa loh! Sebelum ikutan promo ini lo udah harus punya akun BJPay. Buat yang belum punya, langsung chat gue dan ketik BJPAY REGISTER, cuss!
 
 + mgmrefcodenotfound
 - mgm01 Oops, invitation code yang lo input nggak terdaftar tuh. Coba cek lagi deh.
