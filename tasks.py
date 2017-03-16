@@ -1312,9 +1312,19 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
             _print_debug("USER HAS BJPAY")
+            sendMessageT2(msisdn, "Oke deh, pulsa kamu lagi diproses ya sekarang. Makasih loh udah beli pulsa sama Bang Joni", 0)
+
+            x = ['5K', '10K', '20K', '25K', '50K', '100K']
+            y = [5000, 10000, 20000, 25000, 50000, 100000]
+            i = 0
+            modal = 0
+            for item in incomingMsisdn[3].split('|'):
+                if y[i] == incomingMsisdn[5]:
+                    modal = y[i] + int(item)
+                i = i + 1
 
             # if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) is None:
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])) is None:
+            if bjp_service.check_balance(msisdn, int(modal)) is None:
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
@@ -1433,10 +1443,12 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[6] = payload.split('|')[2]
 
             merchant_trx_id = r + incomingMsisdn[6][-4:].zfill(4)
-            payload = { 'command': 'banktransfer', 'username': 'bangjoni', 'time': r, 'amount': incomingMsisdn[8], 'description': 'Beli Saldo MStar', 'merchant_trx_id': merchant_trx_id, 'signature': signature }
+            payload = {'command': 'banktransfer', 'username': 'bangjoni', 'time': r, 'amount': incomingMsisdn[8],
+                       'description': 'Beli Saldo MStar', 'merchant_trx_id': merchant_trx_id, 'signature': signature}
             print payload
             headers = {'content-type': 'application/json'}
-            resp = requests.post('https://cyrusku.cyruspad.com/pgw/pgwapi.asp', data=json.dumps(payload), headers=headers)
+            resp = requests.post('https://cyrusku.cyruspad.com/pgw/pgwapi.asp', data=json.dumps(payload),
+                                 headers=headers)
             content = resp.text
             print content
             content = json.loads(content)
@@ -1444,21 +1456,30 @@ def onMessage(msisdn, ask, first_name):
             if response == "0":
                 trx_id = content['trx_id']
                 transfer_amount = content['transfer_amount']
-                sql = "insert into bjpay values('%s','%s','',%s,'')" % (msisdn, r, transfer_amount)
+                sql = "insert into bjpay values('%s','%s','',%s,'','0')" % (msisdn, r, transfer_amount)
                 print sql
                 insert(sql)
-                answer = "Lakukan transfer Rp %s (harus sesuai) max 3 jam dari sekarang ke bank berikut:" % (transfer_amount)
+                answer = "Oke, silakan lakukan transfer sejumlah Rp %s (harus sesuai) max 3 jam dari sekarang ke:" % (
+                transfer_amount)
                 for bank in content['bank_info']:
-                    if bank['account_no'] == "5425135900":
-                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank['account_no'] + "\nAn: " + bank['account_name']
+                    if bank['account_no'] == "5425135900" and incomingMsisdn[7] == "transfer bca":
+                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank[
+                            'account_no'] + "\nAn: " + bank['account_name']
+                        answer = answer + "\n\nDeposit ke BCA saldo masuk maks 2 jam"
+                    elif bank['account_no'] == "1260007198574" and incomingMsisdn[7] == "transfer mandiri":
+                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank[
+                            'account_no'] + "\nAn: " + bank['account_name']
+                        answer = answer + "\n\nDeposit ke Mandiri saldo masuk maks 2 jam"
         else:
             payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
             va_no = payload.split('|')[1]
             deposit_hp = payload.split('|')[2]
-            sql = "insert into bjpay values('%s','%s','%s',%s,'%s')" % (msisdn, r, va_no, incomingMsisdn[8], deposit_hp)
+            sql = "insert into bjpay values('%s','%s','%s',%s,'%s','0')" % (
+            msisdn, r, va_no, incomingMsisdn[8], deposit_hp)
             print sql
             insert(sql)
             answer = "Oke, silakan transfer sejumlah Rp %s ke: \n Bank Permata \n No. Rek %s \n Atas nama %s" % (incomingMsisdn[8], va_no, first_name)
+
 
         sendMessageT2(msisdn, answer, 0)
 
