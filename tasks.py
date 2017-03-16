@@ -1312,9 +1312,19 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
             _print_debug("USER HAS BJPAY")
+            sendMessageT2(msisdn, "Oke deh, pulsa kamu lagi diproses ya sekarang. Makasih loh udah beli pulsa sama Bang Joni", 0)
+
+            x = ['5K', '10K', '20K', '25K', '50K', '100K']
+            y = [5000, 10000, 20000, 25000, 50000, 100000]
+            i = 0
+            modal = 0
+            for item in incomingMsisdn[3].split('|'):
+                if y[i] == incomingMsisdn[5]:
+                    modal = y[i] + int(item)
+                i = i + 1
 
             # if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])+1000) is None:
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5])) is None:
+            if bjp_service.check_balance(msisdn, int(modal)) is None:
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
                 partner_trxid = r + incomingMsisdn[1][-4:]
                 s = r + incomingMsisdn[1][-4:]
@@ -1359,17 +1369,18 @@ def onMessage(msisdn, ask, first_name):
                     _print_debug(return_code)
                     if return_code is None :
                         try:
-                            answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, serial number %s\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
+                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
-                            answer = "Bang Joni berhasil isiin pulsamu dg harga Rp. %s, cek hp-mu ya.\nSisa saldo BJPAY kamu saat ini Rp. %s" % (debit, current_balance)
+                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
                     else :
-                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
+                        answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, coba lagi nanti yaa.."
 
                 else:
-                    answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+                    answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
             else :
-                sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
+                linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label' : 'Topup aja', 'type' : 'message', 'text' : 'topup'}, {'label' : 'Nggak', 'type' : 'message', 'text' : 'gak jadi topup'})
+                # sendMessageT2(msisdn, "Oops.. Saldo BJPAY lo nggak cukup nih, kalo mau top up, langsung aja ketik TOPUP yaa..", 0)
         else:
             # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register2', answer[4:], 'bjpayregister')
             answer = lineNlp.doNlp("bj01", msisdn, first_name)
@@ -1433,10 +1444,12 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[6] = payload.split('|')[2]
 
             merchant_trx_id = r + incomingMsisdn[6][-4:].zfill(4)
-            payload = { 'command': 'banktransfer', 'username': 'bangjoni', 'time': r, 'amount': incomingMsisdn[8], 'description': 'Beli Saldo MStar', 'merchant_trx_id': merchant_trx_id, 'signature': signature }
+            payload = {'command': 'banktransfer', 'username': 'bangjoni', 'time': r, 'amount': incomingMsisdn[8],
+                       'description': 'Beli Saldo MStar', 'merchant_trx_id': merchant_trx_id, 'signature': signature}
             print payload
             headers = {'content-type': 'application/json'}
-            resp = requests.post('https://cyrusku.cyruspad.com/pgw/pgwapi.asp', data=json.dumps(payload), headers=headers)
+            resp = requests.post('https://cyrusku.cyruspad.com/pgw/pgwapi.asp', data=json.dumps(payload),
+                                 headers=headers)
             content = resp.text
             print content
             content = json.loads(content)
@@ -1444,21 +1457,30 @@ def onMessage(msisdn, ask, first_name):
             if response == "0":
                 trx_id = content['trx_id']
                 transfer_amount = content['transfer_amount']
-                sql = "insert into bjpay values('%s','%s','',%s,'')" % (msisdn, r, transfer_amount)
+                sql = "insert into bjpay values('%s','%s','',%s,'','0')" % (msisdn, r, transfer_amount)
                 print sql
                 insert(sql)
-                answer = "Lakukan transfer Rp %s (harus sesuai) max 3 jam dari sekarang ke bank berikut:" % (transfer_amount)
+                answer = "Oke, silakan lakukan transfer sejumlah Rp %s (harus sesuai) max 3 jam dari sekarang ke:" % (
+                transfer_amount)
                 for bank in content['bank_info']:
-                    if bank['account_no'] == "5425135900":
-                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank['account_no'] + "\nAn: " + bank['account_name']
+                    if bank['account_no'] == "5425135900" and incomingMsisdn[7] == "transfer bca":
+                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank[
+                            'account_no'] + "\nAn: " + bank['account_name']
+                        answer = answer + "\n\nDeposit ke BCA saldo masuk maks 2 jam"
+                    elif bank['account_no'] == "1260007198574" and incomingMsisdn[7] == "transfer mandiri":
+                        answer = answer + "\n\nBank: " + bank['bank'] + "\nNo Rekening: " + bank[
+                            'account_no'] + "\nAn: " + bank['account_name']
+                        answer = answer + "\n\nDeposit ke Mandiri saldo masuk maks 2 jam"
         else:
             payload = lineNlp.redisconn.get("bjpay/%s" % (msisdn))
             va_no = payload.split('|')[1]
             deposit_hp = payload.split('|')[2]
-            sql = "insert into bjpay values('%s','%s','%s',%s,'%s')" % (msisdn, r, va_no, incomingMsisdn[8], deposit_hp)
+            sql = "insert into bjpay values('%s','%s','%s',%s,'%s','0')" % (
+            msisdn, r, va_no, incomingMsisdn[8], deposit_hp)
             print sql
             insert(sql)
-            answer = "Lakukan transfer Rp %s ke Bank Permata no rekening %s an %s:" % (incomingMsisdn[8], va_no, first_name)
+            answer = "Oke, silakan transfer sejumlah Rp %s ke: \n Bank Permata \n No. Rek %s \n Atas nama %s" % (incomingMsisdn[8], va_no, first_name)
+
 
         sendMessageT2(msisdn, answer, 0)
 
@@ -1522,14 +1544,14 @@ def onMessage(msisdn, ask, first_name):
                     # balance = balance - debit
                     # payload = str(balance) + "|" + va_no + "|" + deposit_hp
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                        answer = "Bang Joni berhasil isiin token dg harga Rp. %s, berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s\nSisa saldo BJPAY-mu Rp. %s" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
                     else :
-                        answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, coba lagi ya..."
+                        answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
-                    answer = "Sorry nih, Bang Joni gak bisa isiin pulsanya, %s, coba lagi ya..." % (msg.split('.')[0])
+                    answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
                 sendMessageT2(msisdn, answer, 0)
             else:
-                sendMessageT2(msisdn, "Balance BJPAY-mu tidak cukup, untuk Top up ketik aja topup bjpay", 0)
+                linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label': 'Topup aja', 'type': 'message', 'text': 'topup'}, {'label': 'Nggak', 'type': 'message', 'text': 'gak jadi topup'})
 
         else:
             # sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/bjpay_register', answer[4:], 'bjpayregister')
@@ -3122,7 +3144,7 @@ def docloudmailin(content):
 
             print "--->", kodebooking, kodepembayaran, bataspembayaran, jumlahbayar
             filename = "TIKETTUX." + kodebooking + ".html"
-            resp = "Bang Joni sekedar mengingatkan, kamu belum melakukan pembayaran reservasi xtrans.\nBatas pembayaran sampai %s, lebih dari itu Bang Joni batalin ya." % (bataspembayaran)
+            resp = "Hei <first_name>, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
             print resp
             onEmailReceived(filename, resp)
 

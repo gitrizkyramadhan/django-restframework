@@ -120,7 +120,7 @@ carousels = [{
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel.png',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/travel2.png',
                     title='Transportasi & Travel',
                     text='Jalan-jalan yuk!',
                     actions=[
@@ -256,7 +256,7 @@ carousels = [{
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
-                    thumbnail_image_url='https://example.com/item1.jpg',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/translator.png',
                     title='Translator',
                     text='Monsieur?',
                     actions=[
@@ -267,7 +267,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://example.com/item1.jpg',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/zomato.png',
                     title='Zomato',
                     text='Nyam..',
                     actions=[
@@ -278,7 +278,7 @@ carousels = [{
                     ]
                 ),
                 CarouselColumn(
-                    thumbnail_image_url='https://example.com/item1.jpg',
+                    thumbnail_image_url='https://bangjoni.com/v2/carousel/greetings/reminder.png',
                     title='Reminder',
                     text='Mau diingetin?',
                     actions=[

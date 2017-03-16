@@ -86,7 +86,7 @@
 ! array beli = pesen|beli|psn|bli|beliin|pesenin
 ! array maaf = maaf|maap|muup|muuph|maf|sorry|sori|sory|mf|sry
 ! array cari = cari|cariin|cri|criin|lihat|liat|lihatin|liatin|booking|bookingin|boking|bokingin|buking|bukingin|beli|bli|beliin|bliin|tanya|tanyain|tnyain|tnya|nyari|nyariin
-! array gakada = gak ada|gk ada|g ada|g ad|gada|ga ada|ga ad|gk ad|nggak ada|nggak ad|enggak ada|enggak ad|engga ada|engga ad
+! array gakada = gak ada|gk ada|g ada|g ad|gada|ga ada|ga ad|gk ad|nggak ada|nggak ad|enggak ada|enggak ad|engga ada|engga ad|gak|nggak|ga|ngga|enggak
 
 ! array halo = hi|halo|hai|hello|eh|hei|oi|hallo|helo|alo|hay|uy|haiii|hy|haloo|bang|abang|bang joni|bangjon|bang jon|jon|joni|bangjoni
 
@@ -387,3 +387,19 @@
 ! array males = males|mles|malas|mlas|mls|malez|mlez|mlz|mlas|selam|mger|mager|magr
 
 ! array punya = punya|pnya|pny
+
+! array boleh = boleh|bole|bolee|bolehh|leh|lehh|bleh|blh
+
+! array bener = bener|beneran|betul|betulan|bneran|bnran|btulan|btul
+
+! array ujan = ujan|hujan|ujn|hjan|hjn
+
+! array males = males|mles|malas|mlas|mls|malez|mlez|mlz|mlas|selam|mger|mager|magr
+
+! array punya = punya|pnya|pny
+
+! array kamu = kamu|km|kmu|lo|lu|lw|u|loe|elo|elu|bang joni|bang|bangjoni|bangjon|bang jon|joni
+
+! array siapa = siapa|syp|sapa|spa
+
+! array apa = apa|apaan|ap
