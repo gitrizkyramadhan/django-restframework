@@ -18,7 +18,7 @@
 + askafterservice
 - gr01 Oke deh, ada lagi yang bisa gue bantu? ;)
 
-+ gak jadi topup
++ gak jadi topup {weight=20}
 - {@ askafterservice}
 
 + [*] (@assalamualaikum) [*] {weight=10}
