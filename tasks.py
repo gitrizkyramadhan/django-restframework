@@ -587,18 +587,22 @@ def create_recommended_carousell(msisdn):
 
         actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
         if dest == "CGK-KNO" :
+            title_carousel = 'Jakarta ke Medan'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/medan.jpg'
         elif dest == "CGK-SUB" :
+            title_carousel = 'Jakarta ke Surabaya'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/surabaya.jpg'
         elif dest == "CGK-DPS" :
+            title_carousel = 'Jakarta ke Bali'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/denpasar.jpg'
         elif dest == "CGK-LOP":
+            title_carousel = 'Jakarta ke Lombok'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/lombok.jpg'
-        column['title'] = str(dest)
-        column['text'] = 'Mulai dari Rp ' + str(top_dest['MinPrice']) + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
+        column['title'] = str(title_carousel)
+        column['text'] = 'Mulai dari Rp ' + str('{:,.0f}'.format(int(top_dest['MinPrice'])))
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
-        column['actions'] = actions
+        column['actions'] = action
         columns.append(column)
 
     column = {}
@@ -2300,7 +2304,9 @@ def onMessage(msisdn, ask, first_name):
             else:
                 print "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran)
                 #sendMessageT2(msisdn, "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran), 0)
-                sendLinkMessageT2(msisdn, 'berhasil booking, detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
+                sendMessageT2(msisdn, 'Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
+                # sendLinkMessageT2(msisdn, 'Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
+                sendLinkMessageT2(msisdn, 'Tiket Xtrans', 'Tap aja untuk melanjutkan pembayaran', 'Lanjut Bayar', url_pay, 'https://bangjoni.com/v2/images/logobangjoni2.jpg')
 
         if len(errormsg) > 2:
             sendMessageT2(msisdn, "Eh, gue dapet info dari Xtrans nih: %s" % (errormsg), 0)
