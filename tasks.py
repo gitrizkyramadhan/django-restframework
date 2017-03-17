@@ -607,7 +607,7 @@ def create_recommended_carousell(msisdn):
 
     column = {}
     actions = []
-    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
+    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn + '&d=CGK&a=SUB'})
     # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
     column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
     column['title'] = 'Gak ada?'
