@@ -602,7 +602,7 @@ def create_recommended_carousell(msisdn):
         column['text'] = 'Mulai dari Rp ' + str('{:,.0f}'.format(int(top_dest['MinPrice'])))
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
-        column['actions'] = action
+        column['actions'] = actions
         columns.append(column)
 
     column = {}
