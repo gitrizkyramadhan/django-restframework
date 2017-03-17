@@ -2027,13 +2027,14 @@ def onMessage(msisdn, ask, first_name):
 
                 column['title'] = item.split('|')[0]
                 if (len(column['title']) > 40):
-                    column['title'] = column['text'][:37] + '...'
+                    column['title'] = column['title'][:37] + '...'
 
                 column['text'] = item.split('|')[1]
                 if (len(column['text']) > 60):
                     column['text'] = column['text'][:57] + '...'
 
-                column['actions'] = [{'type': 'postback', 'label': 'Alamat', 'data': "&evt=zomato_loc&lat="+str(item.split('|')[4])+"&lng="+str(item.split('|')[5])+"&address="+str(item.split('|')[1])}]
+                column['actions'] = [{'type': 'postback', 'label': 'Alamat', 'data': "&evt=zomato_loc&lat="+str(item.split('|')[4])+"&lng="+str(item.split('|')[5])+"&address="+str(item.split('|')[1])},
+                                     {'type': 'uri', 'label': 'Detailnya Nih', 'uri':item.split('|')[2]}]
                 columns.append(column)
 
                 print item.split('|')[2]
