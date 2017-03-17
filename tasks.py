@@ -1953,17 +1953,17 @@ def onMessage(msisdn, ask, first_name):
         # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
 
 
-        column_1 = {}
-        column_1['thumbnail_image_url'] = w_now['image']
-        column_1['title'] = 'Cuaca hari ini'
-        column_1['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
-        if (len(column_1['text']) > 60):
-            column_1['text'] = column_1['text'][:57] + '...'
+        column = {}
+        column['thumbnail_image_url'] = w_now['image']
+        column['title'] = 'Cuaca hari ini'
+        column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
         w_now.pop('image')
         encoded_url = urllib.urlencode(w_now, doseq=True)
         now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
-        column_1['actions'] = now_actions
-        columns.append(column_1)
+        column['actions'] = now_actions
+        columns.append(column)
 
         tom_column = {}
         # tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
@@ -2014,7 +2014,28 @@ def onMessage(msisdn, ask, first_name):
         sqlstop = respAPI.find("</found>") - 1
         list_restaurants = respAPI[sqlstart+7:sqlstop]
         if list_restaurants != "":
+            columns = []
             for item in list_restaurants.split(';'):
+                if len(item) < 1:
+                    continue
+
+                column = {}
+                if item.split('|')[3]:
+                    column['thumbnail_image_url'] = item.split('|')[3]
+                else:
+                    column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+
+                column['title'] = item.split('|')[0]
+                if (len(column['title']) > 40):
+                    column['title'] = column['text'][:37] + '...'
+
+                column['text'] = item.split('|')[1]
+                if (len(column['text']) > 60):
+                    column['text'] = column['text'][:57] + '...'
+
+                column['actions'] = [{'type': 'postback', 'label': 'Alamat', 'data': "&evt=zomato_loc&lat="+str(item.split('|')[4])+"&lng="+str(item.split('|')[5])+"&address="+str(item.split('|')[1])}]
+                columns.append(column)
+
                 print item.split('|')[2]
                 #respAPI = fetchHTML(item.split('|')[2])
                 #print "---->", respAPI
@@ -2027,14 +2048,15 @@ def onMessage(msisdn, ask, first_name):
                 #jpg_menu = jpg_menu.translate(None, "\\\"")
                 #print jpg_menu
                 #print jpg_menu.split('/')[-1]
-                answer = item.split('|')[0] + "\n" + item.split('|')[1]
-                sendMessageT2(msisdn, answer, 0)
+                # answer = item.split('|')[0] + "\n" + item.split('|')[1]
+                # sendMessageT2(msisdn, answer, 0)
                 #f = open('/usr/share/nginx/html/line_images/' + jpg_menu.split('/')[-1],'wb')
                 #f.write(urllib.urlopen('https:' + jpg_menu).read())
                 #f.close()
 
 
                 #sendPhotoCaptionT2(msisdn, "http://128.199.88.72/line_images/%s" % (jpg_menu.split('/')[-1]), "http://128.199.88.72/line_images/%s" % (jpg_menu.split('/')[-1]), answer)
+            linebot.send_composed_carousel(msisdn, "Zomato", columns)
         else:
             sendMessageT2(msisdn, "Bang Joni tidak menemukan rekomendasi restoran dari zomato, coba cari tempat atau cuisine lainnya", 0)
 
@@ -3143,7 +3165,7 @@ def docloudmailin(content):
 
             print "--->", kodebooking, kodepembayaran, bataspembayaran, jumlahbayar
             filename = "TIKETTUX." + kodebooking + ".html"
-            resp = "Hei <first_name>, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
+            resp = "Hei, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
             print resp
             onEmailReceived(filename, resp)
 
@@ -3398,6 +3420,11 @@ def doworker(req):
             elif postback_event == 'tol_traffic':
                 value_str = urlparse.parse_qs(parsed.query)['value'][0]
                 sendMessageT2(msisdn, value_str, 0)
+            elif postback_event == 'zomato_loc':
+                lat = urlparse.parse_qs(parsed.query)['lat'][0]
+                lng = urlparse.parse_qs(parsed.query)['lng'][0]
+                address = urlparse.parse_qs(parsed.query)['address'][0]
+                linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
 
 # ---------- DWP MODULE START ----------
 @app.task
