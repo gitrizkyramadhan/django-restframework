@@ -7,7 +7,7 @@ class DataIntegration(object):
     
     def __init__(self):        
 
-        self.client = MongoClient("mongodb://localhost:27017")
+        self.client = MongoClient("mongodb://139.59.96.133:27017")
         self.db = self.client['bangjoni']
         print 'DataIntegration addded ...'
 

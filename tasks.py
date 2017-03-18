@@ -2909,7 +2909,25 @@ def onMessage(msisdn, ask, first_name):
     record_conversation(msisdn, ask, True)
 
 
+def reminder_wheater_today(msisdn, longitude, latitude):
+    
+        w_now = weather_service.get_wheather(longitude, latitude)
+        if w_now[0]['cuaca'].__contains__('HUJAN'):
+            columns = []
+            now_actions = []
 
+            column = {}
+            column['thumbnail_image_url'] = w_now['image']
+            column['title'] = 'Cuaca hari ini'
+            column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+            if (len(column['text']) > 60):
+                column['text'] = column['text'][:57] + '...'
+            w_now.pop('image')
+            encoded_url = urllib.urlencode(w_now, doseq=True)
+            now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+            column['actions'] = now_actions
+            columns.append(column)
+            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
 
 
 
