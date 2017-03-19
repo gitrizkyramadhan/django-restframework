@@ -167,16 +167,18 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 	
-    scheduler = BlockingScheduler()
-    # scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, 'cron', hour='1', minute="50", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
-    #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
-    # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+    linebot.send_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
 
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        pass
+    # scheduler = BlockingScheduler()
+    # # scheduler.add_job(tick, 'interval', minutes=1)
+    # scheduler.add_job(do_wheater_today, 'cron', hour='1', minute="50", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
+    # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+
+    # try:
+    #     scheduler.start()
+    # except (KeyboardInterrupt, SystemExit):
+    #     pass
 	
 	
     #file = open('uniq_chatid.txt', 'r')
