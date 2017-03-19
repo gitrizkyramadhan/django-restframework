@@ -8,7 +8,7 @@ def reminder_cuaca():
     sched.start()
     al = AnalyticLog()
     # for data in al.get_reminder('cuaca'):
-    sched.add_job(reminder_wheater_today, 'cron', hour='6', args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="31", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     # try:
     #     while True:
     #         time.sleep(2)
