@@ -7,11 +7,8 @@ import urllib
 import time
 from weather import WeatherService
 from bot import Bot
-linebot = Bot()
-#daily -> hanya lihat jam
-#once  -> hanya lihat date+jam
-#prayer -> hanya lihat jam
 
+#First Initialization
 TOKEN_TELEGRAM=""
 KEYFILE=""
 CERTFILE=""
@@ -22,6 +19,33 @@ MYSQL_PWD=""
 MYSQL_DB=""
 WEB_HOOK=""
 EMAIL_NOTIF=""
+LINE_TOKEN=""
+
+LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
+
+DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
+
+##########OPEN CONFIGURATION#######################
+with open('BJCONFIG.txt') as f:
+    content = f.read().splitlines()
+f.close()
+TOKEN_TELEGRAM=content[0].split('=')[1]
+KEYFILE=content[1].split('=')[1]
+CERTFILE=content[2].split('=')[1]
+URL_TELEGRAM=content[3].split('=')[1]
+MYSQL_HOST=content[4].split('=')[1]
+MYSQL_USER=content[5].split('=')[1]
+MYSQL_PWD=content[6].split('=')[1]
+MYSQL_DB=content[7].split('=')[1]
+WEB_HOOK=content[8].split('=')[1]
+EMAIL_NOTIF=content[9].split('=')[1]
+LINE_TOKEN=content[11].split('=')[1]
+
+linebot = Bot(LINE_TOKEN)
+
+#daily -> hanya lihat jam
+#once  -> hanya lihat date+jam
+#prayer -> hanya lihat jam
 
 def request(sql):
     try:
@@ -145,7 +169,7 @@ if __name__ == '__main__':
 	
     scheduler = BlockingScheduler()
     # scheduler.add_job(tick, 'interval', minutes=1)
-    sched.add_job(do_wheater_today, 'cron', hour='1', minute="26", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    sched.add_job(do_wheater_today, 'cron', hour='1', minute="48", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
