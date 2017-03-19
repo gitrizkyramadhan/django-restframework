@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler, BaseScheduler
 import MySQLdb
 import requests
 import urllib
 import time
-
+from weather import WeatherService
 from bot import Bot
 linebot = Bot()
 #daily -> hanya lihat jam
@@ -89,7 +89,43 @@ def tick():
             linebot.send_message(msisdn, desc_reminder)
             if once == "None": 
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
-            continue			
+            continue
+
+def do_wheater_today(msisdn, longitude, latitude):
+    
+        w_now = weather_service.get_wheather(longitude, latitude)
+        if w_now[0]['cuaca'].__contains__('HUJAN'):
+            columns = []
+            now_actions = []
+
+            column = {}
+            column['thumbnail_image_url'] = w_now['image']
+            column['title'] = 'Cuaca hari ini'
+            column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+            if (len(column['text']) > 60):
+                column['text'] = column['text'][:57] + '...'
+            w_now.pop('image')
+            encoded_url = urllib.urlencode(w_now, doseq=True)
+            now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+            column['actions'] = now_actions
+            columns.append(column)
+            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+
+def reminder_cuaca():
+    # sched = BackgroundScheduler()
+    # sched.start()
+    al = AnalyticLog()
+    for data in al.get_reminder('cuaca'):
+        postion = data['value']
+        do_wheater_today(data['msisdn'],postion[0], postion[1])
+        # sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="33", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+        # sched.add_job(print_somtehing, 'cron', hour='15', minute="39", args=None)
+    # try:
+    #     while True:
+    #         time.sleep(1)
+    # except (KeyboardInterrupt, SystemExit):
+    #     sched.shutdown()
+
 
 if __name__ == '__main__':
     ##########OPEN CONFIGURATION#######################
@@ -108,9 +144,10 @@ if __name__ == '__main__':
     EMAIL_NOTIF=content[9].split('=')[1]
 	
     scheduler = BlockingScheduler()
-    scheduler.add_job(tick, 'interval', minutes=1)
+    # scheduler.add_job(tick, 'interval', minutes=1)
+    sched.add_job(do_wheater_today, 'cron', hour='1', minute="26", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
-    linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+    # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
     try:
         scheduler.start()
