@@ -167,7 +167,7 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 	
-    linebot.send_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
+    linebot.send_text_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
 
     # scheduler = BlockingScheduler()
     # # scheduler.add_job(tick, 'interval', minutes=1)
