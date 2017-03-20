@@ -10,6 +10,7 @@ from weather import WeatherService
 from bot import Bot
 import logging
 logging.basicConfig()
+from decimal import Decimal
 
 #First Initialization
 TOKEN_TELEGRAM=""
@@ -120,7 +121,7 @@ def tick():
 
 def do_wheater_today(msisdn, longitude, latitude):
     weather_service = WeatherService()
-    w_now = weather_service.get_wheather(int(longitude), int(latitude))
+    w_now = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
     # if w_now[0]['cuaca'].__contains__('HUJAN'):
     columns = []
     now_actions = []
