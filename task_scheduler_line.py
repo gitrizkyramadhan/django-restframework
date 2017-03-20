@@ -8,6 +8,8 @@ import urllib
 import time
 from weather import WeatherService
 from bot import Bot
+import logging
+logging.basicConfig()
 
 #First Initialization
 TOKEN_TELEGRAM=""
