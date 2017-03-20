@@ -574,7 +574,7 @@ def create_incoming_msisdn():
 
 # ---------- FLIGHT CAROUSELL START ----------
 def create_recommended_carousell(msisdn):
-    microsite_url = 'https://bangjoni.com/pesawat/flight-bj.php?'
+    microsite_url = 'https://bangjoni.com/testflv2/flight-bj.php?'
     top_4_destinations = "CGK-KNO,CGK-SUB,CGK-DPS,CGK-LOP"
     columns = []
     for dest in top_4_destinations.split(','):
@@ -1306,18 +1306,12 @@ def onMessage(msisdn, ask, first_name):
             if item != "99":
                 reply = reply + x[i] + " Rp. %d" % (z) + "\n"
             i = i + 1
-        if incomingMsisdn[4] == 'SI':
-            reply = reply + "\nUntuk memilih nominal pulsa data, silahkan tap gambar menu dibawah."
-            sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
-                               "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
-                               "Ok, berikut kuota volume dan periodenya. Tap gbrnya untuk memperbesar")
-        else:
-            reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
-            #print reply
-            if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
-                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
-            else :
-                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
+        reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
+        #print reply
+        if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
+            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
+        else :
+            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
