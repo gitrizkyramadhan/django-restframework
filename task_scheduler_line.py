@@ -121,7 +121,7 @@ def tick():
 
 def do_wheater_today(msisdn, longitude, latitude):
     weather_service = WeatherService()
-    w_now = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
+    (w_now, w_tom) = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
     # if w_now[0]['cuaca'].__contains__('HUJAN'):
     columns = []
     now_actions = []
