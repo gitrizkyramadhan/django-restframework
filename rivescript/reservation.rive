@@ -152,7 +152,7 @@
     - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random} <set mycontext=random>
 
     + [*] (@nggak) [*]
-    - Okee {topic=<get mycontext>}
+    - Okee {topic=<get mycontext>} {topic=random}
 
     + *
     - Gue gak ngerti dah, seriusan. Yakin banget nih gak jadi?

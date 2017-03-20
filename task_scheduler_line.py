@@ -1,17 +1,14 @@
 from datetime import datetime, timedelta
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler, BaseScheduler
 import MySQLdb
 import requests
 import urllib
 import time
-
+from weather import WeatherService
 from bot import Bot
-linebot = Bot()
-#daily -> hanya lihat jam
-#once  -> hanya lihat date+jam
-#prayer -> hanya lihat jam
 
+#First Initialization
 TOKEN_TELEGRAM=""
 KEYFILE=""
 CERTFILE=""
@@ -22,6 +19,33 @@ MYSQL_PWD=""
 MYSQL_DB=""
 WEB_HOOK=""
 EMAIL_NOTIF=""
+LINE_TOKEN=""
+
+LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
+
+DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
+
+##########OPEN CONFIGURATION#######################
+with open('BJCONFIG.txt') as f:
+    content = f.read().splitlines()
+f.close()
+TOKEN_TELEGRAM=content[0].split('=')[1]
+KEYFILE=content[1].split('=')[1]
+CERTFILE=content[2].split('=')[1]
+URL_TELEGRAM=content[3].split('=')[1]
+MYSQL_HOST=content[4].split('=')[1]
+MYSQL_USER=content[5].split('=')[1]
+MYSQL_PWD=content[6].split('=')[1]
+MYSQL_DB=content[7].split('=')[1]
+WEB_HOOK=content[8].split('=')[1]
+EMAIL_NOTIF=content[9].split('=')[1]
+LINE_TOKEN=content[11].split('=')[1]
+
+linebot = Bot(LINE_TOKEN)
+
+#daily -> hanya lihat jam
+#once  -> hanya lihat date+jam
+#prayer -> hanya lihat jam
 
 def request(sql):
     try:
@@ -89,7 +113,43 @@ def tick():
             linebot.send_message(msisdn, desc_reminder)
             if once == "None": 
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
-            continue			
+            continue
+
+def do_wheater_today(msisdn, longitude, latitude):
+    
+        w_now = weather_service.get_wheather(longitude, latitude)
+        if w_now[0]['cuaca'].__contains__('HUJAN'):
+            columns = []
+            now_actions = []
+
+            column = {}
+            column['thumbnail_image_url'] = w_now['image']
+            column['title'] = 'Cuaca hari ini'
+            column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+            if (len(column['text']) > 60):
+                column['text'] = column['text'][:57] + '...'
+            w_now.pop('image')
+            encoded_url = urllib.urlencode(w_now, doseq=True)
+            now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+            column['actions'] = now_actions
+            columns.append(column)
+            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+
+def reminder_cuaca():
+    # sched = BackgroundScheduler()
+    # sched.start()
+    al = AnalyticLog()
+    for data in al.get_reminder('cuaca'):
+        postion = data['value']
+        do_wheater_today(data['msisdn'],postion[0], postion[1])
+        # sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="33", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+        # sched.add_job(print_somtehing, 'cron', hour='15', minute="39", args=None)
+    # try:
+    #     while True:
+    #         time.sleep(1)
+    # except (KeyboardInterrupt, SystemExit):
+    #     sched.shutdown()
+
 
 if __name__ == '__main__':
     ##########OPEN CONFIGURATION#######################
@@ -107,10 +167,13 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 	
+    # linebot.send_text_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
+
     scheduler = BlockingScheduler()
-    scheduler.add_job(tick, 'interval', minutes=1)
-    #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
-    linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+    # # scheduler.add_job(tick, 'interval', minutes=1)
+    scheduler.add_job(do_wheater_today, trigger='cron', hour=2, minute=41, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
+    # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
     try:
         scheduler.start()
