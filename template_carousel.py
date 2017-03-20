@@ -172,7 +172,7 @@ carousels = [{
                         ),
                         MessageTemplateAction(
                             label='Kuota Data',
-                            text='pulsa data'
+                            text='paket data'
                         )
                     ]
                 ),

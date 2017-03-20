@@ -72,8 +72,8 @@ class Nlp:
                 self.kota_sholat_gmt.append(row[3])
 
 
-        self.prefix_operator = ['0811|0812|0813|0821|0822|0823|0852|0853|0851','0855|0856|0857|0858|0814|0815|0816','0817|0818|0819|0859|0877|0878|0838|0831|0832|0833','0896|0897|0898|0899','0881|0882|0883|0884|0885|0886|0887|0888|0889']
-        self.markup_operator = ['500|500|500|0|0|-5000','1000|1000|99|500|0|0','1000|1000|99|500|0|0','500|500|500|500|0|0','500|500|500|500|0|0']
+        self.prefix_operator = ['0811|0812|0813|0821|0822|0823|0852|0853|0851', '0855|0856|0857|0858|0814|0815|0816', '0817|0818|0819|0859|0877|0878', '0895|0896|0897|0898|0899', '0881|0882|0883|0884|0885|0886|0887|0888|0889', '0838|0831|0832|0833']
+        self.markup_operator = ['500|500|500|0|0|-5000', '1000|1000|99|500|0|0', '1000|1000|99|500|0|0', '500|500|500|500|0|0', '500|500|500|500|0|0', '1000|1000|99|500|0|0']
 
     def reply(self, msisdn, mesg):
         params = {'msisdn': msisdn, 'ask': mesg}
@@ -209,10 +209,13 @@ class Nlp:
 
         if answer[:4] == "pu01" :
             incomingMsisdn[1] = self.get_uservar(msisdn,"no_hp")
+            x = self.get_uservar(msisdn, "pulsa_data")
+            incomingMsisdn[8] = x
             idx = self.search_string_match(incomingMsisdn[1][:4], self.prefix_operator)
             if idx == 0:
                 incomingMsisdn[2] = 'Telkomsel'
                 incomingMsisdn[4] = 'S'
+                if x == '1': incomingMsisdn[4] = 'SI'
             elif idx == 1:
                 incomingMsisdn[2] = 'Indosat'
                 incomingMsisdn[4] = 'I'

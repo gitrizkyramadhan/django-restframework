@@ -189,17 +189,17 @@
 < topic
 
 ///////////////////////////////////START REMINDER
-+ [*] (@ingetin) [*] {weight=10}
-- Siap! Ntar gue ingetin deh
-- Oke! Udah gue catet!
+//+ [*] (@ingetin) [*] {weight=10}
+//- Siap! Ntar gue ingetin deh
+//- Oke! Udah gue catet!
 
-//+ [*] (ingetin|reminder|bangunin)
-//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
-//- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
-//^ - Ingetin ada resepsi nikah lusa\n
-//^ - Ingetin bangun pagi tiap jam 5\n
-//^ - Ingetin bayar listrik tiap tgl 5 juli\n
-//^ - Ingetin meeting dengan sales tiap senin jam 9.30
++ [*] (@ingetin) [*] {weight=10}
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+^ - Ingetin ada resepsi nikah lusa\n
+^ - Ingetin bangun pagi tiap jam 5\n
+^ - Ingetin bayar listrik tiap tgl 5 juli\n
+^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
 //+ [*] (ingetin|reminder|bangunin) *{weight=10}
 //* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
@@ -316,7 +316,7 @@
 
 
 ///////////////////////////////////START PULSA DATA HP
-+ [*] (pulsa data|bang isiin pulsa data dong|paket data|paket internet|pulsa internet) [*]
++ [*] (pulsa data|bang isiin pulsa data dong|paket data|paket internet|pulsa internet) [*] {weight=10}
 - Oke, tapi sementara ini gue baru punya pulsa data Telkomsel nih <br>
 ^ Nomer yang mau diisi kuota nomer Telkomsel bukan? <br>
 ^ Kalo iya, langsung ketik aja nomernya (contoh 0812xxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=1>
