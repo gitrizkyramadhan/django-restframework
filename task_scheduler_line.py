@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 import os
-from apscheduler.schedulers.background import BlockingScheduler, BackgroundScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 import MySQLdb
 import requests
+from log_analytic import AnalyticLog
 import urllib
 import time
 from weather import WeatherService
@@ -116,24 +117,24 @@ def tick():
             continue
 
 def do_wheater_today(msisdn, longitude, latitude):
-    
-        w_now = weather_service.get_wheather(longitude, latitude)
-        if w_now[0]['cuaca'].__contains__('HUJAN'):
-            columns = []
-            now_actions = []
+    weather_service = WeatherService()
+    w_now = weather_service.get_wheather(longitude, latitude)
+    if w_now[0]['cuaca'].__contains__('HUJAN'):
+        columns = []
+        now_actions = []
 
-            column = {}
-            column['thumbnail_image_url'] = w_now['image']
-            column['title'] = 'Cuaca hari ini'
-            column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
-            if (len(column['text']) > 60):
-                column['text'] = column['text'][:57] + '...'
-            w_now.pop('image')
-            encoded_url = urllib.urlencode(w_now, doseq=True)
-            now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
-            column['actions'] = now_actions
-            columns.append(column)
-            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+        column = {}
+        column['thumbnail_image_url'] = w_now['image']
+        column['title'] = 'Cuaca hari ini'
+        column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
+        w_now.pop('image')
+        encoded_url = urllib.urlencode(w_now, doseq=True)
+        now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+        column['actions'] = now_actions
+        columns.append(column)
+        linebot.send_composed_carousel(msisdn, "Cuaca", columns)
 
 def reminder_cuaca():
     # sched = BackgroundScheduler()
@@ -169,9 +170,9 @@ if __name__ == '__main__':
 	
     # linebot.send_text_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
 
-    scheduler = BackgroundScheduler()
+    scheduler = BlockingScheduler()
     # # scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, trigger='cron', hour=11, minute=02, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    scheduler.add_job(do_wheater_today, trigger='cron', hour=15, minute=30, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
@@ -179,8 +180,8 @@ if __name__ == '__main__':
         scheduler.start()
     except (KeyboardInterrupt, SystemExit):
         pass
-	
-	
+
+
     #file = open('uniq_chatid.txt', 'r')
     #i = 0
     #for line in file:
