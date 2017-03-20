@@ -67,9 +67,9 @@
 ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
 
 - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
 - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
 
 
 + [*] (@gakada) [*]
@@ -152,7 +152,7 @@
     - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random} <set mycontext=random>
 
     + [*] (@nggak) [*]
-    - Okee {topic=<get mycontext>} {topic=random}
+    - Okee, lanjut ya pesennya {topic=<get mycontext>}
 
     + *
     - Gue gak ngerti dah, seriusan. Yakin banget nih gak jadi?
@@ -201,13 +201,13 @@
 //^ - Ingetin bayar listrik tiap tgl 5 juli\n
 //^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
-//+ [*] (ingetin|reminder|bangunin) *{weight=10}
-//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
-//- re01 OK <first_name>. <set rem_pesan=<star2>>
++ [*] (ingetin|reminder|bangunin) *{weight=10}
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+- re01 OK <first_name>. <set rem_pesan=<star2>>
 
-//+ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
-//* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
-//- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
++ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
+* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
+- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
 
 + [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
 - OK
@@ -505,7 +505,7 @@
 
 > topic uber inherits global
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
-  - ch02 Oke, gue batalin nih ya Uber-nya.{topic=random}
+  - ch02 Oke, gue batalin nih ya Uber-nya.{topic=random} <set mycontext=random>
 
   + ub02a
   - Sekarang share lokasi tujuanmu dengan cara click tombol + sebelah tombol smile dan tap Share Location
@@ -514,11 +514,11 @@
   - ub02 Tuh udah Bang Joni cariin Uber, cuma buat kamu. Tinggal pilih aja mau naik motor apa mobil...
 
   + exittorandom
-  - exittorandom {topic=random}
+  - exittorandom {topic=random} <set mycontext=random>
 
   + [*] (lupa|password|pasword) [*]
   - Coba inget-inget dulu password Uber-nya. <br>
-  ^ Gue perlu itu untuk pertama kali pesen Uber, nanti setelahnya bisa langsung kok, nggak harus login lagi. {topic=random}
+  ^ Gue perlu itu untuk pertama kali pesen Uber, nanti setelahnya bisa langsung kok, nggak harus login lagi. {topic=random} <set mycontext=random>
 
   + [*] (ubermotor|uberx|uber x|ubermobil|uber mobil|uber motor) [*]
   - ub03 Oke, pilih metode pembayaran di atas yak <set uber_product=<star1>>
@@ -530,7 +530,7 @@
   - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. <set uber_payment=<star1>>
 
   + ub04
-  - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. {topic=random}<set uber_payment=<star1>>
+  - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. <set uber_payment=<star1>>
 
 < topic
 
