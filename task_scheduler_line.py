@@ -98,7 +98,7 @@ def tick():
         #checking date for specific date
         if date_system == date_reminder and time_system == time_reminder:
             print "Got reminder task specific date:", msisdn
-            linebot.send_message(msisdn, desc_reminder)
+            linebot.send_text_message(msisdn, desc_reminder)
             if once == "None": 
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
             continue
@@ -106,7 +106,7 @@ def tick():
         #checking day name for specific day
         if day_system == is_day and time_system == time_reminder:
             print "Got reminder task specific day:", msisdn
-            linebot.send_message(msisdn, desc_reminder)
+            linebot.send_text_message(msisdn, desc_reminder)
             if once == "None": 
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
             continue
@@ -114,7 +114,7 @@ def tick():
         #checking time for specific time
         if time_system == time_reminder and dtm.split(' ')[0] == '1979-04-08':
             print "Got reminder task specific time:", msisdn
-            linebot.send_message(msisdn, desc_reminder)
+            linebot.send_text_message(msisdn, desc_reminder)
             if once == "None": 
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
             continue
@@ -122,10 +122,9 @@ def tick():
 def do_wheater_today(msisdn, longitude, latitude):
     weather_service = WeatherService()
     (w_now, w_tom) = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
-    # if w_now[0]['cuaca'].__contains__('HUJAN'):
+    if w_now[0]['cuaca'].__contains__('HUJAN'):
     columns = []
     now_actions = []
-
     column = {}
     column['thumbnail_image_url'] = w_now['image']
     column['title'] = 'Cuaca hari ini'
@@ -140,11 +139,10 @@ def do_wheater_today(msisdn, longitude, latitude):
     linebot.send_composed_carousel(msisdn, "Cuaca", columns)
 
 def reminder_cuaca():
-    # sched = BackgroundScheduler()
-    # sched.start()
+
     al = AnalyticLog()
     for data in al.get_reminder('cuaca'):
-        postion = data['value']
+        postion = data['value'].split(';')
         do_wheater_today(data['msisdn'],postion[0], postion[1])
         # sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="33", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
         # sched.add_job(print_somtehing, 'cron', hour='15', minute="39", args=None)
@@ -170,12 +168,10 @@ if __name__ == '__main__':
     MYSQL_DB=content[7].split('=')[1]
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
-	
-    # linebot.send_text_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
 
     scheduler = BlockingScheduler()
-    # # scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, trigger='cron', hour=15, minute=30, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    # scheduler.add_job(tick, 'interval', minutes=1)
+    scheduler.add_job(do_wheater_today, trigger='insterval', minutes=3, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
