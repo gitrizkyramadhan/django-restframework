@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler, BaseScheduler
+from apscheduler.schedulers.background import BlockingScheduler, BackgroundScheduler
 import MySQLdb
 import requests
 import urllib
@@ -169,9 +169,9 @@ if __name__ == '__main__':
 	
     # linebot.send_text_message("U90a846efb4bc03eec9e66cbf61fea960", "luk luk")
 
-    scheduler = BlockingScheduler()
+    scheduler = BackgroundScheduler()
     # # scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, trigger='cron', hour=2, minute=41, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    scheduler.add_job(do_wheater_today, trigger='cron', hour=11, minute=02, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
