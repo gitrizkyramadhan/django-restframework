@@ -190,8 +190,12 @@
 
 ///////////////////////////////////START REMINDER
 + [*] (@ingetin) [*] {weight=10}
-- Siap! Ntar gue ingetin deh
-- Oke! Udah gue catet!
+* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+^ - Ingetin ada resepsi nikah lusa\n
+^ - Ingetin bangun pagi tiap jam 5\n
+^ - Ingetin bayar listrik tiap tgl 5 juli\n
+^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
 //+ [*] (ingetin|reminder|bangunin)
 //* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
