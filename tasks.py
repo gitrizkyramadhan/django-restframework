@@ -1354,6 +1354,8 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
 
                 if response == "0":
                     # decrement saldo
@@ -1373,14 +1375,18 @@ def onMessage(msisdn, ask, first_name):
                     _print_debug(return_code)
                     if return_code is None :
                         try:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                        log_paid(logDtm, msisdn, first_name, "PULSA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]))
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, coba lagi nanti yaa.."
-
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else :
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label' : 'Topup aja', 'type' : 'message', 'text' : 'topup'}, {'label' : 'Nggak', 'type' : 'message', 'text' : 'gak jadi topup'})
@@ -1534,11 +1540,13 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
                 # print response, msg
                 if response == "0":
                     s = msg.split('S/N ')[1].split('No HP')[0]
                     # decrement saldo
-                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 200
+                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 300
 
                     return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1])
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
@@ -1548,11 +1556,16 @@ def onMessage(msisdn, ask, first_name):
                     # balance = balance - debit
                     # payload = str(balance) + "|" + va_no + "|" + deposit_hp
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                        answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        answer = "Hei "+get_line_username(msisdn)+", token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        log_paid(logDtm, msisdn, first_name, "TOKEN", incomingMsisdn[1] + "-" + incomingMsisdn[3])
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else:
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label': 'Topup aja', 'type': 'message', 'text': 'topup'}, {'label': 'Nggak', 'type': 'message', 'text': 'gak jadi topup'})
