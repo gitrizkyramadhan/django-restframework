@@ -42,11 +42,11 @@
     ^ Semoga membantu yaa.. ;) {topic=random}
 
     + *
-    * <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-    - ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
+    ^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
+    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
     ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-    - ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
     ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic
@@ -115,11 +115,11 @@
     ^ Btw, apa yang bisa gue bantu nih? {topic=random}
 
     + *
-    * <get mycontext> != random => ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
     ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-    - ee01 gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
     ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-    - ee01 gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
     ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic

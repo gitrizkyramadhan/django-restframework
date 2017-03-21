@@ -587,15 +587,19 @@ def create_recommended_carousell(msisdn):
 
         actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
         if dest == "CGK-KNO" :
+            title_carousel = 'Jakarta ke Medan'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/medan.jpg'
         elif dest == "CGK-SUB" :
+            title_carousel = 'Jakarta ke Surabaya'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/surabaya.jpg'
         elif dest == "CGK-DPS" :
+            title_carousel = 'Jakarta ke Bali'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/denpasar.jpg'
         elif dest == "CGK-LOP":
+            title_carousel = 'Jakarta ke Lombok'
             column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/lombok.jpg'
-        column['title'] = str(dest)
-        column['text'] = 'Mulai dari Rp ' + str(top_dest['MinPrice']) + ' buat tanggal ' + top_dest['OutboundLeg']['DepartureDate'][:10]
+        column['title'] = str(title_carousel)
+        column['text'] = 'Mulai dari Rp ' + str('{:,.0f}'.format(int(top_dest['MinPrice'])))
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
         column['actions'] = actions
@@ -603,7 +607,7 @@ def create_recommended_carousell(msisdn):
 
     column = {}
     actions = []
-    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn})
+    actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn + '&d=CGK&a=SUB'})
     # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
     column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
     column['title'] = 'Gak ada?'
@@ -1350,6 +1354,8 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
 
                 if response == "0":
                     # decrement saldo
@@ -1369,14 +1375,18 @@ def onMessage(msisdn, ask, first_name):
                     _print_debug(return_code)
                     if return_code is None :
                         try:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                        log_paid(logDtm, msisdn, first_name, "PULSA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]))
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, coba lagi nanti yaa.."
-
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else :
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label' : 'Topup aja', 'type' : 'message', 'text' : 'topup'}, {'label' : 'Nggak', 'type' : 'message', 'text' : 'gak jadi topup'})
@@ -1530,11 +1540,13 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
                 # print response, msg
                 if response == "0":
                     s = msg.split('S/N ')[1].split('No HP')[0]
                     # decrement saldo
-                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 200
+                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 300
 
                     return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1])
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
@@ -1544,11 +1556,16 @@ def onMessage(msisdn, ask, first_name):
                     # balance = balance - debit
                     # payload = str(balance) + "|" + va_no + "|" + deposit_hp
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                        answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        answer = "Hei "+get_line_username(msisdn)+", token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        log_paid(logDtm, msisdn, first_name, "TOKEN", incomingMsisdn[1] + "-" + incomingMsisdn[3])
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else:
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label': 'Topup aja', 'type': 'message', 'text': 'topup'}, {'label': 'Nggak', 'type': 'message', 'text': 'gak jadi topup'})
@@ -1953,17 +1970,17 @@ def onMessage(msisdn, ask, first_name):
         # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
 
 
-        column_1 = {}
-        column_1['thumbnail_image_url'] = w_now['image']
-        column_1['title'] = 'Cuaca hari ini'
-        column_1['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
-        if (len(column_1['text']) > 60):
-            column_1['text'] = column_1['text'][:57] + '...'
+        column = {}
+        column['thumbnail_image_url'] = w_now['image']
+        column['title'] = 'Cuaca hari ini'
+        column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
         w_now.pop('image')
         encoded_url = urllib.urlencode(w_now, doseq=True)
         now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
-        column_1['actions'] = now_actions
-        columns.append(column_1)
+        column['actions'] = now_actions
+        columns.append(column)
 
         tom_column = {}
         # tom_column.append({'type': 'postback', 'label': 'Detail', 'data': microsite_url + 'msisdn=' + msisdn})
@@ -2014,7 +2031,29 @@ def onMessage(msisdn, ask, first_name):
         sqlstop = respAPI.find("</found>") - 1
         list_restaurants = respAPI[sqlstart+7:sqlstop]
         if list_restaurants != "":
+            columns = []
             for item in list_restaurants.split(';'):
+                if len(item) < 1:
+                    continue
+
+                column = {}
+                if item.split('|')[3]:
+                    column['thumbnail_image_url'] = item.split('|')[3]
+                else:
+                    column['thumbnail_image_url'] = 'https://example.com/item1.jpg'
+
+                column['title'] = item.split('|')[0]
+                if (len(column['title']) > 40):
+                    column['title'] = column['title'][:37] + '...'
+
+                column['text'] = item.split('|')[1]
+                if (len(column['text']) > 60):
+                    column['text'] = column['text'][:57] + '...'
+
+                column['actions'] = [{'type': 'postback', 'label': 'Alamat', 'data': "&evt=zomato_loc&lat="+str(item.split('|')[4])+"&lng="+str(item.split('|')[5])+"&address="+str(item.split('|')[1])},
+                                     {'type': 'uri', 'label': 'Detailnya Nih', 'uri':item.split('|')[2]}]
+                columns.append(column)
+
                 print item.split('|')[2]
                 #respAPI = fetchHTML(item.split('|')[2])
                 #print "---->", respAPI
@@ -2027,14 +2066,15 @@ def onMessage(msisdn, ask, first_name):
                 #jpg_menu = jpg_menu.translate(None, "\\\"")
                 #print jpg_menu
                 #print jpg_menu.split('/')[-1]
-                answer = item.split('|')[0] + "\n" + item.split('|')[1]
-                sendMessageT2(msisdn, answer, 0)
+                # answer = item.split('|')[0] + "\n" + item.split('|')[1]
+                # sendMessageT2(msisdn, answer, 0)
                 #f = open('/usr/share/nginx/html/line_images/' + jpg_menu.split('/')[-1],'wb')
                 #f.write(urllib.urlopen('https:' + jpg_menu).read())
                 #f.close()
 
 
                 #sendPhotoCaptionT2(msisdn, "http://128.199.88.72/line_images/%s" % (jpg_menu.split('/')[-1]), "http://128.199.88.72/line_images/%s" % (jpg_menu.split('/')[-1]), answer)
+            linebot.send_composed_carousel(msisdn, "Zomato", columns)
         else:
             sendMessageT2(msisdn, "Bang Joni tidak menemukan rekomendasi restoran dari zomato, coba cari tempat atau cuisine lainnya", 0)
 
@@ -2277,7 +2317,9 @@ def onMessage(msisdn, ask, first_name):
             else:
                 print "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran)
                 #sendMessageT2(msisdn, "Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya: <br> Kode Booking: %s\nKode Pembayaran: %s\nJumlah Pembayaran: Rp. %s\nLakukan pembayaran via %s dengan cara <a href=\"%s\">click disini</a> sebelum %s supaya tiket lo nggak dibatalin.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya." % (kodeBooking, kodePembayaran, harga, incomingMsisdn[8], url_pay, batasPembayaran), 0)
-                sendLinkMessageT2(msisdn, 'berhasil booking, detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
+                sendMessageT2(msisdn, 'Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), 0)
+                # sendLinkMessageT2(msisdn, 'Tiket Xtrans lo udah berhasil gue booking ya, ini detailnya:\nKode Booking: %s\nKode Pembayaran: %s\nHarga: Rp. %s\nLakukan pembayaran sebelum %s.\nNanti E-ticketnya gue kirim kalo pembayarannya udah diterima ya.' % (kodeBooking, kodePembayaran, harga, batasPembayaran), incomingMsisdn[8], 'Bayar Sekarang', url_pay, 'http://128.199.88.72/line_images/logobangjoni2.jpg')
+                sendLinkMessageT2(msisdn, 'Tiket Xtrans', 'Tap aja untuk melanjutkan pembayaran', 'Lanjut Bayar', url_pay, 'https://bangjoni.com/v2/images/logobangjoni2.jpg')
 
         if len(errormsg) > 2:
             sendMessageT2(msisdn, "Eh, gue dapet info dari Xtrans nih: %s" % (errormsg), 0)
@@ -2880,7 +2922,25 @@ def onMessage(msisdn, ask, first_name):
     record_conversation(msisdn, ask, True)
 
 
+def reminder_wheater_today(msisdn, longitude, latitude):
+    
+        w_now = weather_service.get_wheather(longitude, latitude)
+        if w_now[0]['cuaca'].__contains__('HUJAN'):
+            columns = []
+            now_actions = []
 
+            column = {}
+            column['thumbnail_image_url'] = w_now['image']
+            column['title'] = 'Cuaca hari ini'
+            column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+            if (len(column['text']) > 60):
+                column['text'] = column['text'][:57] + '...'
+            w_now.pop('image')
+            encoded_url = urllib.urlencode(w_now, doseq=True)
+            now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+            column['actions'] = now_actions
+            columns.append(column)
+            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
 
 
 
@@ -3144,7 +3204,7 @@ def docloudmailin(content):
 
             print "--->", kodebooking, kodepembayaran, bataspembayaran, jumlahbayar
             filename = "TIKETTUX." + kodebooking + ".html"
-            resp = "Hei <first_name>, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
+            resp = "Hei, gue mau ngingetin nih, lo belom melakukan pembayaran buat tiket Xtrans loh. <br> Batas waktu pembayarannya sampe %s ya, kalo lewat dari itu, tiketnya otomatis bakal dibatalin." % (bataspembayaran)
             print resp
             onEmailReceived(filename, resp)
 
@@ -3401,6 +3461,11 @@ def doworker(req):
             elif postback_event == 'tol_traffic':
                 value_str = urlparse.parse_qs(parsed.query)['value'][0]
                 sendMessageT2(msisdn, value_str, 0)
+            elif postback_event == 'zomato_loc':
+                lat = urlparse.parse_qs(parsed.query)['lat'][0]
+                lng = urlparse.parse_qs(parsed.query)['lng'][0]
+                address = urlparse.parse_qs(parsed.query)['address'][0]
+                linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
 
 # ---------- DWP MODULE START ----------
 @app.task
