@@ -9,7 +9,7 @@ class DataIntegration(object):
 
         self.client = MongoClient("mongodb://139.59.96.133:27017")
         self.db = self.client['bangjoni']
-        print 'DataIntegration addded ...'
+        print 'DataIntegration added ...'
 
     def job_logpulsa_to_reminder(self):
         
@@ -42,6 +42,15 @@ class DataIntegration(object):
 
         ml = MongoLog()
         la = AnalyticLog()
+        # query_delete_location = [
+        #     {"type_reminder": "location"}
+        # ]
+        self.db.reminder.delete_many({"type_reminder": "location"})
+        msisdn = []
         for data in la.get_often_location_access():
-
-            ml.reminder(data['_id'], 'location', data[''], data[2])
+            if data['_id']['msisdn'] not in msisdn:
+                ml.reminder(data['_id']['msisdn'], 'location', data['_id']['location'], '06:00')
+            msisdn.append(data['_id']['msisdn'])
+#
+# di = DataIntegration()
+# di.job_loglocation_to_reminder()
