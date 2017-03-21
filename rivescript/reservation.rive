@@ -63,14 +63,8 @@
 ^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 
 + *
-* <get mycontext> != random => gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-
-- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
-- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random} <set mycontext=random>
-
+* <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
+^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>} {topic=random}
 
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
@@ -190,27 +184,31 @@
 
 ///////////////////////////////////START REMINDER
 + [*] (@ingetin) [*] {weight=10}
-* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
-- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
-^ - Ingetin ada resepsi nikah lusa\n
-^ - Ingetin bangun pagi tiap jam 5\n
-^ - Ingetin bayar listrik tiap tgl 5 juli\n
-^ - Ingetin meeting dengan sales tiap senin jam 9.30
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=setcity1} <set mycontext=setcity1>
+- Oke deh! buat bikin notes reminder, lo bisa ketik kayak gini ya: <br>
+^ Ingetin ada resepsi nikah lusa\n
+^ Ingetin bangun pagi tiap jam 5\n
+^ Ingetin bayar listrik tiap tanggal 5 juli\n
+^ Ingetin meeting sama sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random} <set mycontext=random>
 
 //+ [*] (ingetin|reminder|bangunin)
-//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
-//- Ok, bang Joni akan ingetin kamu, coba ketik seperti ini:\n
+//* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=setcity1} <set mycontext=setcity1>
+//- Oke deh! buat bikin notes reminder, lo bisa ketik kayak gini ya: <br>
 //^ - Ingetin ada resepsi nikah lusa\n
 //^ - Ingetin bangun pagi tiap jam 5\n
 //^ - Ingetin bayar listrik tiap tgl 5 juli\n
 //^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
 + [*] (ingetin|reminder|bangunin) *{weight=11}
-* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
 - re01 OK <first_name>. <set rem_pesan=<star2>>
 
 + [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
-* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=remindsholat} <set mycontext=remindsholat>
 - rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
 
 + [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
@@ -220,7 +218,7 @@
 - re02 Oke, ini list reminder lo yaa:
 
 + [*] hapus reminder [*]
-- Sorry, layanan penghapusan reminder masih belom ada ya.
+- Sorry, layanan penghapusan reminder masih belom ada nih.
 
 + [*] (set|ubah|ganti) [*] (kota|lokasi) [*] (@kotasholat1|@kotasholat2|@kotasholat3|@kotasholat4|@kotasholat5) [*]
 - sc01 Ok <first_name>, gue set reminder-nya dengan waktu kota <set sholat_kota=<star3>> <get sholat_kota>
