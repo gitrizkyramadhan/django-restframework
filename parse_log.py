@@ -1,6 +1,6 @@
 import re
 
-log_path_unstructured = '..\\line3\\celerylog\\'
+# log_path_unstructured = '..\\line3\\celerylog\\'
 class UnstructureLog(object):
 
     def __init__(self):
@@ -16,7 +16,7 @@ class UnstructureLog(object):
                 location = re.findall("LOC](.*?)\n", text)
                 date_location = re.findall("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}", text)
                 return [location[0], date_location[0]]
-        file = open(log_path_unstructured + file_name, 'r')
+        file = open(file_name, 'r')
         file.readline()
         list_information = []
         for data in file:
@@ -49,14 +49,14 @@ class UnstructureLog(object):
         return list_information
 
 
-log_path_structured = '..\\LOGBJ\\'
+# log_path_structured = '..\\LOGBJ\\'
 class StructuredLog(object):
     
     def __init__(self):
         
         print "StructuredLog added ..."
 
-    def get_pattern_separator(self,file_name):
+    def get_pattern_separator(self, file_name):
         
         flatfile_separator = 'flatfile_separator.dat'
         file = open(flatfile_separator, 'r')
@@ -68,8 +68,8 @@ class StructuredLog(object):
 
     def parse_log(self, file_name):
         
-        separator = get_pattern_separator(file_name)
-        file = open(log_path_structured + file_name,'r')
+        separator = self.get_pattern_separator(file_name)
+        file = open(file_name, 'r')
         file.readline()            
         list_one_row_data = []
         for one_row in file:
@@ -79,9 +79,9 @@ class StructuredLog(object):
                 data_split = data.split('=')
                 try:
                     data_split[1]
-                    splited_one_row_data.append(data_split[1].strip().replace('\n',''))
+                    splited_one_row_data.append(data_split[1].strip().replace('\n', ''))
                 except:
-                    splited_one_row_data.append(data_split[0].strip().replace('\n',''))
+                    splited_one_row_data.append(data_split[0].strip().replace('\n', ''))
             list_one_row_data.append(splited_one_row_data)
         return list_one_row_data
 
