@@ -22,11 +22,11 @@ class DataIntegration(object):
             ml.reminder(data['msisdn'], "pulsa", data['denom'], 
             datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30)) # fill reminder collection
     
-    def job_celerylog_to_locationlog(self):
+    def job_celerylog_to_locationlog(self, filename):
         
         ml = MongoLog()
         ul = UnstructureLog()
-        for data in ul.parse_celery_log('celery1__20170205_12.log'):
+        for data in ul.parse_celery_log(filename):
             ml.log_location(data[0], data[1][0], data[1][1])
     
     def job_migrate_log_pulsa(self):
