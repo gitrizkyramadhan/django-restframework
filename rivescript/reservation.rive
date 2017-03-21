@@ -201,7 +201,7 @@
 //^ - Ingetin bayar listrik tiap tgl 5 juli\n
 //^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
-+ [*] (ingetin|reminder|bangunin) *{weight=10}
++ [*] (ingetin|reminder|bangunin) *{weight=11}
 * <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
 - re01 OK <first_name>. <set rem_pesan=<star2>>
 
