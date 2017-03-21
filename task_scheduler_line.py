@@ -170,7 +170,7 @@ if __name__ == '__main__':
     EMAIL_NOTIF=content[9].split('=')[1]
 
     scheduler = BlockingScheduler()
-    # scheduler.add_job(tick, 'interval', minutes=1)
+    scheduler.add_job(tick, 'interval', minutes=1)
     scheduler.add_job(do_wheater_today, trigger='insterval', minutes=3, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")

@@ -191,8 +191,6 @@
 ^ Ingetin bangun pagi tiap jam 5\n
 ^ Ingetin bayar listrik tiap tanggal 5 juli\n
 ^ Ingetin meeting sama sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random} <set mycontext=random>
-//- Siap! Ntar gue ingetin deh
-//- Oke! Udah gue catet!
 
 //+ [*] (ingetin|reminder|bangunin)
 //* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
@@ -203,7 +201,7 @@
 //^ - Ingetin bayar listrik tiap tgl 5 juli\n
 //^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
-+ [*] (ingetin|reminder|bangunin) *{weight=10}
++ [*] (ingetin|reminder|bangunin) *{weight=11}
 * <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
 ^ Nah, lo sekarang di kota mana <first_name>? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
 - re01 OK <first_name>. <set rem_pesan=<star2>>
