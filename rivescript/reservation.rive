@@ -64,11 +64,7 @@
 
 + *
 * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
-^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
-
-- gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
-^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
-
+^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>} {topic=random}
 
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 
@@ -150,7 +146,7 @@
     - ca01 Sip! Pesenannya udah gue cancel yaa {topic=random} <set mycontext=random>
 
     + [*] (@nggak) [*]
-    - Okee {topic=<get mycontext>} {topic=random}
+    - Okee, lanjut ya pesennya {topic=<get mycontext>}
 
     + *
     - Gue gak ngerti dah, seriusan. Yakin banget nih gak jadi?
@@ -187,25 +183,35 @@
 < topic
 
 ///////////////////////////////////START REMINDER
-//+ [*] (@ingetin) [*] {weight=10}
-//- Siap! Ntar gue ingetin deh
-//- Oke! Udah gue catet!
-
 + [*] (@ingetin) [*] {weight=10}
-* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? {topic=setcity1} <set mycontext=setcity1>
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=setcity1} <set mycontext=setcity1>
 - Oke deh! buat bikin notes reminder, lo bisa ketik kayak gini ya: <br>
 ^ Ingetin ada resepsi nikah lusa\n
 ^ Ingetin bangun pagi tiap jam 5\n
 ^ Ingetin bayar listrik tiap tanggal 5 juli\n
 ^ Ingetin meeting sama sales tiap senin jam 9.30 <set sholat_kota=<star>> {topic=random} <set mycontext=random>
+//- Siap! Ntar gue ingetin deh
+//- Oke! Udah gue catet!
 
-//+ [*] (ingetin|reminder|bangunin) *{weight=10}
-//* <get sholat_kota> == undefined => Ok, untuk seting zona waktu, kamu sekarang di kota mana <first_name> ? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
-//- re01 OK <first_name>. <set rem_pesan=<star2>>
+//+ [*] (ingetin|reminder|bangunin)
+//* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=setcity1} <set mycontext=setcity1>
+//- Oke deh! buat bikin notes reminder, lo bisa ketik kayak gini ya: <br>
+//^ - Ingetin ada resepsi nikah lusa\n
+//^ - Ingetin bangun pagi tiap jam 5\n
+//^ - Ingetin bayar listrik tiap tgl 5 juli\n
+//^ - Ingetin meeting dengan sales tiap senin jam 9.30
 
-//+ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
-//* <get sholat_kota> == undefined => Ok, kamu sekarang di kota mana <first_name> ? {topic=remindsholat} <set mycontext=remindsholat>
-//- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
++ [*] (ingetin|reminder|bangunin) *{weight=10}
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? <set rem_pesan=<star2>> {topic=setcity2} <set mycontext=setcity2>
+- re01 OK <first_name>. <set rem_pesan=<star2>>
+
++ [*] (ingetin|reminder|remind) [*] (sholat|imsak|buka|berbuka) [*]
+* <get sholat_kota> == undefined => Ok, tapi gue perlu nyamain waktunya dulu ya biar nggak salah. <br>
+^ Nah, lo sekarang di kota mana <first_name>? {topic=remindsholat} <set mycontext=remindsholat>
+- rs01 Siap, Bang Joni akan ingetin kamu waktu <set pilih=<star2>><get pilih>
 
 + [*] (infoin|kasih tahu|beri tahu) [*] (goal) [*]
 - OK
@@ -314,7 +320,7 @@
 
 
 ///////////////////////////////////START PULSA DATA HP
-+ [*] (pulsa data|bang isiin pulsa data dong|paket data|paket internet|pulsa internet) [*] {weight=10}
++ [*] (pulsa data|bang isiin pulsa data dong|paket data|paket internet|pulsa internet) [*]
 - Oke, tapi sementara ini gue baru punya pulsa data Telkomsel nih <br>
 ^ Nomer yang mau diisi kuota nomer Telkomsel bukan? <br>
 ^ Kalo iya, langsung ketik aja nomernya (contoh 0812xxxx) {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=1>
@@ -503,7 +509,7 @@
 
 > topic uber inherits global
   + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi|ga|gak|nggak) [*]
-  - ch02 Oke, gue batalin nih ya Uber-nya.{topic=random}
+  - ch02 Oke, gue batalin nih ya Uber-nya.{topic=random} <set mycontext=random>
 
   + ub02a
   - Sekarang share lokasi tujuanmu dengan cara click tombol + sebelah tombol smile dan tap Share Location
@@ -512,11 +518,11 @@
   - ub02 Tuh udah Bang Joni cariin Uber, cuma buat kamu. Tinggal pilih aja mau naik motor apa mobil...
 
   + exittorandom
-  - exittorandom {topic=random}
+  - exittorandom {topic=random} <set mycontext=random>
 
   + [*] (lupa|password|pasword) [*]
   - Coba inget-inget dulu password Uber-nya. <br>
-  ^ Gue perlu itu untuk pertama kali pesen Uber, nanti setelahnya bisa langsung kok, nggak harus login lagi. {topic=random}
+  ^ Gue perlu itu untuk pertama kali pesen Uber, nanti setelahnya bisa langsung kok, nggak harus login lagi. {topic=random} <set mycontext=random>
 
   + [*] (ubermotor|uberx|uber x|ubermobil|uber mobil|uber motor) [*]
   - ub03 Oke, pilih metode pembayaran di atas yak <set uber_product=<star1>>
@@ -528,7 +534,7 @@
   - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. <set uber_payment=<star1>>
 
   + ub04
-  - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. {topic=random}<set uber_payment=<star1>>
+  - ub04 Sip, gue cariin dulu driver-nya ya, nanti gue kabarin kalo udah dapet. <set uber_payment=<star1>>
 
 < topic
 
