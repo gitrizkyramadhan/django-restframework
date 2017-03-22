@@ -142,15 +142,8 @@ def reminder_cuaca():
 
     al = AnalyticLog()
     for data in al.get_reminder('cuaca'):
-        postion = data['value'].split(';')
-        do_wheater_today(data['msisdn'],postion[0], postion[1])
-        # sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="33", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
-        # sched.add_job(print_somtehing, 'cron', hour='15', minute="39", args=None)
-    # try:
-    #     while True:
-    #         time.sleep(1)
-    # except (KeyboardInterrupt, SystemExit):
-    #     sched.shutdown()
+        position = data['value'].split(';')
+        do_wheater_today(data['msisdn'], position[0], position[1])
 
 
 if __name__ == '__main__':
@@ -171,7 +164,7 @@ if __name__ == '__main__':
 
     scheduler = BlockingScheduler()
     scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, trigger='insterval', minutes=3, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    scheduler.add_job(reminder_cuaca, trigger='cron', hour=6)
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 

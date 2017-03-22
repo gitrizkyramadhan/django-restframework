@@ -9,7 +9,7 @@ class DataIntegration(object):
 
         self.client = MongoClient("mongodb://139.59.96.133:27017")
         self.db = self.client['bangjoni']
-        print 'DataIntegration addded ...'
+        print 'DataIntegration added ...'
 
     def job_logpulsa_to_reminder(self):
         
@@ -22,11 +22,11 @@ class DataIntegration(object):
             ml.reminder(data['msisdn'], "pulsa", data['denom'], 
             datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30)) # fill reminder collection
     
-    def job_celerylog_to_locationlog(self):
+    def job_celerylog_to_locationlog(self, filename):
         
         ml = MongoLog()
         ul = UnstructureLog()
-        for data in ul.parse_celery_log('celery1__20170205_12.log'):
+        for data in ul.parse_celery_log(filename):
             ml.log_location(data[0], data[1][0], data[1][1])
     
     def job_migrate_log_pulsa(self):
@@ -42,6 +42,15 @@ class DataIntegration(object):
 
         ml = MongoLog()
         la = AnalyticLog()
+        # query_delete_location = [
+        #     {"type_reminder": "location"}
+        # ]
+        self.db.reminder.delete_many({"type_reminder": "location"})
+        msisdn = []
         for data in la.get_often_location_access():
-
-            ml.reminder(data['_id'], 'location', data[''], data[2])
+            if data['_id']['msisdn'] not in msisdn:
+                ml.reminder(data['_id']['msisdn'], 'location', data['_id']['location'], '06:00')
+            msisdn.append(data['_id']['msisdn'])
+#
+# di = DataIntegration()
+# di.job_loglocation_to_reminder()
