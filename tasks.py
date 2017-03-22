@@ -1306,12 +1306,20 @@ def onMessage(msisdn, ask, first_name):
             if item != "99":
                 reply = reply + x[i] + " Rp. %d" % (z) + "\n"
             i = i + 1
-        reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
-        #print reply
-        if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
-        else :
+
+        if incomingMsisdn[4] == 'SI':
+            reply = reply + "\nUntuk milih nominal paket data, langsung tap gambar di atas aja yaa."
+            sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
+                               "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
+                               "Ok, berikut kuota volume dan periodenya. Tap gbrnya untuk memperbesar")
             sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
+        else:
+            reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
+            #print reply
+            if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
+                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
+            else :
+                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
@@ -1369,8 +1377,9 @@ def onMessage(msisdn, ask, first_name):
                         i = i + 1
 
                     debit = int(msg.split('(Rp ')[1].split(')')[0]) + (modal - int(msg.split('(Rp ')[1].split(')')[0]))
+                    biller_debit = int(msg.split('(Rp ')[1].split(')')[0])
 
-                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4] + ", no hp " + incomingMsisdn[1])
+                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4] + ", no hp " + incomingMsisdn[1] + ", harga biller : " + str(biller_debit))
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
                     _print_debug(return_code)
                     if return_code is None :
@@ -1378,7 +1387,10 @@ def onMessage(msisdn, ask, first_name):
                             answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
                             answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
-                        log_paid(logDtm, msisdn, first_name, "PULSA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]))
+                        if incomingMsisdn[4] == 'SI':
+                            log_paid(logDtm, msisdn, first_name, "PULSA_DATA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]) + "-" + str(biller_debit))
+                        else :
+                            log_paid(logDtm, msisdn, first_name, "PULSA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]) + "-" + str(biller_debit))
                         sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
                         insert5(sql)
                     else :
@@ -1547,8 +1559,9 @@ def onMessage(msisdn, ask, first_name):
                     s = msg.split('S/N ')[1].split('No HP')[0]
                     # decrement saldo
                     debit = int(msg.split('(Rp ')[1].split(')')[0]) + 300
+                    biller_debit = int(msg.split('(Rp ')[1].split(')')[0])
 
-                    return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1])
+                    return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1] + ", harga biller : " + str(biller_debit))
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
                     _print_debug(return_code)
 
@@ -1557,7 +1570,7 @@ def onMessage(msisdn, ask, first_name):
                     # payload = str(balance) + "|" + va_no + "|" + deposit_hp
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
                         answer = "Hei "+get_line_username(msisdn)+", token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
-                        log_paid(logDtm, msisdn, first_name, "TOKEN", incomingMsisdn[1] + "-" + incomingMsisdn[3])
+                        log_paid(logDtm, msisdn, first_name, "TOKEN", incomingMsisdn[1] + "-" + incomingMsisdn[3] + "-" + str(biller_debit))
                         sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
                         insert5(sql)
                     else :
