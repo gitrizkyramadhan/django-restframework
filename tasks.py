@@ -1168,7 +1168,7 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[11] == ""
             print "-->", answer
 
-        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co" or answer[:3] == "prf") and incomingMsisdn[1] != "TRANSLATOR_MODE":
+        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co" or answer[:3] == "prf" or answer[:3] == "cmp") and incomingMsisdn[1] != "TRANSLATOR_MODE":
             if answer[:4] != "xt02":
                 temp_answer = answer[4:]
                 temp_answer = temp_answer.replace("xt01 ","")
@@ -1180,7 +1180,7 @@ def onMessage(msisdn, ask, first_name):
                 temp_answer = temp_answer.replace("ka01 ","")
                 temp_answer = temp_answer.replace("tr01 ","")
                 # ---------- DWP MODULE ADD EXCLUSION ----------
-                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf":
+                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf" and answer[:3] != "cmp":
                     sendMessageT2(msisdn, temp_answer, 0)
                 if answer[:4] == "xt08":
                     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/payment_tiketux1', answer.replace('xt08 ',''), 'tiketux')
@@ -1231,6 +1231,18 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "co00":
         # linebot.send_text_message(msisdn, answer[4:])
         linebot.send_composed_confirm(msisdn, 'Konfirmasi', answer[4:], {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
+
+    ####################KOMPLAIN####################
+    if answer[:5] == "cmp01":
+        # linebot.send_rich_message_greeting_text(msisdn, 'https://www.bangjoni.com/line_images/halo1', 'RICH MESG', temp_answer.strip())
+        answer = answer[5:]
+        splitAns = answer.split('<br>')
+        for splitAn in splitAns:
+            sendMessageT2(msisdn, splitAn, 0)
+        sendLinkMessageT2(msisdn, "Feedback", "Tap disini", "Isi Feedback Kamu",
+                          "https://www.bangjoni.com/complaint/complaint.php?user_id=" + msisdn,
+                          "https://www.bangjoni.com/images/bangjoni/logo.png")
+    #################################################
 
     ####################BJPAY CEK SALDO####################
     if answer[:4] == "bj00":
