@@ -58,5 +58,5 @@ class AnalyticLog(object):
         return list(self.db.loglocation.aggregate(query_get_often_location))
 
 
-al = AnalyticLog()
-print al.get_reminder_weather()
+# al = AnalyticLog()
+# print al.get_reminder_weather()

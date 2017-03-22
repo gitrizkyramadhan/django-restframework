@@ -45,7 +45,7 @@ class DataIntegration(object):
         # query_delete_location = [
         #     {"type_reminder": "location"}
         # ]
-        self.db.reminder.delete_many({"type_reminder": "location"})
+        self.db.reminder.delete_many({"type_reminder": "weather"})
         msisdn = []
         for data in la.get_often_location_access():
             if data['_id']['msisdn'] not in msisdn:
