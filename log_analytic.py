@@ -20,7 +20,7 @@ class AnalyticLog(object):
 
         return result
 
-    def get_reminder(self, type_reminder):
+    def get_reminder_pulsa(self):
         
         query_get_reminder_today = [
             {"$project": {"msisdn" : "$msisdn","type_reminder": "$type_reminder","date_execution": "$date_execution",
@@ -28,12 +28,24 @@ class AnalyticLog(object):
             "value" : "$value"}
             }
             ,
-            {"$match": {"type_reminder": type_reminder,"filter_date" :  "20170322"}
+            {"$match": {"type_reminder": "pulsa", "filter_date" :  datetime.now().strftime("%Y%m%d")}
             }
-            #datetime.now().strftime("%Y%m%d")
         ]
         
         return list(self.db.reminder.aggregate(query_get_reminder_today))
+
+    def get_reminder_weather(self):
+        # query_get_reminder_today = [
+        #     {"$project": {"msisdn": "$msisdn", "type_reminder": "$type_reminder", "date_execution": "$date_execution",
+        #                   "filter_date": {"$dateToString": {"format": "%Y%m%d", "date": "$date_execution"}},
+        #                   "value": "$value"}
+        #      }
+        #     ,
+        #     {"$match": {"type_reminder": "weather"}
+        #      }
+        # ]
+        # return list(self.db.reminder.aggregate(query_get_reminder_today))
+        return list(self.db.reminder.find({"type_reminder" : "weather"}))
 
     def get_often_location_access(self):
 
@@ -46,5 +58,5 @@ class AnalyticLog(object):
         return list(self.db.loglocation.aggregate(query_get_often_location))
 
 
-# al = AnalyticLog()
-# print al.get_often_location_access()
+al = AnalyticLog()
+print al.get_reminder_weather()
