@@ -398,12 +398,12 @@ def get_line_username(msisdn):
     if first_name != "":
         return first_name
     else:
-        profile_obj = linebot.get_profile(msisdn)
 
         # r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
         #
         # rjson = json.loads(r.content)
         try:
+            profile_obj = linebot.get_profile(msisdn)
             sql = "insert into line_users values('" + msisdn + "','" + profile_obj.display_name + "')"
             print sql
             insert(sql)
@@ -1168,7 +1168,7 @@ def onMessage(msisdn, ask, first_name):
                 incomingMsisdn[11] == ""
             print "-->", answer
 
-        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co" or answer[:3] == "prf") and incomingMsisdn[1] != "TRANSLATOR_MODE":
+        if (answer[:2] == "fl" or answer[:2] == "xt" or answer[:2] == "ke" or answer[:2] == "ub" or answer[:2] == "ca" or answer[:2] == "zo" or answer[:2] == "ch" or answer[:2] == "ee" or answer[:2] == "gr" or answer[:2] == "we" or answer[:2] == "to" or answer[:2] == "ka" or answer[:2] == "sh" or answer[:2] == "eu" or answer[:2] == "re" or answer[:2] == "sh" or answer[:2] == "rs" or answer[:2] == "sc" or answer[:2] == "tr" or answer[:2] == "pl" or answer[:2] == "pu" or answer[:3] == "dwp" or answer[:3] == "lov" or answer[:3] == "eco" or answer[:2] == "bj" or answer[:3] == "cim" or answer[:3] == "sky"  or answer[:3] == "mgm" or answer[:2] == "co" or answer[:3] == "prf" or answer[:3] == "cmp") and incomingMsisdn[1] != "TRANSLATOR_MODE":
             if answer[:4] != "xt02":
                 temp_answer = answer[4:]
                 temp_answer = temp_answer.replace("xt01 ","")
@@ -1180,7 +1180,7 @@ def onMessage(msisdn, ask, first_name):
                 temp_answer = temp_answer.replace("ka01 ","")
                 temp_answer = temp_answer.replace("tr01 ","")
                 # ---------- DWP MODULE ADD EXCLUSION ----------
-                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf":
+                if answer[:4] != "gr01" and answer[:4] != "ub01" and answer[:4] != "xt08" and answer[:4] != "fl05" and answer[:4] != "ka01" and answer[:4] != "xt01" and answer[:4] != "xt06" and answer[:4] != "xt04" and answer[:4] != "pu01" and answer[:4] != "pl02" and answer[:4] != "pu02" and answer[:3] != "dwp" and answer[:3] != "lov" and answer[:3] != "eco" and answer[:4] != "bj01" and answer[:4] != "bj02" and answer[:4] != "bj04" and answer[:4] != "bj00" and answer[:4] != "bj11" and answer[:4] != "bj99"  and answer[:3] != "cim" and answer[:3] != "sky" and answer[:3] != "mgm" and answer[:2] != "co" and answer[:3] != "prf" and answer[:3] != "cmp":
                     sendMessageT2(msisdn, temp_answer, 0)
                 if answer[:4] == "xt08":
                     sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/payment_tiketux1', answer.replace('xt08 ',''), 'tiketux')
@@ -1231,6 +1231,18 @@ def onMessage(msisdn, ask, first_name):
     if answer[:4] == "co00":
         # linebot.send_text_message(msisdn, answer[4:])
         linebot.send_composed_confirm(msisdn, 'Konfirmasi', answer[4:], {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
+
+    ####################KOMPLAIN####################
+    if answer[:5] == "cmp01":
+        # linebot.send_rich_message_greeting_text(msisdn, 'https://www.bangjoni.com/line_images/halo1', 'RICH MESG', temp_answer.strip())
+        answer = answer[5:]
+        splitAns = answer.split('<br>')
+        for splitAn in splitAns:
+            sendMessageT2(msisdn, splitAn, 0)
+        sendLinkMessageT2(msisdn, "Feedback", "Tap disini", "Isi Feedback Kamu",
+                          "https://www.bangjoni.com/complaint/complaint.php?user_id=" + msisdn,
+                          "https://www.bangjoni.com/images/bangjoni/logo.png")
+    #################################################
 
     ####################BJPAY CEK SALDO####################
     if answer[:4] == "bj00":
@@ -1306,12 +1318,20 @@ def onMessage(msisdn, ask, first_name):
             if item != "99":
                 reply = reply + x[i] + " Rp. %d" % (z) + "\n"
             i = i + 1
-        reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
-        #print reply
-        if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
-            sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
-        else :
+
+        if incomingMsisdn[4] == 'SI':
+            reply = reply + "\nUntuk milih nominal paket data, langsung tap gambar di atas aja yaa."
+            sendPhotoCaptionT2(msisdn, "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
+                               "https://www.bangjoni.com/line_images/pulsa_data_tsel_ex.jpg",
+                               "Ok, berikut kuota volume dan periodenya. Tap gbrnya untuk memperbesar")
             sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
+        else:
+            reply = reply + "Untuk milih nominal pulsa, langsung tap gambar di atas aja yaa"
+            #print reply
+            if incomingMsisdn[2] == 'XL' or incomingMsisdn[2] == 'Axis':
+                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsaxl')
+            else :
+                sendRichCaptionT2(msisdn, 'https://www.bangjoni.com/line_images/pulsa_hp1', reply, 'pulsahp')
 
     if answer[:4] == "pu02":
         if bjp_service.is_exist(msisdn) :
@@ -1354,6 +1374,8 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
 
                 if response == "0":
                     # decrement saldo
@@ -1367,20 +1389,28 @@ def onMessage(msisdn, ask, first_name):
                         i = i + 1
 
                     debit = int(msg.split('(Rp ')[1].split(')')[0]) + (modal - int(msg.split('(Rp ')[1].split(')')[0]))
+                    biller_debit = int(msg.split('(Rp ')[1].split(')')[0])
 
-                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4] + ", no hp " + incomingMsisdn[1])
+                    return_code = bjp_service.debit(msisdn, debit, '1001', 'Pulsa '+incomingMsisdn[4] + ", no hp " + incomingMsisdn[1] + ", harga biller : " + str(biller_debit))
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
                     _print_debug(return_code)
                     if return_code is None :
                         try:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
-                            answer = "gr01 Hei <first_name>, pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                        if incomingMsisdn[4] == 'SI':
+                            log_paid(logDtm, msisdn, first_name, "PULSA_DATA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]) + "-" + str(biller_debit))
+                        else :
+                            log_paid(logDtm, msisdn, first_name, "PULSA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]) + "-" + str(biller_debit))
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, coba lagi nanti yaa.."
-
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else :
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label' : 'Topup aja', 'type' : 'message', 'text' : 'topup'}, {'label' : 'Nggak', 'type' : 'message', 'text' : 'gak jadi topup'})
@@ -1534,13 +1564,16 @@ def onMessage(msisdn, ask, first_name):
                 parsed_xml = BeautifulSoup(resp.text)
                 response = parsed_xml.evoucher.result.string
                 msg = parsed_xml.evoucher.msg.string
+                trxid = parsed_xml.evoucher.trxid.string
+                partner_trxid = parsed_xml.evoucher.partner_trxid.string
                 # print response, msg
                 if response == "0":
                     s = msg.split('S/N ')[1].split('No HP')[0]
                     # decrement saldo
-                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 200
+                    debit = int(msg.split('(Rp ')[1].split(')')[0]) + 300
+                    biller_debit = int(msg.split('(Rp ')[1].split(')')[0])
 
-                    return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1])
+                    return_code = bjp_service.debit(msisdn, debit, '1002', 'Token PLN ' + incomingMsisdn[3] + ", no meter " + incomingMsisdn[1] + ", harga biller : " + str(biller_debit))
                     (current_balance, va_no, phone) = bjp_service.get(msisdn)
                     _print_debug(return_code)
 
@@ -1548,11 +1581,16 @@ def onMessage(msisdn, ask, first_name):
                     # balance = balance - debit
                     # payload = str(balance) + "|" + va_no + "|" + deposit_hp
                     # lineNlp.redisconn.set("bjpay/%s" % (msisdn), payload)
-                        answer = "gr01 Hei <first_name>, token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        answer = "Hei "+get_line_username(msisdn)+", token listrik yang lo beli seharga Rp. %s, udah berhasil masuk yaa.. <br> berikut informasi serial detailnya:\nNomor Token: %s\nNama: %s\nDaya: %s\nKwh: %s <br> Sisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada yang bisa gue bantu lagi? :)" % (debit, s.split('~')[0],s.split('~')[4],s.split('~')[1],s.split('~')[3], current_balance)
+                        log_paid(logDtm, msisdn, first_name, "TOKEN", incomingMsisdn[1] + "-" + incomingMsisdn[3] + "-" + str(biller_debit))
+                        sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',%d,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, debit, msg)
+                        insert5(sql)
                     else :
                         answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa beliin token listriknya nih, coba lagi nanti yaa.."
                 else:
                     answer = "Aduh sorry ya, kayaknya lagi ada error di sistem deh. <br> Gue nggak bisa isiin pulsanya nih, %s, coba lagi nanti yaa.." % (msg.split('.')[0])
+                    sql = "insert into 1pulsa_pulsa_token values('%s','%s','%s','%s','%s',0,'%s','')" % (logDtm, msisdn, response, trxid, partner_trxid, msg)
+                    insert5(sql)
                 sendMessageT2(msisdn, answer, 0)
             else:
                 linebot.send_composed_confirm(msisdn, "Confirm", "Saldo BJPAY lo nggak cukup nih, mau topup?", {'label': 'Topup aja', 'type': 'message', 'text': 'topup'}, {'label': 'Nggak', 'type': 'message', 'text': 'gak jadi topup'})
@@ -2949,7 +2987,7 @@ def uber_request_ride_surge(surge_confirmation_id):
         access_token = row[5]
         first_name = row[1]
     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn_uber)))
-    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, 'fare', incomingMsisdn[6]['id'], surge_confirmation_id)
+    request_ride = uber.request_ride(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), {'lat':incomingMsisdn[2], 'lng':incomingMsisdn[3]},{'lat':incomingMsisdn[4], 'lng':incomingMsisdn[5]}, incomingMsisdn[6]['id'], 'fare', surge_confirmation_id)
     sql = "insert into booking_uber values('" + msisdn_uber + "','" + first_name + "','" + request_ride['request_id'] + "','" + request_ride['status'] + "','" + logDtm + "','" + access_token + "','line')"
     print sql
     insert(sql)
@@ -2969,12 +3007,12 @@ def uber_send_notification(event_id, event_time, event_type, meta_user_id, meta_
         first_name = row[1]
         access_token = row[5]
     if msisdn_uber != "":
-        ride_detail = uber.get_ride_detail(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))))
+        ride_detail = uber.get_ride_detail(msisdn_uber, pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber))), meta_resource_id)
 
         if ride_detail['status'] == 'accepted' :
             answer = "Bang Joni udah dapet Uber nih, kira-kira datang " + ride_detail['pickup']['eta'] + " menit lagi, berikut data driver-nya"
             sendMessageT2(msisdn_uber, answer, 0)
-            answer = "Driver: " + ride_detail['driver']['name'] + "\nHP: " + ride_detail['driver']['phone_number'] + "\nRating: " + ride_detail['driver']['rating'] + "\nKendaraan: " + ride_detail['vehicle']['make'] + " " + ride_detail['vehicle']['model'] + "\nNopol: " + ride_detail['vehicle']['license_plate']
+            answer = "Driver: " + str(ride_detail['driver']['name']) + "\nHP: " + str(ride_detail['driver']['phone_number']) + "\nRating: " + str(ride_detail['driver']['rating']) + "\nKendaraan: " + str(ride_detail['vehicle']['make']) + " " + str(ride_detail['vehicle']['model']) + "\nNopol: " + str(ride_detail['vehicle']['license_plate'])
             sendMessageT2(msisdn_uber, answer, 0)
             linebot.send_image_message(msisdn_uber, ride_detail['driver']['picture_url'])
 
@@ -3025,14 +3063,14 @@ def uber_authorization(msisdn, code):
         result_redirect = "https://www.bangjoni.com/uber_token?state=%s&code=%s" % (msisdn, code)
         print ">>>", result_redirect
         try:
-            auth_flow = pickle.loads(incomingMsisdn[1])
-            session = auth_flow.get_session(result_redirect)
+            # auth_flow = pickle.loads(incomingMsisdn[1])
+            # session = auth_flow.get_session(result_redirect)
             print uber.create_client(msisdn_uber, msisdn, code)
         except (ClientError, UberIllegalState), error:
             print ">>>", error
             return
 
-        credential = session.oauth2credential
+        credential = pickle.loads(lineNlp.redisconn.get("cred/%s" % (msisdn_uber)))
 
         # credential_data = {
         #     'client_id': credential.client_id,
@@ -3063,7 +3101,8 @@ def uber_authorization(msisdn, code):
         sql = "update token_uber set access_token='%s', refresh_token='%s', expires_in_sec='%s', email='%s' where email='%s'" % (credential.access_token, credential.refresh_token, credential.expires_in_seconds, email, email)
         print sql
         insert(sql)
-        sendMessageT2(msisdn_uber, "Account ubermu sudah terhubung dengan BangJoni\nSekarang share lokasimu dengan cara click tombol PIN dan tap Location", 0)
+        linebot.send_image_button(msisdn_uber, "uber_after_auth")
+        # sendMessageT2(msisdn_uber, "Account ubermu sudah terhubung dengan BangJoni\nSekarang share lokasimu dengan cara click tombol PIN dan tap Location", 0)
         #return "Y"
 
 
@@ -3327,6 +3366,8 @@ def doworker(req):
     print "================================NEW LINE REQUEST============================================="
     print content
 
+    if not content.has_key('events'):
+        return
     for event in content["events"] :
         msisdn = ""
         ask = ""

@@ -144,9 +144,9 @@ class Nlp:
         #add uber
         if answer[:4] == "ub03" :
             x = self.get_uservar(msisdn,"uber_product")
-            incomingMsisdn[6] = {'product':'uberX', 'id':'89da0988-cb4f-4c85-b84f-aac2f5115068'}
+            incomingMsisdn[6] = {'product':'uberX', 'id':'776ea734-1404-4a40-bf09-ebcb2acf6f2b'}
             if x == "ubermotor":
-                incomingMsisdn[6] = {'product':'uberX', 'id':'776ea734-1404-4a40-bf09-ebcb2acf6f2b'}
+                incomingMsisdn[6] = {'product':'uberMotor', 'id':'89da0988-cb4f-4c85-b84f-aac2f5115068'}
 
 
         if answer[:4] == "ub04" :

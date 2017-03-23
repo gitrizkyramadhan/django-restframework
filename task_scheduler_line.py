@@ -11,7 +11,7 @@ from bot import Bot
 import logging
 logging.basicConfig()
 from decimal import Decimal
-
+from data_integration import DataIntegration
 #First Initialization
 TOKEN_TELEGRAM=""
 KEYFILE=""
@@ -141,16 +141,9 @@ def do_wheater_today(msisdn, longitude, latitude):
 def reminder_cuaca():
 
     al = AnalyticLog()
-    for data in al.get_reminder('cuaca'):
-        postion = data['value'].split(';')
-        do_wheater_today(data['msisdn'],postion[0], postion[1])
-        # sched.add_job(reminder_wheater_today, 'cron', hour='13', minute="33", args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
-        # sched.add_job(print_somtehing, 'cron', hour='15', minute="39", args=None)
-    # try:
-    #     while True:
-    #         time.sleep(1)
-    # except (KeyboardInterrupt, SystemExit):
-    #     sched.shutdown()
+    for data in al.get_reminder_weather():
+        position = data['value'].split(';')
+        do_wheater_today(data['msisdn'], position[0], position[1])
 
 
 if __name__ == '__main__':
@@ -169,9 +162,14 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 
+
+
     scheduler = BlockingScheduler()
+    di = DataIntegration()
     scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(do_wheater_today, trigger='insterval', minutes=3, args=["U90a846efb4bc03eec9e66cbf61fea960", "-6.946494", "107.613608"])
+    scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
+    scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
+
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 

@@ -45,6 +45,22 @@ imgbuttons = [{
             ]
         )
     )
+},{
+    "id":"uber_after_auth",
+    "payload": TemplateSendMessage(
+        alt_text='Uber',
+        template=ButtonsTemplate(
+            thumbnail_image_url='https://bangjoni.com/v2/carousel/images/uber.png',
+            title='Pesen Uber',
+            text='Account Uber kamu udah terhubung',
+            actions=[
+                MessageTemplateAction(
+                    label='Lanjut Pesen',
+                    text='uber'
+                )
+            ]
+        )
+    )
 }]
 
 def compose_img_buttons(alt_text, thumbnail_url, title, description, actions):
