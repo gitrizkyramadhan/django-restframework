@@ -174,7 +174,7 @@ def blast_reminder_weather_service():
               "from city A join city_weather B on A.id = B.id_city " \
               "where lower(A.city_name) = '%s'" % (location_detail['kota'].lower().replace('kota', '').strip())
         sqlout = request(sql)
-        cuaca, deskripsi, image_url = sqlout
+        cuaca, deskripsi, image_url = sqlout[0]
         columns = []
         now_actions = []
         column = {}
