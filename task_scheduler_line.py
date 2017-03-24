@@ -146,14 +146,14 @@ def do_weather_today(msisdn, longitude, latitude):
 
 def get_city_weather():
 
-    sql = "select id, city_name from city limit 1"
+    sql = "select id, city_name from city"
     sqlout = request(sql)
     insert ("truncate table city_weather")
     for data in sqlout:
         id, city_name = data
         latlng = gmaps.getLatLng(city_name)
         (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']))
-        w_now.pop('image')
+        w_tom.pop('image')
         encoded_url = urllib.urlencode(w_tom, doseq=True)
         insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url) values ('%s', %s, '%s', "
                "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), str(w_tom['image'])))
@@ -178,12 +178,8 @@ def blast_reminder_weather_service():
         cuaca, deskripsi, image_url = sqlout[0]
         columns = []
         now_actions = []
-        yes_action = [
-            {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather"}
-        ]
-        no_action = [
-            {'type': 'postback', 'label': 'Yes', 'data': "&evt=no_reminder_weather"}
-        ]
+        yes_action = {'type': 'postback', 'label': 'Yes', 'text': 'Yes', 'data': "evt=yes_reminder_weather"}
+        no_action = {'type': 'postback', 'label': 'Yes', 'text': 'Yes', 'data': "evt=no_reminder_weather"}
         column = {}
         column['thumbnail_image_url'] = image_url
         column['title'] = 'Cuaca hari ini'
@@ -219,8 +215,8 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 
-    get_city_weather()
-    # blast_reminder_weather_service()
+    # get_city_weather()
+    blast_reminder_weather_service()
 
 #     scheduler = BlockingScheduler()
 #     scheduler.add_job(tick, 'interval', minutes=1)
