@@ -11,7 +11,9 @@ from bot import Bot
 import logging
 logging.basicConfig()
 from decimal import Decimal
+from datetime import datetime
 from data_integration import DataIntegration
+from gmaps_geolocation import GMapsGeocoding
 #First Initialization
 TOKEN_TELEGRAM=""
 KEYFILE=""
@@ -46,7 +48,10 @@ EMAIL_NOTIF=content[9].split('=')[1]
 LINE_TOKEN=content[11].split('=')[1]
 
 linebot = Bot(LINE_TOKEN)
-
+weather_service = WeatherService()
+gmaps = GMapsGeocoding()
+analytic_log = AnalyticLog()
+# data_integration = DataIntegration()
 #daily -> hanya lihat jam
 #once  -> hanya lihat date+jam
 #prayer -> hanya lihat jam
@@ -119,10 +124,11 @@ def tick():
                 insert("delete from reminder where id = '%s' and msisdn = '%s' and platform = 'line'" % (id, msisdn))
             continue
 
-def do_wheater_today(msisdn, longitude, latitude):
-    weather_service = WeatherService()
+
+def do_weather_today(msisdn, longitude, latitude):
+
     (w_now, w_tom) = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
-    if w_now[0]['cuaca'].__contains__('HUJAN'):
+    if w_now['cuaca'].__contains__('HUJAN'):
         columns = []
         now_actions = []
         column = {}
@@ -138,12 +144,50 @@ def do_wheater_today(msisdn, longitude, latitude):
         columns.append(column)
         linebot.send_composed_carousel(msisdn, "Cuaca", columns)
 
-def reminder_cuaca():
+def get_city_weather():
 
-    al = AnalyticLog()
-    for data in al.get_reminder_weather():
+    sql = "select id, city_name from city"
+    sqlout = request(sql)
+    insert ("truncate table city_weather")
+    for data in sqlout:
+        id, city_name = data
+        latlng = gmaps.getLatLng(city_name)
+        (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']))
+        encoded_url = urllib.urlencode(w_tom, doseq=True)
+        insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url) values ('%s', %s, '%s', "
+               "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), str(w_tom['image'])))
+
+# def reminder_cuaca():
+#
+#     al = AnalyticLog()
+#     for data in al.get_reminder_weather():
+#         position = data['value'].split(';')
+#         do_wheater_today(data['msisdn'], position[0], position[1])
+
+
+def blast_reminder_weather_service():
+
+    for data in analytic_log.get_reminder_weather():
         position = data['value'].split(';')
-        do_wheater_today(data['msisdn'], position[0], position[1])
+        location_detail = gmaps.getLocationDetail(position[0], position[1])
+        sql = "select B.cuaca, B.deskripsi, B.image_url " \
+              "from city A join city_weather B on A.id = B.id_city " \
+              "where A.city_name = '%s'" % (location_detail['kota'])
+        sqlout = request(sql)
+        cuaca, deskripsi, image_url = sqlout
+        columns = []
+        now_actions = []
+        column = {}
+        column['thumbnail_image_url'] = image_url
+        column['title'] = 'Cuaca hari ini'
+        column['text'] = "Hari ini rata-rata %s" % cuaca
+        if (len(column['text']) > 60):
+            column['text'] = column['text'][:57] + '...'
+        now_actions.append(
+            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=today"})
+        column['actions'] = now_actions
+        columns.append(column)
+        linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
 
 
 if __name__ == '__main__':
@@ -164,26 +208,25 @@ if __name__ == '__main__':
 
 
 
-    scheduler = BlockingScheduler()
-    di = DataIntegration()
-    scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
-    scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
+#     scheduler = BlockingScheduler()
+#     scheduler.add_job(tick, 'interval', minutes=1)
+#     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
+#     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
+#
+#     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
+#     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+#
+#     try:
+#         scheduler.start()
+#     except (KeyboardInterrupt, SystemExit):
+#         pass
 
-    # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
-    # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        pass
-
-
-    #file = open('uniq_chatid.txt', 'r')
-    #i = 0
-    #for line in file:
-        #msisdn = str(line).rstrip()
-        #i = i + 1
-        #print "%d send to %s" % (i,msisdn)
-        #sendPhotoTelegram(msisdn, "/tmp/Telegram-Ads-1080-Soccer-v3.png", "")
-        #time.sleep(1)
+    # file = open('uniq_chatid.txt', 'r')
+    # i = 0
+    # for line in file:
+    #     msisdn = str(line).rstrip()
+    #     i = i + 1
+    #     print "%d send to %s" % (i,msisdn)
+    #     sendPhotoTelegram(msisdn, "/tmp/Telegram-Ads-1080-Soccer-v3.png", "")
+    #     time.sleep(1)
