@@ -28,7 +28,7 @@ def composeConfirm(alt_text, text, option1, option2):
     if option1['type'] == "postback":
         opt1_payload = PostbackTemplateAction(
                     label=option1['label'],
-                    text=option1['text'],
+                    # text=option1['text'],
                     data=option1['data']
         )
     elif option1['type'] == "message":
@@ -40,7 +40,7 @@ def composeConfirm(alt_text, text, option1, option2):
     if option2['type'] == "postback":
         opt2_payload = PostbackTemplateAction(
                     label=option2['label'],
-                    text=option2['text'],
+                    # text=option2['text'],
                     data=option2['data']
         )
     elif option2['type'] == "message":
