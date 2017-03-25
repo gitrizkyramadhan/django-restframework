@@ -3,7 +3,7 @@ import json
 
 from geopy.distance import vincenty
 
-APIKEY = "AIzaSyDKeRE8tRlw3cRvKmUNKHAzmsz0KOYF0QY"
+APIKEY = "AIzaSyBRMZM-OHOO6O2yUE-lrWyG08naIU930S0"
 BASEURL = "https://maps.googleapis.com/maps/api/geocode/json"
 
 class GMapsGeocoding():

@@ -171,15 +171,16 @@ def blast_reminder_weather_service():
     for data in analytic_log.get_reminder_weather():
         position = data['value'].split(';')
         location_detail = gmaps.getLocationDetail(position[0], position[1])
+        city = location_detail['kota'].lower().replace('kota', '').strip()
         sql = "select B.cuaca, B.deskripsi, B.image_url " \
               "from city A join city_weather B on A.id = B.id_city " \
-              "where lower(A.city_name) = '%s'" % (location_detail['kota'].lower().replace('kota', '').strip())
+              "where lower(A.city_name) = '%s'" % (city)
         sqlout = request(sql)
         cuaca, deskripsi, image_url = sqlout[0]
         columns = []
         now_actions = []
-        yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather"}
-        no_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=no_reminder_weather"}
+        yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather&city=" + city}
+        no_action = {'type': 'postback', 'label': 'No', 'data': "&evt=no_reminder_weather"}
         column = {}
         column['thumbnail_image_url'] = image_url
         column['title'] = 'Cuaca hari ini'
@@ -193,7 +194,7 @@ def blast_reminder_weather_service():
         column['actions'] = now_actions
         columns.append(column)
         # linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
-        linebot.send_composed_confirm(data['msisdn'], 'Konfirmasi',
+        linebot.send_composed_confirm(data['msisdn'], 'Cuaca',
                                       'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
                                       yes_action, no_action)
 
