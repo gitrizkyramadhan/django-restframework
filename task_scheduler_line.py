@@ -178,8 +178,8 @@ def blast_reminder_weather_service():
         cuaca, deskripsi, image_url = sqlout[0]
         columns = []
         now_actions = []
-        yes_action = {'type': 'postback', 'label': 'Yes', 'text': 'Yes', 'data': "evt=yes_reminder_weather"}
-        no_action = {'type': 'postback', 'label': 'Yes', 'text': 'Yes', 'data': "evt=no_reminder_weather"}
+        yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather"}
+        no_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=no_reminder_weather"}
         column = {}
         column['thumbnail_image_url'] = image_url
         column['title'] = 'Cuaca hari ini'
@@ -192,8 +192,8 @@ def blast_reminder_weather_service():
             {'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
         column['actions'] = now_actions
         columns.append(column)
-        linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
-        linebot.send_composed_confirm(data['msisdn'], '',
+        # linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
+        linebot.send_composed_confirm(data['msisdn'], 'Konfirmasi',
                                       'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
                                       yes_action, no_action)
 
