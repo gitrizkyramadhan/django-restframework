@@ -145,7 +145,7 @@ def do_weather_today():
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
         now_actions.append(
-            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=today"})
+            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today"})
         column['actions'] = now_actions
         columns.append(column)
         try:
@@ -158,15 +158,16 @@ def get_city_weather():
 
     sql = "select id, city_name from city"
     sqlout = request(sql)
-    insert ("truncate table city_weather")
+    insert("truncate table city_weather")
     for data in sqlout:
         id, city_name = data
         latlng = gmaps.getLatLng(city_name)
         (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']))
+        image = str(w_tom['image'])
         w_tom.pop('image')
         encoded_url = urllib.urlencode(w_tom, doseq=True)
         insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url) values ('%s', %s, '%s', "
-               "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), str(w_tom['image'])))
+               "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image))
 
 
 def update_city_reminder():
