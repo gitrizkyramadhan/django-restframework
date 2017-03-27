@@ -249,8 +249,8 @@ if __name__ == '__main__':
     EMAIL_NOTIF=content[9].split('=')[1]
 
 
-    get_city_weather()
-    # blast_reminder_weather_service()
+    #get_city_weather()
+    blast_reminder_weather_service()
 
     # scheduler = BlockingScheduler()
     # scheduler.add_job(tick, 'interval', minutes=1)

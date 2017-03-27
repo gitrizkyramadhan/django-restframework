@@ -3503,11 +3503,13 @@ def doworker(req):
                 insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
                              "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'Everyday', 'cuaca', '', city_reminder, 'line', '7')
                 insert(insert_sql)
+                linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
             elif postback_event == 'no_reminder_weather':
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                 insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
                              "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'None', 'cuaca', '', city_reminder, 'line', '7')
                 insert(insert_sql)
+                linebot.send_text_message(msisdn, 'Oke deh')
 # ---------- DWP MODULE START ----------
 @app.task
 def updateDWPInvoice(bookingId, amountPay):
