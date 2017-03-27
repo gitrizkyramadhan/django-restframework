@@ -1535,7 +1535,7 @@ def onMessage(msisdn, ask, first_name):
             deposit_hp = payload.split('|')[2]
             _print_debug("USER HAS BJPAY")
 
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5]) + 1000) is None:
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[2]) + 1000) is None:
             # if balance >= (incomingMsisdn[5] + 1000):
             #     print balance, incomingMsisdn[5] + 1000
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
