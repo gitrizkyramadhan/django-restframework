@@ -3502,7 +3502,6 @@ def doworker(req):
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                 check_if_exists = "select count(1) from reminder where " \
                                   "platform = 'line' and description = 'cuaca' " \
-                                  "and once = 'tiap' and is_day = 'Everyday' " \
                                   "and msisdn ='" + msisdn + "'"
                 count_data = request(check_if_exists)
                 if count_data[0][0] == 0:
@@ -3515,7 +3514,6 @@ def doworker(req):
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                 check_if_exists = "select count(1) from reminder where " \
                                   "platform = 'line' and description = 'cuaca' " \
-                                  "and once = 'None' and is_day = 'None' " \
                                   "and msisdn ='" + msisdn + "'"
                 count_data = request(check_if_exists)
                 if count_data[0][0] == 0:
