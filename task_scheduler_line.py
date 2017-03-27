@@ -125,24 +125,34 @@ def tick():
             continue
 
 
-def do_weather_today(msisdn, longitude, latitude):
+def do_weather_today():
 
-    (w_now, w_tom) = weather_service.get_wheather(Decimal(longitude), Decimal(latitude))
-    if w_now['cuaca'].__contains__('HUJAN'):
+    sql = "select msisdn, city from reminder where description = 'cuaca' and is_day = 'Everyday'"
+    sqlout = request(sql)
+    for data in sqlout:
+        msisdn, city = data
+        sql = "select B.cuaca, B.deskripsi, B.image_url " \
+              "from city A join city_weather B on A.id = B.id_city " \
+              "where lower(A.city_name) = '%s'" % (city)
+        sqlout = request(sql)
+        cuaca, deskripsi, image_url = sqlout[0]
         columns = []
         now_actions = []
         column = {}
-        column['thumbnail_image_url'] = w_now['image']
+        column['thumbnail_image_url'] = image_url
         column['title'] = 'Cuaca hari ini'
-        column['text'] = "Hari ini rata-rata %s" % (w_now['cuaca'])
+        column['text'] = "Hari ini rata-rata %s" % cuaca
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
-        w_now.pop('image')
-        encoded_url = urllib.urlencode(w_now, doseq=True)
-        now_actions.append({'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
+        now_actions.append(
+            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=today"})
         column['actions'] = now_actions
         columns.append(column)
-        linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+        try:
+            linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
+        except:
+            pass
+
 
 def get_city_weather():
 
@@ -158,6 +168,17 @@ def get_city_weather():
         insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url) values ('%s', %s, '%s', "
                "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), str(w_tom['image'])))
 
+
+def update_city_reminder():
+
+    for data in analytic_log.get_reminder_weather():
+        position = data['value'].split(';')
+        location_detail = gmaps.getLocationDetail(position[0], position[1])
+        city = location_detail['kota'].lower().replace('kota', '').strip()
+        try:
+            insert("update reminder set city = '%s' where msisdn = '%s'" % (data['msisdn'], city))
+        except:
+            pass
 # def reminder_cuaca():
 #
 #     al = AnalyticLog()
@@ -168,35 +189,45 @@ def get_city_weather():
 
 def blast_reminder_weather_service():
 
+    sql_user_after_blast = "select msisdn from reminder where platform = 'line' and description='cuaca'"
+    sqlout = request(sql_user_after_blast)
+    transform_msisdn = zip(*sqlout)
     for data in analytic_log.get_reminder_weather():
-        position = data['value'].split(';')
-        location_detail = gmaps.getLocationDetail(position[0], position[1])
-        city = location_detail['kota'].lower().replace('kota', '').strip()
-        sql = "select B.cuaca, B.deskripsi, B.image_url " \
-              "from city A join city_weather B on A.id = B.id_city " \
-              "where lower(A.city_name) = '%s'" % (city)
-        sqlout = request(sql)
-        cuaca, deskripsi, image_url = sqlout[0]
-        columns = []
-        now_actions = []
-        yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather&city=" + city}
-        no_action = {'type': 'postback', 'label': 'No', 'data': "&evt=no_reminder_weather"}
-        column = {}
-        column['thumbnail_image_url'] = image_url
-        column['title'] = 'Cuaca hari ini'
-        column['text'] = "Hari ini rata-rata %s" % cuaca
-        if (len(column['text']) > 60):
-            column['text'] = column['text'][:57] + '...'
-        encoded_url = urllib.urlencode(deskripsi, doseq=True)
-        # print encoded_url
-        now_actions.append(
-            {'type': 'postback', 'label': 'Detailnya', 'data': encoded_url + "&evt=weather&day_type=today"})
-        column['actions'] = now_actions
-        columns.append(column)
-        # linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
-        linebot.send_composed_confirm(data['msisdn'], 'Cuaca',
-                                      'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
-                                      yes_action, no_action)
+        if data['msisdn'] not in transform_msisdn:
+            position = data['value'].split(';')
+            location_detail = gmaps.getLocationDetail(position[0], position[1])
+            city = location_detail['kota'].lower().replace('kota', '').strip()
+            sql = "select B.cuaca, B.deskripsi, B.image_url " \
+                  "from city A join city_weather B on A.id = B.id_city " \
+                  "where lower(A.city_name) = '%s'" % (city)
+            sqlout = request(sql)
+            cuaca, deskripsi, image_url = sqlout[0]
+            columns = []
+            now_actions = []
+            yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather&city=" + city}
+            no_action = {'type': 'postback', 'label': 'No', 'data': "&evt=no_reminder_weather"}
+            column = {}
+            column['thumbnail_image_url'] = image_url
+            column['title'] = 'Cuaca hari ini'
+            column['text'] = "Hari ini rata-rata %s" % cuaca
+            if (len(column['text']) > 60):
+                column['text'] = column['text'][:57] + '...'
+            now_actions.append(
+                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=today"})
+            column['actions'] = now_actions
+            columns.append(column)
+            try:
+                linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
+                linebot.send_composed_confirm(data['msisdn'], 'Cuaca',
+                                              'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
+                                              yes_action, no_action)
+            except:
+                pass
+
+# def do_reminder_pulsa() :
+#
+#     for data in analytic_log.get_reminder_pulsa():
+
 
 
 
@@ -216,21 +247,26 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 
-    # get_city_weather()
-    blast_reminder_weather_service()
 
-#     scheduler = BlockingScheduler()
-#     scheduler.add_job(tick, 'interval', minutes=1)
-#     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
-#     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
-#
-#     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
-#     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
-#
-#     try:
-#         scheduler.start()
-#     except (KeyboardInterrupt, SystemExit):
-#         pass
+    get_city_weather()
+    # blast_reminder_weather_service()
+
+    # scheduler = BlockingScheduler()
+    # scheduler.add_job(tick, 'interval', minutes=1)
+    # scheduler.add_job(get_city_weather(), 'cron', hour=21)
+    # scheduler.add_job(update_city_reminder(), 'cron', hour=23)
+    # scheduler.add_job(do_weather_today(), 'cron', hour=6)
+
+    # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
+    # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
+
+    # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
+    # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
+
+    try:
+        scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        pass
 
 
     # file = open('uniq_chatid.txt', 'r')
