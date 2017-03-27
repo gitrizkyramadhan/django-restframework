@@ -149,7 +149,7 @@ def do_weather_today():
         column['actions'] = now_actions
         columns.append(column)
         try:
-            linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
+            linebot.send_composed_carousel(msisdn, "Cuaca", columns)
         except:
             pass
 
@@ -249,14 +249,12 @@ if __name__ == '__main__':
     EMAIL_NOTIF=content[9].split('=')[1]
 
 
-    #get_city_weather()
-    blast_reminder_weather_service()
-
-    # scheduler = BlockingScheduler()
-    # scheduler.add_job(tick, 'interval', minutes=1)
-    # scheduler.add_job(get_city_weather(), 'cron', hour=21)
-    # scheduler.add_job(update_city_reminder(), 'cron', hour=23)
-    # scheduler.add_job(do_weather_today(), 'cron', hour=6)
+    scheduler = BlockingScheduler()
+    scheduler.add_job(tick, 'interval', minutes=1)
+    scheduler.add_job(get_city_weather(), 'cron', hour=21)
+    scheduler.add_job(update_city_reminder(), 'cron', hour=23)
+    scheduler.add_job(blast_reminder_weather_service(), 'cron', hour=6)
+    scheduler.add_job(do_weather_today(), 'cron', hour=6)
 
     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
