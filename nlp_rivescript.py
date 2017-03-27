@@ -159,31 +159,31 @@ class Nlp:
         if answer[:4] == "pl02" :
             x = self.get_uservar(msisdn,"nominal_token")
             if x == "dua puluh":
-                incomingMsisdn[2] = "20000"
+                incomingMsisdn[2] = 20000
                 incomingMsisdn[3] = "P20"
             elif x == "lima puluh":
-                incomingMsisdn[2] = "50000"
+                incomingMsisdn[2] = 50000
                 incomingMsisdn[3] = "P50"
             elif x == "seratus":
-                incomingMsisdn[2] = "100000"
+                incomingMsisdn[2] = 100000
                 incomingMsisdn[3] = "P100"
             elif x == "dua ratus":
-                incomingMsisdn[2] = "200000"
+                incomingMsisdn[2] = 200000
                 incomingMsisdn[3] = "P200"
             elif x == "lima ratus":
-                incomingMsisdn[2] = "500000"
+                incomingMsisdn[2] = 500000
                 incomingMsisdn[3] = "P500"
             elif x == "sejuta":
-                incomingMsisdn[2] = "1000000"
+                incomingMsisdn[2] = 1000000
                 incomingMsisdn[3] = "P1000"
             elif x == "lima juta":
-                incomingMsisdn[2] = "5000000"
+                incomingMsisdn[2] = 5000000
                 incomingMsisdn[3] = "P5000"
             elif x == "sepuluh juta":
-                incomingMsisdn[2] = "10000000"
+                incomingMsisdn[2] = 10000000
                 incomingMsisdn[3] = "P10000"
             else:
-                incomingMsisdn[2] = "50000000"
+                incomingMsisdn[2] = 50000000
                 incomingMsisdn[3] = "P500000"
 
         if answer[:4] == "pl03" or answer[:4] == "pu03":

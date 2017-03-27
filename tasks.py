@@ -588,16 +588,16 @@ def create_recommended_carousell(msisdn):
         actions.append({'type': 'uri', 'label': 'Pilih', 'uri': url})
         if dest == "CGK-KNO" :
             title_carousel = 'Jakarta ke Medan'
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/medan.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/flight/medan.png'
         elif dest == "CGK-SUB" :
             title_carousel = 'Jakarta ke Surabaya'
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/surabaya.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/flight/surabaya.png'
         elif dest == "CGK-DPS" :
             title_carousel = 'Jakarta ke Bali'
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/denpasar.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/flight/denpasar.png'
         elif dest == "CGK-LOP":
             title_carousel = 'Jakarta ke Lombok'
-            column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/lombok.jpg'
+            column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/flight/lombok.png'
         column['title'] = str(title_carousel)
         column['text'] = 'Mulai dari Rp ' + str('{:,.0f}'.format(int(top_dest['MinPrice'])))
         if (len(column['text']) > 60):
@@ -609,7 +609,7 @@ def create_recommended_carousell(msisdn):
     actions = []
     actions.append({'type': 'uri', 'label': 'Pilih destinasi lain', 'uri': microsite_url + 'msisdn=' + msisdn + '&d=CGK&a=SUB'})
     # actions.append({'type': 'message', 'label': 'Pilih destinasi lain', 'text': "ubah tanggal"})
-    column['thumbnail_image_url'] = 'https://bangjoni.com/testflv2/carousell/tujuan_lain.jpg'
+    column['thumbnail_image_url'] = 'https://bangjoni.com/v2/carousel/flight/tujuan_lain.png'
     column['title'] = 'Gak ada?'
     column['text'] = "Tap 'Pilih' buat cari destinasi atau jadwal lain"
     if (len(column['text']) > 60):
@@ -1535,7 +1535,7 @@ def onMessage(msisdn, ask, first_name):
             deposit_hp = payload.split('|')[2]
             _print_debug("USER HAS BJPAY")
 
-            if bjp_service.check_balance(msisdn, int(incomingMsisdn[5]) + 1000) is None:
+            if bjp_service.check_balance(msisdn, int(incomingMsisdn[2]) + 1000) is None:
             # if balance >= (incomingMsisdn[5] + 1000):
             #     print balance, incomingMsisdn[5] + 1000
                 r = (datetime.now() + timedelta(hours=0)).strftime('%H%M%S')
