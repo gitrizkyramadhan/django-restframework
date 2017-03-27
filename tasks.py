@@ -3469,6 +3469,13 @@ def doworker(req):
                     answer = "Cuaca hari ini %s dengan suhu rata2 %s Celcius dan kecepatan angin %s Km/h." % (
                     cuaca, suhu, angin)
                     sendMessageT2(msisdn, answer, 0)
+                elif day_type == 'reminder_today':
+                    suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
+                    cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
+                    suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
+
+                    answer = "Hari kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
+                    sendMessageT2(msisdn, answer, 0)
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
@@ -3494,12 +3501,12 @@ def doworker(req):
             elif postback_event == 'yes_reminder_weather':
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                 insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
-                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'Everyday', 'Cuaca', city_reminder, 'line', '7')
+                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'Everyday', 'cuaca', '', city_reminder, 'line', '7')
                 insert(insert_sql)
             elif postback_event == 'no_reminder_weather':
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                 insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
-                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'None', 'Cuaca', city_reminder, 'line', '7')
+                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'None', 'cuaca', '', city_reminder, 'line', '7')
                 insert(insert_sql)
 # ---------- DWP MODULE START ----------
 @app.task
