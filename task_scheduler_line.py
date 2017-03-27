@@ -205,8 +205,8 @@ def blast_reminder_weather_service():
             cuaca, deskripsi, image_url = sqlout[0]
             columns = []
             now_actions = []
-            yes_action = {'type': 'postback', 'label': 'Yes', 'data': "&evt=yes_reminder_weather&city=" + city}
-            no_action = {'type': 'postback', 'label': 'No', 'data': "&evt=no_reminder_weather"}
+            yes_action = {'type': 'postback', 'label': 'Yes', 'data': "evt=yes_reminder_weather&city=" + city}
+            no_action = {'type': 'postback', 'label': 'No', 'data': "evt=no_reminder_weather&city=" + city}
             column = {}
             column['thumbnail_image_url'] = image_url
             column['title'] = 'Cuaca hari ini'
@@ -214,7 +214,7 @@ def blast_reminder_weather_service():
             if (len(column['text']) > 60):
                 column['text'] = column['text'][:57] + '...'
             now_actions.append(
-                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=today"})
+                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today"})
             column['actions'] = now_actions
             columns.append(column)
             try:
