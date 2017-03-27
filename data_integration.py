@@ -22,11 +22,11 @@ class DataIntegration(object):
             ml.reminder(data['msisdn'], "pulsa", data['denom'], 
             datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30)) # fill reminder collection
     
-    def job_celerylog_to_locationlog(self, filename):
-        
+    def job_celerylog_to_locationlog(self):
+
         ml = MongoLog()
         ul = UnstructureLog()
-        for data in ul.parse_celery_log(filename):
+        for data in ul.parse_celery_log('celery1.log'):
             ml.log_location(data[0], data[1][0], data[1][1])
     
     def job_migrate_log_pulsa(self):
@@ -45,7 +45,7 @@ class DataIntegration(object):
         # query_delete_location = [
         #     {"type_reminder": "location"}
         # ]
-        self.db.reminder.delete_many({"type_reminder": "location"})
+        self.db.reminder.delete_many({"type_reminder": "weather"})
         msisdn = []
         for data in la.get_often_location_access():
             if data['_id']['msisdn'] not in msisdn:

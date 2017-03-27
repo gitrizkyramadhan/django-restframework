@@ -3491,7 +3491,16 @@ def doworker(req):
                 lng = urlparse.parse_qs(parsed.query)['lng'][0]
                 address = urlparse.parse_qs(parsed.query)['address'][0]
                 linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
-
+            elif postback_event == 'yes_reminder_weather':
+                city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
+                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'Everyday', 'Cuaca', city_reminder, 'line', '7')
+                insert(insert_sql)
+            elif postback_event == 'no_reminder_weather':
+                city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'%s','%s','%s','%s','%s'," \
+                             "'%s','%s','%s','%s','%s'" % (msisdn, '1979-08-04 06:00:00', 'tiap', 'No', 'None', 'Cuaca', city_reminder, 'line', '7')
+                insert(insert_sql)
 # ---------- DWP MODULE START ----------
 @app.task
 def updateDWPInvoice(bookingId, amountPay):

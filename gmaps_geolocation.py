@@ -3,7 +3,7 @@ import json
 
 from geopy.distance import vincenty
 
-APIKEY = "AIzaSyDKeRE8tRlw3cRvKmUNKHAzmsz0KOYF0QY"
+APIKEY = "AIzaSyBRMZM-OHOO6O2yUE-lrWyG08naIU930S0"
 BASEURL = "https://maps.googleapis.com/maps/api/geocode/json"
 
 class GMapsGeocoding():
@@ -18,7 +18,7 @@ class GMapsGeocoding():
         r = requests.get(url, headers={})
         decodedJson = json.dumps(r.json())
         decodedJson = json.loads(decodedJson)
-        print "Response :: %s" % (decodedJson)
+        # print "Response :: %s" % (decodedJson)
         # print decodedJson['result'][0]
         if decodedJson['status'] == 'OK':
             return self.__translateGmapData(decodedJson)
@@ -31,7 +31,7 @@ class GMapsGeocoding():
         r = requests.get(url, headers={})
         decodedJson = json.dumps(r.json())
         decodedJson = json.loads(decodedJson)
-        print "Response :: %s" % (decodedJson)
+        # print "Response :: %s" % (decodedJson)
         # print json.dumps(decodedJson['results'][0])
         if decodedJson['status'] == 'OK':
             return self.__translateGmapData(decodedJson)
@@ -56,11 +56,13 @@ class GMapsGeocoding():
                     if admLevel == 'administrative_area_level_1':
                         location['provinsi'] = addrObj['long_name']
             location['formattedAddr'] = gmapData['formatted_address']
-            print location
+            # print location
             return location
 
 
-gmaps = GMapsGeocoding()
+# gmaps = GMapsGeocoding()
 # # gmaps.getLatLng('graha anabatic')
-gmaps.getLatLng('Jl. Prof Dr Satrio No 12A, Jakarta Selatan, DKI Jakarta')
-# gmaps.getLocationDetail(-6.2501281,106.5996596)
+# data = gmaps.getLatLng('Jakarta')
+# print data['latitude']
+
+# print gmaps.getLocationDetail(-6.2501281, 106.5996596)
