@@ -3500,17 +3500,30 @@ def doworker(req):
                 linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
             elif postback_event == 'yes_reminder_weather':
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
-                linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
-                insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn +"','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                         "'cuaca','','line','"+ city_reminder +"','7')"
-                print insert_sql
-                insert(insert_sql)
+                check_if_exists = "select count(1) from reminder where " \
+                                  "platform = 'line' and description = 'cuaca' " \
+                                  "and once = 'tiap' and is_day = 'Everyday' " \
+                                  "and msisdn ='" + msisdn + "'"
+                count_data = request(check_if_exists)
+                if count_data[0][0] == 0:
+                    insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn +"','1979-08-04 06:00:00','tiap','No','Everyday'," \
+                                                                                                             "'cuaca','','line','"+ city_reminder +"','7')"
+                    print insert_sql
+                    linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
+                    insert(insert_sql)
             elif postback_event == 'no_reminder_weather':
                 city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
-                linebot.send_text_message(msisdn, 'Oke deh')
-                insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','None'," \
-                print insert_sql                                                                                           "'cuaca','','line','"+ city_reminder +"','7')"
-                insert(insert_sql)
+                check_if_exists = "select count(1) from reminder where " \
+                                  "platform = 'line' and description = 'cuaca' " \
+                                  "and once = 'None' and is_day = 'None' " \
+                                  "and msisdn ='" + msisdn + "'"
+                count_data = request(check_if_exists)
+                if count_data[0][0] == 0:
+                    insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','None'," \
+                                                                                                               "'cuaca','','line','"+ city_reminder +"','7')"
+                    print insert_sql
+                    linebot.send_text_message(msisdn, 'Oke deh')
+                    insert(insert_sql)
 # ---------- DWP MODULE START ----------
 @app.task
 def updateDWPInvoice(bookingId, amountPay):

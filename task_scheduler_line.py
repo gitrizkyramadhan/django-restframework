@@ -194,7 +194,7 @@ def blast_reminder_weather_service():
     sqlout = request(sql_user_after_blast)
     transform_msisdn = zip(*sqlout)
     for data in analytic_log.get_reminder_weather():
-        if data['msisdn'] not in transform_msisdn:
+        if data['msisdn'] not in transform_msisdn[0]:
             position = data['value'].split(';')
             location_detail = gmaps.getLocationDetail(position[0], position[1])
             city = location_detail['kota'].lower().replace('kota', '').strip()
@@ -252,11 +252,11 @@ if __name__ == '__main__':
     #get_city_weather()
     blast_reminder_weather_service()
 
-    scheduler = BlockingScheduler()
-    scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(get_city_weather(), 'cron', hour=21)
-    scheduler.add_job(update_city_reminder(), 'cron', hour=23)
-    scheduler.add_job(do_weather_today(), 'cron', hour=6)
+    # scheduler = BlockingScheduler()
+    # scheduler.add_job(tick, 'interval', minutes=1)
+    # scheduler.add_job(get_city_weather(), 'cron', hour=21)
+    # scheduler.add_job(update_city_reminder(), 'cron', hour=23)
+    # scheduler.add_job(do_weather_today(), 'cron', hour=6)
 
     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
