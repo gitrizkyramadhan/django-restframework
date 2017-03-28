@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import os
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BlockingScheduler, BackgroundScheduler
 import MySQLdb
 import requests
 from log_analytic import AnalyticLog
@@ -222,8 +222,9 @@ def blast_reminder_weather_service():
                 linebot.send_composed_confirm(data['msisdn'], 'Cuaca',
                                               'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
                                               yes_action, no_action)
-            except:
+            except :
                 pass
+            time.sleep(1)
 
 # def do_reminder_pulsa() :
 #
@@ -251,10 +252,10 @@ if __name__ == '__main__':
 
     scheduler = BlockingScheduler()
     scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(get_city_weather(), 'cron', hour=21)
-    scheduler.add_job(update_city_reminder(), 'cron', hour=23)
-    scheduler.add_job(blast_reminder_weather_service(), 'cron', hour=6)
-    scheduler.add_job(do_weather_today(), 'cron', hour=6)
+    scheduler.add_job(get_city_weather, 'cron', hour=21)
+    scheduler.add_job(update_city_reminder, 'cron', hour=23)
+    scheduler.add_job(blast_reminder_weather_service, 'cron', hour=6)
+    scheduler.add_job(do_weather_today, 'cron', hour=6)
 
     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
