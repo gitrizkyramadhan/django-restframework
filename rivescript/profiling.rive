@@ -7,7 +7,7 @@
 
     + [*] (@betul) [*] {weight=5}
     * <get given_name> != -1 => prf01a Oke deh <first_name>! <br>
-    ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
+    ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D <set name=<get given_name>> {topic=cewekataucowok}
     - Oke deh <get name>! <br>
     ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 

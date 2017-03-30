@@ -396,7 +396,7 @@ def get_line_username(msisdn):
     first_name = ""
     for row in sqlout:
         first_name = row[0]
-
+        
     if first_name != "":
         return first_name
     else :
