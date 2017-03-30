@@ -309,6 +309,9 @@
 - Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 
+///////////////////////////////////REMINDER PULSA HP
++ [*] (@pulsa) (#) [*] {weight=12}
+- pu01 <set no_hp=<star2>> Ok, lo pilih pulsa dengan nominal {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 //////////////////////////////////START TOKEN LISTRIK
 + [*] (token|pulsa listrik|token pln|token listrik) [*] {weight=10}
