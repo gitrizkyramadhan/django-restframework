@@ -108,3 +108,13 @@ class MongoLog(object):
             "location" : location,
             "date_location" : date_location
         })
+
+    def reminder_pulsa(self, msisdn, type_reminder, value, date_execution, phone):
+        result = self.db.reminder.insert_one({
+            "data_date" : datetime.now(),
+            "msisdn" : msisdn,
+            "type_reminder" : type_reminder,
+            "value" : value,
+            "date_execution" : date_execution,
+            "phone" : phone
+        })
