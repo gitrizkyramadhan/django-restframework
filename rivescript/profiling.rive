@@ -10,7 +10,7 @@
     ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 
     + [*] (@panggilan) (*) [*] {weight=5}
-    - Sip! Berarti gue manggilnya <star3> aja nih ya? <set star3=name> {topic=jawaban_nama}
+    - Sip! Berarti gue manggilnya <star2> aja nih ya? <set name=<star2>> {topic=jawaban_nama}
 
     + [*] (ada) [*] {weight=6}
     - Siapa tuh namanya?

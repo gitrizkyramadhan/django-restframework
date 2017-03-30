@@ -1144,6 +1144,7 @@ def onMessage(msisdn, ask, first_name):
         if not lineNlp.redisconn.exists("profiling/%s" % (msisdn)):
             status = 0  # profiling in progress
             lineNlp.redisconn.set("profiling/%s" % (msisdn), json.dumps(status))
+            lineNlp.set_uservar(msisdn, "name", first_name)
             answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
             do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
             return
