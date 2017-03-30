@@ -1,9 +1,9 @@
 > topic nama
     + [*] [@namaku] (*) [*]
-    - Oke deh! Jadi gue manggilnya <star2> ya? {topic=jawaban_nama} <set star2=name>
+    - Oke deh! Jadi gue manggilnya <star> ya? {topic=jawaban_nama} <set name=<star>>
 
     + [*] (@panggil) (*) [*] {weight=5}
-    - Sip! Berarti gue manggilnya <star3> aja nih ya? {topic=jawaban_nama} <set star2=name>
+    - Sip! Berarti gue manggilnya <star2> aja nih ya? {topic=jawaban_nama} <set name=<star2>>
 
     + [*] (@betul) [*] {weight=5}
     - Oke deh <get name>! <br>
