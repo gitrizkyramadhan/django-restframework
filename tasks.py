@@ -1241,7 +1241,7 @@ def onMessage(msisdn, ask, first_name):
             sendMessageT2(msisdn, splitAn, 0)
         sendLinkMessageT2(msisdn, "Feedback", "Tap disini", "Isi Feedback Kamu",
                           "https://www.bangjoni.com/complaint/complaint.php?user_id=" + msisdn,
-                          "https://www.bangjoni.com/images/bangjoni/logo.png")
+                          "https://www.bangjoni.com/v2/carousel/feedback/feedback.png")
     #################################################
 
     ####################BJPAY CEK SALDO####################
