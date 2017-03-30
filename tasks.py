@@ -391,14 +391,16 @@ def log_addfriends(logDtm, msisdn, first_name, service, desc = 'None'):
 def get_line_username(msisdn):
     sql = "select full_name from user_profile where msisdn = '%s'" % (msisdn)
     sqlout = request(sql)
-    if sqlout:
-        for row in sqlout:
-            first_name = row[0]
+    first_name = ""
+    for row in sqlout:
+        first_name = row[0]
+        
+    if first_name != "":
         return first_name
     else :
         sql = "select * from line_users where user_id = '%s'" % (msisdn)
         sqlout = request(sql)
-        first_name = "";
+        first_name = ""
         for row in sqlout:
             first_name = row[1]
         print sql, first_name
