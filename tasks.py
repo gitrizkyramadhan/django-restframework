@@ -1161,6 +1161,7 @@ def onMessage(msisdn, ask, first_name):
             lineNlp.set_uservar(msisdn, "given_name", first_name)
             answer = lineNlp.doNlp("usertoprofiling", msisdn, first_name)
             do_profiling(msisdn, first_name, ask, answer, incomingMsisdn)
+            userpservice.update_profile(msisdn, full_name="", display_name="")
             return
 
         print "_____________________>", answer, incomingMsisdn
