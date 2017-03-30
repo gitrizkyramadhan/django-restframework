@@ -389,29 +389,36 @@ def log_addfriends(logDtm, msisdn, first_name, service, desc = 'None'):
     F_ADDFRIENDS.info(sql)
 
 def get_line_username(msisdn):
-    sql = "select * from line_users where user_id = '%s'" % (msisdn)
+    sql = "select full_name from user_profile where msisdn = '%s'" % (msisdn)
     sqlout = request(sql)
-    first_name = "";
-    for row in sqlout:
-        first_name = row[1]
-    print sql, first_name
-    if first_name != "":
+    if sqlout:
+        for row in sqlout:
+            first_name = row[0]
         return first_name
-    else:
+    else :
+        sql = "select * from line_users where user_id = '%s'" % (msisdn)
+        sqlout = request(sql)
+        first_name = "";
+        for row in sqlout:
+            first_name = row[1]
+        print sql, first_name
+        if first_name != "":
+            return first_name
+        else:
 
-        # r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
-        #
-        # rjson = json.loads(r.content)
-        try:
-            profile_obj = linebot.get_profile(msisdn)
-            sql = "insert into line_users values('" + msisdn + "','" + profile_obj.display_name + "')"
-            print sql
-            insert(sql)
-            return profile_obj.display_name
-        except:
-            sql = "insert into line_users values('" + msisdn + "','" + "bro/sis" + "')"
-            insert(sql)
-            return "bro/sis"
+            # r = requests.get("https://api.line.me/v1/profiles?mids=%s" % (msisdn), headers={'Content-Type': 'application/json', 'X-LINE-ChannelToken': 'NXLU6oHQJxMzsUwJLUiWgSGKOG6J+l9/gUx+p0qtI5wdfx063TL55RQ1QzocuBIETSwUY98USKR+MhG5Ndq1dBFYmzjXa3UfUn8iCD7ShHVtZZ4eLTZe0xVuMBd9pyDUtfGctFIIjC3W+kRVkxGUka18BSl7lGXPAT9HRw/DX2c='})
+            #
+            # rjson = json.loads(r.content)
+            try:
+                profile_obj = linebot.get_profile(msisdn)
+                sql = "insert into line_users values('" + msisdn + "','" + profile_obj.display_name + "')"
+                print sql
+                insert(sql)
+                return profile_obj.display_name
+            except:
+                sql = "insert into line_users values('" + msisdn + "','" + "bro/sis" + "')"
+                insert(sql)
+                return "bro/sis"
 
 def onEmailReceived(filename, filetype):
     logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
@@ -1065,12 +1072,12 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     answer = answer.strip()
     if answer[:5] == "prf00":
         sendMessageT2(msisdn, answer[5:], 0)
+    elif answer[:6] == "prf01a": #nama dari line
+        sendMessageT2(msisdn, answer[6:], 0)
+        userpservice.update_profile(msisdn, full_name=first_name, display_name=first_name)
     elif answer[:5] == "prf01": #nama
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, full_name=ask, display_name=first_name)
-    elif answer[:6] == "prf01a": #nama dari line
-        sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, full_name=first_name, display_name=first_name)
     elif answer[:5] == "prf02": #dob
         sendMessageT2(msisdn, answer[5:], 0)
         idx = search_string(ask, when)
@@ -2200,7 +2207,7 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
                 sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
                 insert("delete from searching_jadwal_xtrans where msisdn = '%s'" % (msisdn))
@@ -2270,7 +2277,7 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
+                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
                 sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
     if answer[:4] == "xt09":
@@ -2666,7 +2673,7 @@ def onMessage(msisdn, ask, first_name):
             except Exception as e:
                 print "Error pdfkit",e
             if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-                # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
                 #answer = "Berikut 9 penerbangan termurah sesuai kriteriamu.\nJika ada yang cocok sebut saja no pilihannya untuk Bang Joni booking.\nJika tidak ada yang cocok, Bang Joni bisa carikan jadwal lainnya."
                 ask = "fl01aa"
                 answer = lineNlp.doNlp(ask, msisdn, first_name)
@@ -2685,7 +2692,7 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[5], randomDtm)
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), 'http://128.199.88.72/line_images/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
                 sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
                 incomingMsisdn[13] = token

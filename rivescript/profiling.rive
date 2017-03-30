@@ -1,16 +1,18 @@
 > topic nama
     + [*] [@namaku] (*) [*]
-    - Oke deh! Jadi gue manggilnya <star> ya? {topic=jawaban_nama} <set given_name=-1> <set name=<star>>
+    - prf01 Oke deh! Jadi gue manggilnya <star> ya? {topic=jawaban_nama} <set given_name=-1> <set name=<star>>
 
     + [*] (@panggil) (*) [*] {weight=5}
-    - Sip! Berarti gue manggilnya <star2> aja nih ya? {topic=jawaban_nama} <set given_name=-1> <set name=<star2>>
+    - prf01 Sip! Berarti gue manggilnya <star2> aja nih ya? {topic=jawaban_nama} <set given_name=-1> <set name=<star2>>
 
     + [*] (@betul) [*] {weight=5}
+    * <get given_name> != -1 => prf01a Oke deh <first_name>! <br>
+    ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
     - Oke deh <get name>! <br>
     ^ Eh iya, lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 
     + [*] (@panggilan) (*) [*] {weight=5}
-    - Sip! Berarti gue manggilnya <star2> aja nih ya? <set given_name=-1> <set name=<star2>> {topic=jawaban_nama}
+    - prf01 Sip! Berarti gue manggilnya <star2> aja nih ya? <set given_name=-1> <set name=<star2>> {topic=jawaban_nama}
 
     + [*] (ada) [*] {weight=6}
     - Siapa tuh namanya?
@@ -76,9 +78,9 @@
 
 > topic jawaban_nama
     + [*] (@betul) [*]
-    * <get given_name != -1> prf01a Oke deh <first_name>! <br>
+    * <get given_name> != -1 => prf01a Oke deh <first_name>! <br>
     ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
-    - prf01 Oke deh <get name>! <br>
+    - Oke deh <get name>! <br>
     ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
 
     + [*] (@salah) [*]
