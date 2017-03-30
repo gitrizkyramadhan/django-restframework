@@ -19,8 +19,8 @@ class DataIntegration(object):
             # print str(data['datetime']) + ' ' + str(datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30))
             
             self.db.reminder.delete_one({ "msisdn" : data['msisdn'] }) #delete msisdn first
-            ml.reminder(data['msisdn'], "pulsa", data['denom'], 
-            datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30)) # fill reminder collection
+            ml.reminder_pulsa(data['msisdn'], "pulsa", data['denom'],
+            datetime.strptime(data['datetime'], '%Y-%m-%d %H:%M:%S') + timedelta(days = 30), data['phone']) # fill reminder collection
     
     def job_celerylog_to_locationlog(self):
 

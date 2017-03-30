@@ -205,8 +205,8 @@ def blast_reminder_weather_service():
             cuaca, deskripsi, image_url = sqlout[0]
             columns = []
             now_actions = []
-            yes_action = {'type': 'postback', 'label': 'Yes', 'data': "evt=yes_reminder_weather&city=" + city}
-            no_action = {'type': 'postback', 'label': 'No', 'data': "evt=no_reminder_weather&city=" + city}
+            yes_action = {'type': 'postback', 'label': 'Yes', 'data': "evt=reminder_weather&confirmation=yes&city=" + city}
+            no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_weather&confirmation=no&city=" + city}
             column = {}
             column['thumbnail_image_url'] = image_url
             column['title'] = 'Cuaca hari ini'
@@ -226,9 +226,25 @@ def blast_reminder_weather_service():
                 pass
             time.sleep(1)
 
-# def do_reminder_pulsa() :
-#
-#     for data in analytic_log.get_reminder_pulsa():
+
+def do_reminder_pulsa() :
+
+    for data in analytic_log.get_reminder_pulsa():
+
+        yes_action = {'type': 'message', 'label': 'Yes', 'text': "pulsa " + data['phone']}
+        no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_pulsa&confirmation=no&phone=" + data['phone']}
+
+        try:
+            linebot.send_composed_confirm(data['msisdn'], 'Pulsa',
+                                          'Halo Sebulan yang lalu pas banget lo terakhir beli pulsa sama gue ke no ini ' + data['phone'] +
+                                          ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
+                                          yes_action, no_action)
+        except:
+            pass
+
+
+
+
 
 
 
@@ -251,7 +267,7 @@ if __name__ == '__main__':
 
 
     scheduler = BlockingScheduler()
-    scheduler.add_job(tick, 'interval', minutes=1)
+    #scheduler.add_job(tick, 'interval', minutes=1)
     scheduler.add_job(get_city_weather, 'cron', hour=21)
     scheduler.add_job(update_city_reminder, 'cron', hour=23)
     scheduler.add_job(blast_reminder_weather_service, 'cron', hour=6)

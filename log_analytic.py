@@ -23,7 +23,7 @@ class AnalyticLog(object):
     def get_reminder_pulsa(self):
         
         query_get_reminder_today = [
-            {"$project": {"msisdn" : "$msisdn","type_reminder": "$type_reminder","date_execution": "$date_execution",
+            {"$project": {"msisdn" : "$msisdn","type_reminder": "$type_reminder","date_execution": "$date_execution", "phone" : "$phone",
             "filter_date": { "$dateToString": { "format": "%Y%m%d", "date": "$date_execution" } },
             "value" : "$value"}
             }

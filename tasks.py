@@ -46,6 +46,7 @@ from uber_rides.errors import ServerError
 from uber_rides.errors import UberIllegalState
 
 from bot import Bot
+from gmaps_geolocation import GMapsGeocoding
 
 import random
 import base64
@@ -141,6 +142,7 @@ weather_service = WeatherService()
 mongolog = MongoLog()
 userpservice = UserProfileService()
 uber = UberService()
+gmaps = GMapsGeocoding()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -2035,6 +2037,15 @@ def onMessage(msisdn, ask, first_name):
         columns.append(tom_column)
 
         linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+    elif ask[:5] == "[LOC]" and incomingMsisdn[11] == "reminder_weather":
+        longlat = ask[5:].split(';')
+        location_detail = gmaps.getLocationDetail(Decimal(longlat[0]), Decimal(longlat[1]))
+        city = location_detail['kota'].lower().replace('kota', '').strip()
+        sql = "update reminder set city = '" + city + "' where msisdn ='" + msisdn + "' and description = 'cuaca' and is_day = 'Everyday'"
+        try:
+            insert(sql)
+        except:
+            pass
         ####################WEATHER MODULE END####################
 
 
@@ -3512,30 +3523,64 @@ def doworker(req):
                 lng = urlparse.parse_qs(parsed.query)['lng'][0]
                 address = urlparse.parse_qs(parsed.query)['address'][0]
                 linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
-            elif postback_event == 'yes_reminder_weather':
-                city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
-                check_if_exists = "select count(1) from reminder where " \
-                                  "platform = 'line' and description = 'cuaca' " \
-                                  "and msisdn ='" + msisdn + "'"
-                count_data = request(check_if_exists)
-                if count_data[0][0] == 0:
-                    insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn +"','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                             "'cuaca','','line','"+ city_reminder +"','7')"
-                    print insert_sql
-                    linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
-                    insert(insert_sql)
-            elif postback_event == 'no_reminder_weather':
-                city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
-                check_if_exists = "select count(1) from reminder where " \
-                                  "platform = 'line' and description = 'cuaca' " \
-                                  "and msisdn ='" + msisdn + "'"
-                count_data = request(check_if_exists)
-                if count_data[0][0] == 0:
-                    insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','None'," \
-                                                                                                               "'cuaca','','line','"+ city_reminder +"','7')"
-                    print insert_sql
-                    linebot.send_text_message(msisdn, 'Oke deh')
-                    insert(insert_sql)
+            elif postback_event == 'reminder_weather':
+                confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
+
+                if confirmation == 'yes':
+                    city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                    check_if_exists = "select count(1) from reminder where " \
+                                      "platform = 'line' and description = 'cuaca' " \
+                                      "and msisdn ='" + msisdn + "'"
+
+                    count_data = request(check_if_exists)
+                    if count_data[0][0] == 0:
+                        insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
+                                                                                                                   "'cuaca','','line','" + city_reminder + "','7')"
+                        yes_action = {'type': 'postback', 'label': 'Yes',
+                                      'data': "evt=reminder_weather&confirmation=yes_location"}
+                        no_action = {'type': 'postback', 'label': 'No',
+                                     'data': "evt=reminder_weather&confirmation=no_location"}
+                        try:
+                            linebot.send_composed_confirm(msisdn, 'Cuaca',
+                                                          'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
+                                                          yes_action, no_action)
+
+                            insert(insert_sql)
+                        except:
+                            pass
+                elif confirmation == 'no':
+                    city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                    check_if_exists = "select count(1) from reminder where " \
+                                      "platform = 'line' and description = 'cuaca' " \
+                                      "and msisdn ='" + msisdn + "'"
+                    count_data = request(check_if_exists)
+                    if count_data[0][0] == 0:
+                        insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','None'," \
+                                                                                                                   "'cuaca','','line','" + city_reminder + "','7')"
+                        print insert_sql
+                        linebot.send_text_message(msisdn, 'Oke deh')
+                        insert(insert_sql)
+                elif confirmation == 'no_location':
+                    incomingMsisdn[2] = 'reminder_weather'
+                    linebot.send_text_message(msisdn, "Oke share location dong ")
+                else:
+                    try:
+                        linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
+                    except:
+                        pass
+            elif postback_event == "reminder_pulsa":
+
+                confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
+
+                if confirmation == 'no':
+                    try:
+                        linebot.send_text_message(msisdn, 'Oke deh')
+                    except:
+                        pass
+
+
+
+
 # ---------- DWP MODULE START ----------
 @app.task
 def updateDWPInvoice(bookingId, amountPay):
