@@ -3542,7 +3542,7 @@ def doworker(req):
                                      'data': "evt=reminder_weather&confirmation=no_location"}
                         try:
                             linebot.send_composed_confirm(msisdn, 'Cuaca',
-                                                          'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
+                                                          'Lokasi lo bener di kota Jakarta ?',
                                                           yes_action, no_action)
 
                             insert(insert_sql)
@@ -3564,6 +3564,11 @@ def doworker(req):
                     incomingMsisdn[2] = 'reminder_weather'
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                 else:
+                    insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
+                                                                                                               "'cuaca','','line','jakarta','7')"
+                    print insert_sql
+                    linebot.send_text_message(msisdn, 'Oke deh')
+                    insert(insert_sql)
                     try:
                         linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
                     except:
