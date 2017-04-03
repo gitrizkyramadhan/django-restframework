@@ -3566,6 +3566,7 @@ def doworker(req):
                 elif confirmation == 'no_location':
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                     incomingMsisdn[11] = 'reminder_weather'
+                    lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
                 else:
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta','7')"
