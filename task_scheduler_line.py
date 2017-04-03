@@ -145,7 +145,7 @@ def do_weather_today():
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
         now_actions.append(
-            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today"})
+            {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city=" + city})
         column['actions'] = now_actions
         columns.append(column)
         try:

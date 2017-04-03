@@ -2044,6 +2044,8 @@ def onMessage(msisdn, ask, first_name):
         sql = "update reminder set city = '" + city + "' where msisdn ='" + msisdn + "' and description = 'cuaca' and is_day = 'Everyday'"
         try:
             insert(sql)
+            linebot.send_text_message("oke mulai besok bang joni ingetin ya")
+
         except:
             pass
         ####################WEATHER MODULE END####################
@@ -3495,11 +3497,12 @@ def doworker(req):
                     cuaca, suhu, angin)
                     sendMessageT2(msisdn, answer, 0)
                 elif day_type == 'reminder_today':
+                    city = urlparse.parse_qs(parsed.query)['city'][0]
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
                     suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
 
-                    answer = "Hari kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
+                    answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
@@ -3561,8 +3564,8 @@ def doworker(req):
                         linebot.send_text_message(msisdn, 'Oke deh')
                         insert(insert_sql)
                 elif confirmation == 'no_location':
-                    incomingMsisdn[2] = 'reminder_weather'
                     linebot.send_text_message(msisdn, "Oke share location dong ")
+                    incomingMsisdn[11] = 'reminder_weather'
                 else:
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta','7')"
