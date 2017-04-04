@@ -2036,14 +2036,17 @@ def onMessage(msisdn, ask, first_name):
         tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
-        linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+        linebot.send_composed_carousel(msisdn, "Info Cuaca", columns)
     elif ask[:5] == "[LOC]" and incomingMsisdn[11] == "reminder_weather":
         longlat = ask[5:].split(';')
         location_detail = gmaps.getLocationDetail(Decimal(longlat[0]), Decimal(longlat[1]))
         city = location_detail['kota'].lower().replace('kota', '').strip()
-        sql = "update reminder set city = '" + city + "' where msisdn ='" + msisdn + "' and description = 'cuaca' and is_day = 'Everyday'"
+        insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
+                                                                                                   "'cuaca','','line','" + city + "','7')"
         try:
-            insert(sql)
+            insert(insert_sql)
+            linebot.send_text_message(msisdn, "oke mulai besok bang joni ingetin ya")
+
         except:
             pass
         ####################WEATHER MODULE END####################
@@ -3495,11 +3498,12 @@ def doworker(req):
                     cuaca, suhu, angin)
                     sendMessageT2(msisdn, answer, 0)
                 elif day_type == 'reminder_today':
+                    city = urlparse.parse_qs(parsed.query)['city'][0]
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
                     suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
 
-                    answer = "Hari kira-kira %s, suhu antara %s Celcius - %s Celcius" % (cuaca, suhu_min, suhu_max)
+                    answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
@@ -3534,8 +3538,6 @@ def doworker(req):
 
                     count_data = request(check_if_exists)
                     if count_data[0][0] == 0:
-                        insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                                   "'cuaca','','line','" + city_reminder + "','7')"
                         yes_action = {'type': 'postback', 'label': 'Yes',
                                       'data': "evt=reminder_weather&confirmation=yes_location"}
                         no_action = {'type': 'postback', 'label': 'No',
@@ -3561,8 +3563,14 @@ def doworker(req):
                         linebot.send_text_message(msisdn, 'Oke deh')
                         insert(insert_sql)
                 elif confirmation == 'no_location':
-                    incomingMsisdn[2] = 'reminder_weather'
                     linebot.send_text_message(msisdn, "Oke share location dong ")
+                    incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
+                    last_request = datetime.strptime(incomingMsisdn[12], '%Y-%m-%d %H:%M:%S')
+                    new_request = datetime.strptime(logDtm, '%Y-%m-%d %H:%M:%S')
+                    if (new_request - last_request).total_seconds() > 1800:  # reset request after half an hour
+                        incomingMsisdn = create_incoming_msisdn()
+                    incomingMsisdn[11] = 'reminder_weather'
+                    lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
                 else:
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta','7')"
