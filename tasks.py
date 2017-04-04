@@ -2036,7 +2036,7 @@ def onMessage(msisdn, ask, first_name):
         tom_column['actions'] = tom_actions
         columns.append(tom_column)
 
-        linebot.send_composed_carousel(msisdn, "Cuaca", columns)
+        linebot.send_composed_carousel(msisdn, "Info Cuaca", columns)
     elif ask[:5] == "[LOC]" and incomingMsisdn[11] == "reminder_weather":
         longlat = ask[5:].split(';')
         location_detail = gmaps.getLocationDetail(Decimal(longlat[0]), Decimal(longlat[1]))
@@ -2045,7 +2045,7 @@ def onMessage(msisdn, ask, first_name):
                                                                                                    "'cuaca','','line','" + city + "','7')"
         try:
             insert(insert_sql)
-            linebot.send_text_message("oke mulai besok bang joni ingetin ya")
+            linebot.send_text_message(msisdn, "oke mulai besok bang joni ingetin ya")
 
         except:
             pass

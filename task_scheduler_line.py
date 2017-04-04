@@ -214,11 +214,11 @@ def blast_reminder_weather_service():
             if (len(column['text']) > 60):
                 column['text'] = column['text'][:57] + '...'
             now_actions.append(
-                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today"})
+                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city" + city})
             column['actions'] = now_actions
             columns.append(column)
             try:
-                linebot.send_composed_carousel(data['msisdn'], "Cuaca", columns)
+                linebot.send_composed_carousel(data['msisdn'], "Info Cuaca", columns)
                 linebot.send_composed_confirm(data['msisdn'], 'Cuaca',
                                               'Anyway, gue bisa loh kasih info cuaca kayak gini setiap hari buat lo. Mau nggak? ;)',
                                               yes_action, no_action)
