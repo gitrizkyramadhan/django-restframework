@@ -3583,13 +3583,18 @@ def doworker(req):
                     batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta selatan','7')"
+                    check_if_exists = "select count(1) from reminder where " \
+                                      "platform = 'line' and description = 'cuaca' " \
+                                      "and msisdn ='" + msisdn + "'"
+                    count_data = request(check_if_exists)
                     print insert_sql
-                    insert(insert_sql)
-                    try:
-                        insert(insert_sql)
-                        linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
-                    except:
-                        pass
+                    if count_data[0][0] == 0:
+
+                        try:
+                            insert(insert_sql)
+                            linebot.send_text_message(msisdn, 'oke mulai besok bang joni ingetin ya')
+                        except:
+                            pass
                     mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes location')
 
 
