@@ -141,7 +141,7 @@ def do_weather_today():
         column = {}
         column['thumbnail_image_url'] = image_url
         column['title'] = 'Cuaca hari ini'
-        column['text'] = "Hari ini rata-rata %s" % cuaca
+        column['text'] = "Hari ini perkiraan cuaca di %s akan %s" % (city, cuaca)
         if (len(column['text']) > 60):
             column['text'] = column['text'][:57] + '...'
         now_actions.append(
@@ -210,11 +210,11 @@ def blast_reminder_weather_service():
             column = {}
             column['thumbnail_image_url'] = image_url
             column['title'] = 'Cuaca hari ini'
-            column['text'] = "Hari ini rata-rata %s" % cuaca
+            column['text'] = "Hari ini perkiraan cuaca di %s akan %s" % (city, cuaca)
             if (len(column['text']) > 60):
                 column['text'] = column['text'][:57] + '...'
             now_actions.append(
-                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city" + city})
+                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city=" + city})
             column['actions'] = now_actions
             columns.append(column)
             try:
