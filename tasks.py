@@ -2050,7 +2050,7 @@ def onMessage(msisdn, ask, first_name):
 
         except:
             pass
-        mongolog.track_reminder_event(incomingMsisdn[2], msisdn, 'cuaca', 'location send')
+        mongolog.log_track_reminder(incomingMsisdn[2], msisdn, 'cuaca', 'location send')
         ####################WEATHER MODULE END####################
 
 
@@ -3509,7 +3509,7 @@ def doworker(req):
 
                     answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
-                    mongolog.track_reminder_event(batchid, msisdn, 'cuaca', 'detailnya')
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'detailnya')
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
@@ -3552,7 +3552,7 @@ def doworker(req):
                                                           yes_action, no_action)
                         except:
                             pass
-                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'yes')
+                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes')
                 elif confirmation == 'no':
                     city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                     check_if_exists = "select count(1) from reminder where " \
@@ -3565,7 +3565,7 @@ def doworker(req):
                         print insert_sql
                         linebot.send_text_message(msisdn, 'Oke deh')
                         insert(insert_sql)
-                    mongolog.track_reminder_event(batchid, msisdn, 'cuaca', 'no')
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no')
                 elif confirmation == 'no_location':
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
@@ -3576,7 +3576,7 @@ def doworker(req):
                     incomingMsisdn[11] = 'reminder_weather'
                     incomingMsisdn[2] = batchid
                     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'no location')
+                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'no location')
                 elif confirmation == "yes_location":
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta selatan','7')"
@@ -3587,7 +3587,7 @@ def doworker(req):
                         linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
                     except:
                         pass
-                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'yes location')
+                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes location')
 
 
 

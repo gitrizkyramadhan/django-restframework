@@ -129,7 +129,7 @@ def tick():
 
 def do_weather_today():
     try:
-        batchid  = analytic_log.get_max_batchid_track_reminder()
+        batchid  = analytic_log.get_max_batchid_log_track_reminder()
     except:
         batchid = 0
     sql = "select msisdn, city from reminder where description = 'cuaca' and is_day = 'Everyday'"
@@ -159,7 +159,7 @@ def do_weather_today():
                 linebot.send_composed_carousel(msisdn, "Info Cuaca", columns)
             except:
                 pass
-            mongo_log.track_reminder(batchid, data['msisdn'], 'cuaca', 'daily blast')
+            mongo_log.log_track_reminder(batchid, data['msisdn'], 'cuaca', 'daily blast')
             batchid += 1
 
 
@@ -205,7 +205,7 @@ def blast_reminder_weather_service():
     sqlout = request(sql_user_after_blast)
     transform_msisdn = zip(*sqlout)
     try:
-        batchid  = analytic_log.get_max_batchid_track_reminder()
+        batchid  = analytic_log.get_max_batchid_log_track_reminder()
     except:
         batchid = 0
     for data in analytic_log.get_reminder_weather():
@@ -242,7 +242,7 @@ def blast_reminder_weather_service():
                                               yes_action, no_action)
             except :
                 pass
-            mongo_log.track_reminder(batchid, data['msisdn'], 'cuaca', 'blast')
+            mongo_log.log_track_reminder(batchid, data['msisdn'], 'cuaca', 'blast')
             time.sleep(1)
             batchid += 1
 
