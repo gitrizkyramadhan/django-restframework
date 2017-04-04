@@ -3541,7 +3541,6 @@ def doworker(req):
                                       "and msisdn ='" + msisdn + "'"
 
                     count_data = request(check_if_exists)
-                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes')
                     if count_data[0][0] == 0:
                         yes_action = {'type': 'postback', 'label': 'Yes',
                                       'data': "evt=reminder_weather&confirmation=yes_location&batchid=" + str(batchid)}
@@ -3553,7 +3552,7 @@ def doworker(req):
                                                           yes_action, no_action)
                         except:
                             pass
-                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes')
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes')
                 elif confirmation == 'no':
                     city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                     batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
@@ -3579,7 +3578,7 @@ def doworker(req):
                     incomingMsisdn[11] = 'reminder_weather'
                     incomingMsisdn[2] = batchid
                     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'no location')
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no location')
                 elif confirmation == "yes_location":
                     batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
@@ -3591,7 +3590,7 @@ def doworker(req):
                         linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
                     except:
                         pass
-                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes location')
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes location')
 
 
 
