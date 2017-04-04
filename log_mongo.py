@@ -118,3 +118,12 @@ class MongoLog(object):
             "date_execution" : date_execution,
             "phone" : phone
         })
+
+    def track_reminder(self, batchid, msisdn, type_reminder, event_desc):
+        result = self.track_reminder.insert_one({
+            "data_date" : datetime.now(),
+            "batchid" : batchid,
+            "msisdn" : msisdn,
+            "type_reminder" : type_reminder,
+            "desc" : event_desc,
+        })

@@ -59,6 +59,14 @@ class AnalyticLog(object):
 
         return list(self.db.loglocation.aggregate(query_get_often_location))
 
+    def get_max_batchid_track_reminder(self):
+
+        query_get_max_batchid = [
+                {"$group": {"_id": "1", "batchid": {"$max": "$batchid"}}}
+        ]
+
+        return list(self.db.track_reminder.aggregate(query_get_max_batchid))
+
 
 # al = AnalyticLog()
 # print al.get_reminder_weather()

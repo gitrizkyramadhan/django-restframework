@@ -144,6 +144,7 @@ userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
 
+
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
 F_SRVC = None
@@ -2049,6 +2050,7 @@ def onMessage(msisdn, ask, first_name):
 
         except:
             pass
+        mongolog.track_reminder_event(incomingMsisdn[2], msisdn, 'cuaca', 'location send')
         ####################WEATHER MODULE END####################
 
 
@@ -3502,9 +3504,12 @@ def doworker(req):
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
                     suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
+
 
                     answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
+                    mongolog.track_reminder_event(batchid, msisdn, 'cuaca', 'detailnya')
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
@@ -3529,9 +3534,8 @@ def doworker(req):
                 linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
             elif postback_event == 'reminder_weather':
                 confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
-
+                batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                 if confirmation == 'yes':
-                    city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"
@@ -3544,12 +3548,11 @@ def doworker(req):
                                      'data': "evt=reminder_weather&confirmation=no_location"}
                         try:
                             linebot.send_composed_confirm(msisdn, 'Cuaca',
-                                                          'Lokasi lo bener di kota Jakarta ?',
+                                                          'Lokasi lo bener di kota Jakarta Selatan?',
                                                           yes_action, no_action)
-
-                            insert(insert_sql)
                         except:
                             pass
+                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'yes')
                 elif confirmation == 'no':
                     city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                     check_if_exists = "select count(1) from reminder where " \
@@ -3562,6 +3565,7 @@ def doworker(req):
                         print insert_sql
                         linebot.send_text_message(msisdn, 'Oke deh')
                         insert(insert_sql)
+                    mongolog.track_reminder_event(batchid, msisdn, 'cuaca', 'no')
                 elif confirmation == 'no_location':
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
@@ -3570,26 +3574,20 @@ def doworker(req):
                     if (new_request - last_request).total_seconds() > 1800:  # reset request after half an hour
                         incomingMsisdn = create_incoming_msisdn()
                     incomingMsisdn[11] = 'reminder_weather'
+                    incomingMsisdn[2] = batchid
                     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-                else:
+                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'no location')
+                elif confirmation == "yes_location":
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                               "'cuaca','','line','jakarta','7')"
+                                                                                                               "'cuaca','','line','jakarta selatan','7')"
                     print insert_sql
-                    linebot.send_text_message(msisdn, 'Oke deh')
                     insert(insert_sql)
                     try:
+                        insert(insert_sql)
                         linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
                     except:
                         pass
-            elif postback_event == "reminder_pulsa":
-
-                confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
-
-                if confirmation == 'no':
-                    try:
-                        linebot.send_text_message(msisdn, 'Oke deh')
-                    except:
-                        pass
+                    mongolog.track_reminder_event(batchid, msisdn, cuaca, 'yes location')
 
 
 
