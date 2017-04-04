@@ -205,7 +205,8 @@ def blast_reminder_weather_service():
     sqlout = request(sql_user_after_blast)
     transform_msisdn = zip(*sqlout)
     try:
-        batchid  = analytic_log.get_max_batchid_log_track_reminder()
+        data = analytic_log.get_max_batchid_track_reminder()
+        batchid = int(data[0]['batchid'])
     except:
         batchid = 0
     for data in analytic_log.get_reminder_weather():
