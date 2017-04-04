@@ -90,11 +90,18 @@ class BJPayService() :
 
         check_row = self._request("SELECT * FROM bjpay_account WHERE va_no = '"+va_number+"'")
         if check_row :
+            last_amt = 0
+            last_msisdn = ""
+            for row in check_row:
+                last_amt = int(row[3])
+                last_msisdn = row[1]
             # for row in check_row:
+            self.lineNlp.redisconn.delete("bjpay/%s" % (last_msisdn))
             print "BJPAY EXIST :: msisdn="+msisdn+", va_number="+va_number+", phone="+phone
             sql = "UPDATE bjpay_account SET update_time=now(), msisdn='"+msisdn+"' where va_no='"+va_number+"'"
             self._insert(sql)
             # initial_amount = row[0]
+            self._set_redis(msisdn, last_amt, va_number, phone)
         else :
             sql = "INSERT INTO bjpay_account (va_no, msisdn, phone_number, amount, register_date, update_time, status) VALUES ('"+va_number+"', '"+msisdn+"', '"+phone+"', '0', now(), now(), 1)"
             self._insert(sql)
@@ -104,7 +111,7 @@ class BJPayService() :
             if int(initial_amount) != 0:
                 self._set_redis(msisdn, initial_amount, va_number, phone)
                 self.credit(msisdn, phone, initial_amount, "1000", "Initial amount for account "+va_number)
-        self._set_redis(msisdn, initial_amount, va_number, phone)
+            self._set_redis(msisdn, initial_amount, va_number, phone)
 
 
     def transfer(self, originPhone, destinationPhone, amount):
