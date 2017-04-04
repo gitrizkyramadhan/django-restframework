@@ -3541,11 +3541,12 @@ def doworker(req):
                                       "and msisdn ='" + msisdn + "'"
 
                     count_data = request(check_if_exists)
+                    mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes')
                     if count_data[0][0] == 0:
                         yes_action = {'type': 'postback', 'label': 'Yes',
-                                      'data': "evt=reminder_weather&confirmation=yes_location"}
+                                      'data': "evt=reminder_weather&confirmation=yes_location&batchid=" + str(batchid)}
                         no_action = {'type': 'postback', 'label': 'No',
-                                     'data': "evt=reminder_weather&confirmation=no_location"}
+                                     'data': "evt=reminder_weather&confirmation=no_location&batchid=" + str(batchid)}
                         try:
                             linebot.send_composed_confirm(msisdn, 'Cuaca',
                                                           'Lokasi lo bener di kota Jakarta Selatan?',
@@ -3555,6 +3556,7 @@ def doworker(req):
                     mongolog.log_track_reminder(batchid, msisdn, cuaca, 'yes')
                 elif confirmation == 'no':
                     city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"
@@ -3567,6 +3569,7 @@ def doworker(req):
                         insert(insert_sql)
                     mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no')
                 elif confirmation == 'no_location':
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
                     last_request = datetime.strptime(incomingMsisdn[12], '%Y-%m-%d %H:%M:%S')
@@ -3578,6 +3581,7 @@ def doworker(req):
                     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
                     mongolog.log_track_reminder(batchid, msisdn, cuaca, 'no location')
                 elif confirmation == "yes_location":
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
                                                                                                                "'cuaca','','line','jakarta selatan','7')"
                     print insert_sql
