@@ -52,12 +52,26 @@ class Bot(object):
         :param text:
         :return:
         """
+
+        payloads = []
         user_ids = user_ids.split(",")
         messages = text.split("<br>")
         for msg in messages:
             if not msg :
                 continue
-            self.__send_multicast(user_ids, TextSendMessage(text=msg.strip()))
+            payloads.append(TextSendMessage(text=msg.strip()))
+        # print payloads
+
+        if len(payloads) > 0:
+            looper = 5
+            start_idx = 0
+            end_idx = 5
+            remaining_payloads = len(payloads)
+            while remaining_payloads > 0:
+                self.__send_multicast(user_ids, payloads[start_idx:end_idx])
+                start_idx = start_idx + looper
+                end_idx = end_idx + looper
+                remaining_payloads = remaining_payloads - looper
 
     def send_image_message(self, user_ids, img_url, **params):
         """

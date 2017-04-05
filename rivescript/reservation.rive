@@ -381,7 +381,7 @@
 > topic token inherits global
   + [*] # [*] {weight=10}
   //- pl01 Ok, gue cek dulu nomor meter-nya ya... <set id_pln=<star>>
-  - pl01 Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700\n200K Rp. 200.700<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
+  - pl01 Berikut tarif token-nya:\n20K Rp. 21.000\n50K Rp. 51.000\n100K Rp. 101.000\n200K Rp. 201.000<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
 
   + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
   - pl02 <set nominal_token=<star>> Ok, token yang lo pilih nominalnya <get nominal_token> <br>
