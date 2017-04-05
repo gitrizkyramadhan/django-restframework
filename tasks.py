@@ -144,6 +144,7 @@ userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
 
+
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
 F_SRVC = None
@@ -1102,7 +1103,7 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     elif answer[:5] == "prf05": #kota
         linebot.send_carousel(msisdn, 'greetings')
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, city=ask)
+        userpservice.update_profile(msisdn, city=incomingMsisdn[14])
     elif answer[:5] == "prf06": #phone
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, phone=ask)
@@ -2049,6 +2050,7 @@ def onMessage(msisdn, ask, first_name):
 
         except:
             pass
+        mongolog.log_track_reminder(incomingMsisdn[2], msisdn, 'cuaca', 'location send')
         ####################WEATHER MODULE END####################
 
 
@@ -3502,9 +3504,12 @@ def doworker(req):
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
                     suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
+
 
                     answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
                     sendMessageT2(msisdn, answer, 0)
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'detailnya')
                 else:
                     suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
@@ -3529,9 +3534,8 @@ def doworker(req):
                 linebot.send_location_message(msisdn, 'Alamat Restoran', address, lat, lng)
             elif postback_event == 'reminder_weather':
                 confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
-
+                batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                 if confirmation == 'yes':
-                    city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"
@@ -3539,19 +3543,19 @@ def doworker(req):
                     count_data = request(check_if_exists)
                     if count_data[0][0] == 0:
                         yes_action = {'type': 'postback', 'label': 'Yes',
-                                      'data': "evt=reminder_weather&confirmation=yes_location"}
+                                      'data': "evt=reminder_weather&confirmation=yes_location&batchid=" + str(batchid)}
                         no_action = {'type': 'postback', 'label': 'No',
-                                     'data': "evt=reminder_weather&confirmation=no_location"}
+                                     'data': "evt=reminder_weather&confirmation=no_location&batchid=" + str(batchid)}
                         try:
                             linebot.send_composed_confirm(msisdn, 'Cuaca',
-                                                          'Lokasi lo bener di kota Jakarta ?',
+                                                          'Lokasi lo bener di kota Jakarta Selatan?',
                                                           yes_action, no_action)
-
-                            insert(insert_sql)
                         except:
                             pass
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes')
                 elif confirmation == 'no':
                     city_reminder = urlparse.parse_qs(parsed.query)['city'][0]
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"
@@ -3562,7 +3566,9 @@ def doworker(req):
                         print insert_sql
                         linebot.send_text_message(msisdn, 'Oke deh')
                         insert(insert_sql)
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no')
                 elif confirmation == 'no_location':
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     linebot.send_text_message(msisdn, "Oke share location dong ")
                     incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
                     last_request = datetime.strptime(incomingMsisdn[12], '%Y-%m-%d %H:%M:%S')
@@ -3570,26 +3576,26 @@ def doworker(req):
                     if (new_request - last_request).total_seconds() > 1800:  # reset request after half an hour
                         incomingMsisdn = create_incoming_msisdn()
                     incomingMsisdn[11] = 'reminder_weather'
+                    incomingMsisdn[2] = batchid
                     lineNlp.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-                else:
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no location')
+                elif confirmation == "yes_location":
+                    batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                               "'cuaca','','line','jakarta','7')"
+                                                                                                               "'cuaca','','line','jakarta selatan','7')"
+                    check_if_exists = "select count(1) from reminder where " \
+                                      "platform = 'line' and description = 'cuaca' " \
+                                      "and msisdn ='" + msisdn + "'"
+                    count_data = request(check_if_exists)
                     print insert_sql
-                    linebot.send_text_message(msisdn, 'Oke deh')
-                    insert(insert_sql)
-                    try:
-                        linebot.send_text_message(msisdn, 'Oke mulai besok bang joni ingetin ya')
-                    except:
-                        pass
-            elif postback_event == "reminder_pulsa":
+                    if count_data[0][0] == 0:
 
-                confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
-
-                if confirmation == 'no':
-                    try:
-                        linebot.send_text_message(msisdn, 'Oke deh')
-                    except:
-                        pass
+                        try:
+                            insert(insert_sql)
+                            linebot.send_text_message(msisdn, 'oke mulai besok bang joni ingetin ya')
+                        except:
+                            pass
+                    mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes location')
 
 
 
