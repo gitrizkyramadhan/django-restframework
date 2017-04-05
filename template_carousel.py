@@ -149,7 +149,7 @@ carousels = [{
                         ),
                         MessageTemplateAction(
                             label='Registrasi',
-                            text='byjpay register'
+                            text='bjpay register'
                         ),
                         MessageTemplateAction(
                             label='Cek Saldo',
