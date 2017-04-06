@@ -2051,6 +2051,7 @@ def onMessage(msisdn, ask, first_name):
         except:
             pass
         mongolog.log_track_reminder(incomingMsisdn[2], msisdn, 'cuaca', 'location send')
+        mongolog.log_location(msisdn, ask[5:], datetime.now())
         ####################WEATHER MODULE END####################
 
 
@@ -3536,6 +3537,7 @@ def doworker(req):
                 confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
                 batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
                 if confirmation == 'yes':
+                    city = urlparse.parse_qs(parsed.query)['city'][0]
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"
@@ -3543,12 +3545,12 @@ def doworker(req):
                     count_data = request(check_if_exists)
                     if count_data[0][0] == 0:
                         yes_action = {'type': 'postback', 'label': 'Yes',
-                                      'data': "evt=reminder_weather&confirmation=yes_location&batchid=" + str(batchid)}
+                                      'data': "evt=reminder_weather&confirmation=yes_location&city="+ city +"&batchid=" + str(batchid)}
                         no_action = {'type': 'postback', 'label': 'No',
                                      'data': "evt=reminder_weather&confirmation=no_location&batchid=" + str(batchid)}
                         try:
                             linebot.send_composed_confirm(msisdn, 'Cuaca',
-                                                          'Lokasi lo bener di kota Jakarta Selatan?',
+                                                          'Lokasi lo bener di '+ city + ' ?',
                                                           yes_action, no_action)
                         except:
                             pass
@@ -3581,8 +3583,9 @@ def doworker(req):
                     mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'no location')
                 elif confirmation == "yes_location":
                     batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
+                    city = urlparse.parse_qs(parsed.query)['city'][0]
                     insert_sql = "insert into reminder values(date_format(now(), '%Y%m%d%H%i%s'),'" + msisdn + "','1979-08-04 06:00:00','tiap','No','Everyday'," \
-                                                                                                               "'cuaca','','line','jakarta selatan','7')"
+                                                                                                               "'cuaca','','line','"+ city +"','7')"
                     check_if_exists = "select count(1) from reminder where " \
                                       "platform = 'line' and description = 'cuaca' " \
                                       "and msisdn ='" + msisdn + "'"

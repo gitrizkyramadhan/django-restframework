@@ -67,6 +67,18 @@ class AnalyticLog(object):
 
         return list(self.db.track_reminder.aggregate(query_get_max_batchid))
 
+    def get_msisdn_blast(self):
+
+        # query_get_msisdn_blast = [
+        #     {"desc": "blast"}, {"msisdn": "1"}
+        #
+        # ]
+
+        return list(self.db.track_reminder.find({"desc": "blast"}, {"msisdn": "1"}))
+
 
 # al = AnalyticLog()
-# print al.get_reminder_weather()
+# msisdn_blast = []
+# for data in al.get_msisdn_blast():
+#     msisdn_blast.append(data['msisdn'])
+# print msisdn_blast

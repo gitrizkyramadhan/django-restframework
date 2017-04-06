@@ -77,6 +77,7 @@ class StructuredLog(object):
         list_one_row_data = []
         for one_row in file:
             separate_data = re.split(separator, one_row)
+            print separate_data
             splited_one_row_data = []
             for data in separate_data:
                 data_split = data.split('=')
@@ -88,8 +89,8 @@ class StructuredLog(object):
             list_one_row_data.append(splited_one_row_data)
         return list_one_row_data
 
-# ul = UnstructureLog()
-# print ul.parse_celery_log('D:\BangJoni\line3\celerylog\celery1.log')
+ul = StructuredLog()
+print ul.parse_log('pulsa.txt')
 # print ul.clean( "Process] [LOC]-6.164737;106.610214\n" )
 # for data in ul.parse_celery_log('celery1__20170301_00.log'):
 #     print data[0]
