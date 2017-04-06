@@ -1103,7 +1103,7 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
     elif answer[:5] == "prf05": #kota
         linebot.send_carousel(msisdn, 'greetings')
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, city=ask)
+        userpservice.update_profile(msisdn, city=incomingMsisdn[14])
     elif answer[:5] == "prf06": #phone
         sendMessageT2(msisdn, answer[5:], 0)
         userpservice.update_profile(msisdn, phone=ask)

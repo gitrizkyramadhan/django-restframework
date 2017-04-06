@@ -6,32 +6,32 @@
 - {@halo}
 
 + [*] (menu) [*]
-- gr01 Oke deh, apa yang bisa gue bantu nih? :)
+- gr01 Oke deh, apa yang bisa gue bantu nih? :) {topic=random} <set mycontext=random>
 
 + [*] (@halo) [*]
 - gr01 Halo, <first_name>! <br>
-^ Apa yang bisa gue bantu nih? ;)
-- gr01 Ya? Mau gue bantu apa nih, <first_name>? ;)
+^ Apa yang bisa gue bantu nih? ;) {topic=random} <set mycontext=random>
+- gr01 Ya? Mau gue bantu apa nih, <first_name>? ;) {topic=random} <set mycontext=random>
 - gr01 Halo juga! <br>
-^ Ada yang bisa gue bantu, <first_name>? ;)
+^ Ada yang bisa gue bantu, <first_name>? ;) {topic=random} <set mycontext=random>
 
 + askafterservice
-- gr01 Oke deh, ada lagi yang bisa gue bantu? ;)
+- gr01 Oke deh, ada lagi yang bisa gue bantu? ;) {topic=random} <set mycontext=random>
 
 + gak jadi topup {weight=20}
 - {@ askafterservice}
 
 + [*] (@assalamualaikum) [*] {weight=10}
 - gr01 Wa'alaikumsalam, <first_name>! :) <br>
-^ Apa yang bisa gue bantu nih?
+^ Apa yang bisa gue bantu nih? {topic=random} <set mycontext=random>
 
 + [*] (@salam kenal) [*] {weight=10}
 - gr01 Yooo... <first_name>, salam kenal juga ya! <br>
-^ Apa yang bisa gue bantu nih? :)
+^ Apa yang bisa gue bantu nih? :) {topic=random} <set mycontext=random>
 
 + @test
 - gr01 Yuhuu.. Tes.. Tes.. <br>
-^ Apa yang bisa gue bantu nih? :)
+^ Apa yang bisa gue bantu nih? :) {topic=random} <set mycontext=random>
 
 + [*] (@thanks) [*] {weight=10}
 - Sip! Sama-sama yaa :) {topic=random} <set mycontext=random>
@@ -123,11 +123,11 @@
 
 + [*] (@assalamualaikum) [*]
 - gr01 Wa'alaikumsalam! <br>
-^ Ya <first_name>, apa yang bisa gue bantu nih?
+^ Ya <first_name>, apa yang bisa gue bantu nih? {topic=random} <set mycontext=random>
 
 + [*] (@salam kenal) [*]
 - gr01 Yooo... <first_name>, salam kenal juga ya! <br>
-^ Apa yang bisa gue bantu nih?
+^ Apa yang bisa gue bantu nih? {topic=random} <set mycontext=random>
 
 + [*] (ga jadi|gak jadi|nggak jadi|cancel|batal|batalin|enggak jadi|nanti aja|tidak jadi) [*]
 - co00 Oke, mau di-cancel nih ya? {topic=cancelconfirm}
@@ -136,7 +136,7 @@
 + [*] (@kamu) [*] (@siapa|@apa) [*]
 - gr01 Gue tuh temen virtual yang hidup di LINE messenger, hehehe :D <br>
 ^ Lahirnya dari teknologi artificial intelligence, atau bisa dibilang kecerdasan buatan. <br>
-^ Anyway, apa yang bisa gue bantu nih?
+^ Anyway, apa yang bisa gue bantu nih? {topic=random} <set mycontext=random>
 
 > topic cancelconfirm
 
@@ -381,7 +381,7 @@
 > topic token inherits global
   + [*] # [*] {weight=10}
   //- pl01 Ok, gue cek dulu nomor meter-nya ya... <set id_pln=<star>>
-  - pl01 Berikut tarif token-nya:\n20K Rp. 20.700\n50K Rp. 50.700\n100K Rp. 100.700\n200K Rp. 200.700<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
+  - pl01 Berikut tarif token-nya:\n20K Rp. 21.000\n50K Rp. 51.000\n100K Rp. 101.000\n200K Rp. 201.000<br>Untuk memilih tap menu diatas ya <set id_pln=<star>>
 
   + (dua puluh|lima puluh|seratus|dua ratus|lima ratus|satu juta|lima juta|sepuluh juta|lima puluh juta)
   - pl02 <set nominal_token=<star>> Ok, token yang lo pilih nominalnya <get nominal_token> <br>
