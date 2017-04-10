@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, ASCENDING, DESCENDING
 from datetime import datetime
 class AnalyticLog(object):
     
@@ -76,9 +76,27 @@ class AnalyticLog(object):
 
         return list(self.db.track_reminder.find({"desc": "blast"}, {"msisdn": "1"}))
 
+    def get_new_converstion_word(self):
+
+        query_get_error_answer = [
+            #{"$match": {"incomingmsisdn": {"$regex" : "ngerti"}}}
+            {"$match": {"$or": [{"incomingmsisdn": {"$regex" : "ngerti"}},
+                                {"incomingmsisdn": {"$regex" : "maaf"}},{"incomingmsisdn": {"$regex" : "err"}}]}},
+            {"$group": {"_id": "$question", "jmldata": {"$sum": 1}}},
+            {"$match": {"jmldata": {"$gt": 10}}},
+            {"$sort": {"jmldata": -1}}
+        ]
+
+        return list(self.db.conversation.aggregate(query_get_error_answer))
+
+    def get_pulsa_data(self):
+
+        return list(self.db.logpulsa.find({}, {"msisdn": "msisdn", "denom": "denom",
+                                               "phone": "phone", "datetime": "datetime"})
+                    .sort([("phone" , ASCENDING), ("dateteime" , ASCENDING)]))
 
 # al = AnalyticLog()
-# msisdn_blast = []
+# print al.get_pulsa_data()
 # for data in al.get_msisdn_blast():
 #     msisdn_blast.append(data['msisdn'])
 # print msisdn_blast

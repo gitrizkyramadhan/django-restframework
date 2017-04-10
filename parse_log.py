@@ -68,30 +68,31 @@ class StructuredLog(object):
             split_data = data.split('=')
         if split_data[0] == file_name:
             return split_data[1].replace('\n', '')
+        return data[len(data)]
 
-    def parse_log(self, file_name):
-        
-        separator = self.get_pattern_separator(file_name)
+    def parse_log(self, file_name, contain):
+
+        path = file_name.split('/')
+        file_name_separat = path[len(path)-1]
+        separator = self.get_pattern_separator(file_name_separat)
         file = open(file_name, 'r')
         file.readline()            
         list_one_row_data = []
         for one_row in file:
-            separate_data = re.split(separator, one_row)
-            print separate_data
-            splited_one_row_data = []
-            for data in separate_data:
-                data_split = data.split('=')
-                try:
-                    data_split[1]
-                    splited_one_row_data.append(data_split[1].strip().replace('\n', ''))
-                except:
-                    splited_one_row_data.append(data_split[0].strip().replace('\n', ''))
-            list_one_row_data.append(splited_one_row_data)
+            if one_row.__contains__(contain):
+                separate_data = re.split(separator, one_row)
+                splited_one_row_data = []
+                for data in separate_data:
+                    data_split = data.split('=')
+                    try:
+                        data_split[1]
+                        splited_one_row_data.append(data_split[1].strip().replace('\n', ''))
+                    except:
+                        splited_one_row_data.append(data_split[0].strip().replace('\n', ''))
+                list_one_row_data.append(splited_one_row_data)
+                # print splited_one_row_data
         return list_one_row_data
 
-ul = StructuredLog()
-print ul.parse_log('pulsa.txt')
-# print ul.clean( "Process] [LOC]-6.164737;106.610214\n" )
-# for data in ul.parse_celery_log('celery1__20170301_00.log'):
-#     print data[0]
+# ul = StructuredLog()
+# ul.parse_log('../compare_file_to_prod/F_PAID.log', 'PULSA')
 
