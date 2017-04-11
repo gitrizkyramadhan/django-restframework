@@ -135,8 +135,9 @@ class DataIntegration(object):
                     mean_days = numpy.mean(int(math.floor(range_date)))
                 except:
                     mean_days = 0
-                count = self.request("select count(1) from reminder A join reminder_ext B on A.id = B.id "
-                        "where A.msisdn = '%s' and A.phone = '%s'" % (msisdn, phone))
+                count = self.request("select count(1) from reminder A join reminder_ext B  on A.id = B.id "
+                                     "join phone C on B.phone_id = C.id "
+                                     "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone))
                 phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s'" % (msisdn, phone))
                 curr_date = datetime.now() + timedelta(seconds=1)
                 next_run_date = date + timedelta(days=mean_days)
