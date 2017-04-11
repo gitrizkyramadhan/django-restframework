@@ -135,21 +135,21 @@ class DataIntegration(object):
                     mean_days = numpy.mean(int(math.floor(range_date)))
                 except:
                     mean_days = 0
-                sql = "select count(1) from reminder A join reminder_ext B  on A.id = B.id "
-                "join phone C on B.phone_id = C.id "
-                "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone)
+                sql = "select count(1) from reminder A join reminder_ext B  on A.id = B.id " \
+                      "join phone C on B.phone_id = C.id " \
+                      "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone)
                 print sql
                 count = self.request(sql)
                 phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s' limit 1" % (msisdn, phone))
                 curr_date = datetime.now() + timedelta(seconds=1)
                 next_run_date = date + timedelta(days=mean_days)
                 if count[0][0] == 0:
-                    sql = "insert into reminder values ('%s', '%s', "
-                    "'1979-08-04 06:00:00', 'tiap', 'No', "
-                    "'Sometimes', 'pulsa', '', 'line', '', '7');"
-                    "insert into reminder_ext (id, last_run_date, next_run_date, val_iteration, phone_id) "
-                    "values ('%s' , '%s', '%s', '%s', '%s');"
-                    "" % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn, curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
+                    sql = "insert into reminder values ('%s', '%s', " \
+                          "'1979-08-04 06:00:00', 'tiap', 'No', " \
+                          "'Sometimes', 'pulsa', '', 'line', '', '7'); " \
+                          "insert into reminder_ext (id, last_run_date, next_run_date, val_iteration, phone_id) " \
+                          "values ('%s' , '%s', '%s', '%s', '%s'); " \
+                          % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn, curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
                     print sql
                     #self.insert(sql)
                 range_date = []
