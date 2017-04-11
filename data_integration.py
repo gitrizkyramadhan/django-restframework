@@ -138,7 +138,7 @@ class DataIntegration(object):
                 count = self.request("select count(1) from reminder A join reminder_ext B on A.id = B.id "
                         "where A.msisdn = '%s' and A.phone = '%s'" % (msisdn, phone))
                 phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s'" % (msisdn, phone))
-                curr_date = datetime.strptime(datetime.now() + timedelta(seconds=1), '%Y%m%d%H%M%S')
+                curr_date = datetime.now() + timedelta(seconds=1)
                 next_run_date = date + timedelta(days=mean_days)
                 if count[0][0] == 0:
                     self.insert("insert into reminder from values ('%s', '%s', "
@@ -146,8 +146,8 @@ class DataIntegration(object):
                                 "'Sometimes', 'pulsa', '', 'line', '', '7');"
                                 "insert into reminder_ext (id, last_run_date, next_run_date, val_iteraation, phone_id) "
                                 "values ('%s' , '%s', '%s', '%s', '%s');"
-                                "" % (curr_date, msisdn, curr_date, date, next_run_date, str(mean_days), str(phone_id)))
+                                "" % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn, curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id)))
                 range_date = []
 
 di = DataIntegration()
-di.request('select count(1) from phone')
+di.job_logpulsa_to_reminder()
