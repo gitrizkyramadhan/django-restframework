@@ -29,7 +29,7 @@ class DataIntegration(object):
         print 'DataIntegration added ...'
 
     def request(self, sql):
-        print self.MYSQL_HOST, self.MYSQL_DB, self.MYSQL_USER, self.MYSQL_PWD
+        # print self.MYSQL_HOST, self.MYSQL_DB, self.MYSQL_USER, self.MYSQL_PWD
         try:
             db_connect = MySQLdb.connect(host=self.MYSQL_HOST, port=3306, user=self.MYSQL_USER, passwd=self.MYSQL_PWD, db=self.MYSQL_DB)
             # Create cursor
@@ -135,19 +135,23 @@ class DataIntegration(object):
                     mean_days = numpy.mean(int(math.floor(range_date)))
                 except:
                     mean_days = 0
-                count = self.request("select count(1) from reminder A join reminder_ext B  on A.id = B.id "
-                                     "join phone C on B.phone_id = C.id "
-                                     "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone))
-                phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s'" % (msisdn, phone))
+                sql = "select count(1) from reminder A join reminder_ext B  on A.id = B.id "
+                "join phone C on B.phone_id = C.id "
+                "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone)
+                print sql
+                count = self.request(sql)
+                phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s' limit 1" % (msisdn, phone))
                 curr_date = datetime.now() + timedelta(seconds=1)
                 next_run_date = date + timedelta(days=mean_days)
                 if count[0][0] == 0:
-                    self.insert("insert into reminder from values ('%s', '%s', "
-                                "'1979-08-04 06:00:00', 'tiap', 'No', "
-                                "'Sometimes', 'pulsa', '', 'line', '', '7');"
-                                "insert into reminder_ext (id, last_run_date, next_run_date, val_iteraation, phone_id) "
-                                "values ('%s' , '%s', '%s', '%s', '%s');"
-                                "" % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn, curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id)))
+                    sql = "insert into reminder values ('%s', '%s', "
+                    "'1979-08-04 06:00:00', 'tiap', 'No', "
+                    "'Sometimes', 'pulsa', '', 'line', '', '7');"
+                    "insert into reminder_ext (id, last_run_date, next_run_date, val_iteration, phone_id) "
+                    "values ('%s' , '%s', '%s', '%s', '%s');"
+                    "" % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn, curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
+                    print sql
+                    #self.insert(sql)
                 range_date = []
 
 di = DataIntegration()
