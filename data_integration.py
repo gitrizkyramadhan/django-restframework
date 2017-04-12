@@ -115,45 +115,55 @@ class DataIntegration(object):
     def job_logpulsa_to_reminder(self):
 
         la = AnalyticLog()
-        pulsa_data = la.get_pulsa_data()
+        pulsa_data = la.get_pulsa_data(msisdn='', phone='')
         range_date = []
+        time_now = datetime.now()
         for idx, data in enumerate(pulsa_data):
 
             date_format = '%Y-%m-%d %H:%M:%S'
             msisdn = data['msisdn']
             phone = data['phone']
             date = datetime.strptime(data['datetime'], date_format)
-            next_data = pulsa_data[idx+1]
-            next_msisdn = next_data['msisdn']
-            next_phone = next_data['phone']
-            next_date = datetime.strptime(next_data['datetime'], date_format)
-            if msisdn == next_msisdn and phone == next_phone :
-                delta_date = date - next_date
-                range_date.append(math.fabs(delta_date.days))
-            else :
-                try :
-                    mean_days = numpy.mean(int(math.floor(range_date)))
-                except:
-                    mean_days = 0
-                sql = "select count(1) from reminder A join reminder_ext B  on A.id = B.id " \
-                      "join phone C on B.phone_id = C.id " \
-                      "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone)
-                #print sql
-                count = self.request(sql)
-                phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s' limit 1" % (msisdn, phone))
-                curr_date = datetime.now() + timedelta(seconds=1)
-                next_run_date = date + timedelta(days=mean_days)
-                if count[0][0] == 0:
-                    sql = "insert into reminder values ('%s', '%s', " \
-                          "'1979-08-04 06:00:00', 'tiap', 'No', " \
-                          "'Sometimes', 'pulsa', '', 'line', '', '7'); " \
-                          % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn)
-                    self.insert(sql)
-                    sql = "insert into reminder_ext (id, last_run_date, next_run_date, val_iteration, phone_id) " \
-                          "values ('%s' , '%s', '%s', '%s', '%s'); " \
-                          % (curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
-                    self.insert(sql)
-                range_date = []
+            try:
+                next_data = pulsa_data[idx+1]
+                next_msisdn = next_data['msisdn']
+                next_phone = next_data['phone']
+                next_date = datetime.strptime(next_data['datetime'], date_format)
+                if msisdn == next_msisdn and phone == next_phone :
+                    delta_date = date - next_date
+                    range_date.append(math.fabs(delta_date.days))
+                else :
+                    try :
+                        mean_days = int(math.floor(numpy.mean(range_date)))
+                    except:
+                        mean_days = 30
+                    sql = "select count(1) from reminder A join reminder_ext B  on A.id = B.id " \
+                          "join phone C on B.phone_id = C.id " \
+                          "where A.msisdn = '%s' and C.phone = '%s';" % (msisdn, phone)
+                    #print sql
+                    count = self.request(sql)
+                    phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s' limit 1" % (msisdn, phone))
+                    curr_date = time_now + timedelta(seconds=1)
+                    next_run_date = date + timedelta(days=mean_days)
+                    if count[0][0] == 0:
+                        sql = "insert into reminder values ('%s', '%s', " \
+                              "'1979-08-04 06:00:00', 'tiap', 'No', " \
+                              "'Sometimes', 'pulsa', '', 'line', '', '7'); " \
+                              % (curr_date.strftime('%Y%m%d%H%M%S'), msisdn)
+                        self.insert(sql)
+                        sql = "insert into reminder_ext (id, last_run_date, next_run_date, val_iteration, phone_id) " \
+                              "values ('%s' , '%s', '%s', '%s', '%s'); " \
+                              % (curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
+                        self.insert(sql)
+                    else:
+                        sql = "update reminder, reminder_ext, phone " \
+                              "set reminder_ext.last_run_date = reminder_ext.next_run_date , reminder_ext.next_run_date = '%s' , reminder_ext.val_iteration = '%s'" \
+                              "where reminder.msisdn = '%s' and phone.phone = '%s';" % (next_run_date,str(mean_days),msisdn, phone)
+                        self.insert(sql)
+                    range_date = []
+
+            except:
+                pass
 
 di = DataIntegration()
 di.job_logpulsa_to_reminder()

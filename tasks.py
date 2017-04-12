@@ -3599,6 +3599,18 @@ def doworker(req):
                         except:
                             pass
                     mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'yes location')
+            elif postback_event == "reminder_pulsa":
+                batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
+                confirmation = urlparse.parse_qs(parsed.query)['confirmation'][0]
+                if confirmation == 'no':
+                    try:
+                        linebot.send_text_message(msisdn, 'Oke deh, tapi kapan pun lo mau beli pulsa, gue selalu siap 24 jam ya :)')
+                    except:
+                        pass
+
+
+
+
 
 
 

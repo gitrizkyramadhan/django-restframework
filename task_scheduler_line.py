@@ -134,11 +134,12 @@ def do_weather_today():
         batchid = 0
     sql = "select msisdn, city from reminder where description = 'cuaca' and is_day = 'Everyday'"
     sqlout = request(sql)
+    hour = datetime.now().hour()
     for data in sqlout:
         msisdn, city = data
         sql = "select B.cuaca, B.deskripsi, B.image_url " \
               "from city A join city_weather B on A.id = B.id_city " \
-              "where lower(A.city_name) = '%s'" % (city)
+              "where lower(A.city_name) = '%s' and hours = %s" % (city, hour)
         sqlout = request(sql)
         cuaca, deskripsi, image_url = sqlout[0]
         if cuaca.__contains__('HUJAN'):
@@ -165,6 +166,8 @@ def do_weather_today():
 
 def get_city_weather():
 
+    hours = [6,16]
+
     try:
         sql = "select id, city_name from city"
         sqlout = request(sql)
@@ -172,12 +175,13 @@ def get_city_weather():
         for data in sqlout:
             id, city_name = data
             latlng = gmaps.getLatLng(city_name)
-            (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']))
-            image = str(w_tom['image'])
-            w_tom.pop('image')
-            encoded_url = urllib.urlencode(w_tom, doseq=True)
-            insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url) values ('%s', %s, '%s', "
-                   "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image))
+            for data_hour in hours:
+                (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']), data_hour)
+                image = str(w_tom['image'])
+                w_tom.pop('image')
+                encoded_url = urllib.urlencode(w_tom, doseq=True)
+                insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url, hours) values ('%s', %s, '%s', "
+                       "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image), str(data_hour))
     except:
         pass
 
@@ -258,18 +262,44 @@ def blast_reminder_weather_service():
 
 def do_reminder_pulsa() :
 
-    for data in analytic_log.get_reminder_pulsa():
-
-        yes_action = {'type': 'message', 'label': 'Yes', 'text': "pulsa " + data['phone']}
-        no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_pulsa&confirmation=no&phone=" + data['phone']}
-
+    try:
+        sql = "select A.msisdn, C.phone, C.val_iteration from reminder A " \
+              "join reminder_ext B on A.id = B.id " \
+              "join phone C on B.phone_id = C.id " \
+              "where date_format(B.next_run_date, '%Y%m%d') = date_format(now(), '%Y%m%d');"
+        sqlout = request(sql)
         try:
-            linebot.send_composed_confirm(data['msisdn'], 'Pulsa',
-                                          'Halo Sebulan yang lalu pas banget lo terakhir beli pulsa sama gue ke no ini ' + data['phone'] +
-                                          ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
-                                          yes_action, no_action)
+            data = analytic_log.get_max_batchid_track_reminder()
+            batchid = int(data[0]['batchid'])
         except:
-            pass
+            batchid = 0
+        list_msisdn = []
+        for data in sqlout:
+            msisdn, phone, iteration = sqlout
+            if msisdn not in list_msisdn:
+                yes_action = {'type': 'message', 'label': 'Yes', 'text': "pulsa " + phone}
+                no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_pulsa&confirmation=no&phone="
+                                                                        + phone + "&batchid=" + str(batchid)}
+                list_msisdn.append(msisdn)
+                try:
+                    if iteration in range(1, 8):
+                        linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
+                                                      'Halo beberapa hari yang lalu pas banget lo '
+                                                      'terakhir beli pulsa sama gue ke no ini ' + phone +
+                                                      ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
+                                                      yes_action, no_action)
+                        mongo_log.log_track_reminder(batchid, data['msisdn'], 'pulsa', 'blast')
+                    else:
+                        linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
+                                                      'Udah lama nggak isi pulsa sama gue nih, '
+                                                      'terakhir beli pulsa sama gue ke no ini ' + phone +
+                                                      ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
+                                                      yes_action, no_action)
+                        mongo_log.log_track_reminder(batchid, data['msisdn'], 'pulsa', 'blast')
+                except:
+                    pass
+    except:
+        pass
 
 
 

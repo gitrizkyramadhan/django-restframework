@@ -16,8 +16,11 @@ class WeatherService() :
         except Exception as e:
             print ">>Error is:", e
 
-    def get_wheather(self, latitude, longitude):
-        respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s" % (latitude, longitude))
+    def get_wheather(self, latitude, longitude, *hour):
+        if hour:
+            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s&hour=%s" % (latitude, longitude, str(hour[0])))
+        else:
+            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s" % (latitude, longitude))
         weather_forecast = ""
         sqlstart = respAPI.find("<weather>")
         sqlstop = respAPI.find("</weather>") - 1

@@ -89,14 +89,18 @@ class AnalyticLog(object):
 
         return list(self.db.conversation.aggregate(query_get_error_answer))
 
-    def get_pulsa_data(self):
+    def get_pulsa_data(self, msisdn, phone):
 
-        return list(self.db.logpulsa.find({}, {"msisdn": "msisdn", "denom": "denom",
-                                               "phone": "phone", "datetime": "datetime"})
-                    .sort([("phone" , ASCENDING), ("dateteime" , ASCENDING)]))
+        if msisdn != '' and phone != '':
+            return list(self.db.logpulsa.find({"msisdn" : msisdn, "phone" : phone}, {"msisdn": "msisdn", "denom": "denom",
+                                                   "phone": "phone", "datetime": "datetime"})
+                        .sort([("phone", ASCENDING), ("dateteime", ASCENDING)]))
+        else :
+            return list(self.db.logpulsa.find({}, {"msisdn": "msisdn", "denom": "denom",
+                                                   "phone": "phone", "datetime": "datetime"})
+                        .sort([("phone", ASCENDING), ("dateteime", ASCENDING)]))
 
-# al = AnalyticLog()
-# print al.get_pulsa_data()
-# for data in al.get_msisdn_blast():
-#     msisdn_blast.append(data['msisdn'])
-# print msisdn_blast
+    # def blast_pulsa_reminder_today
+
+al = AnalyticLog()
+print al.get_pulsa_data(msisdn='', phone='')
