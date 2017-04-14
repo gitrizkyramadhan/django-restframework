@@ -96,9 +96,8 @@ class AnalyticLog(object):
                                                    "phone": "phone", "datetime": "datetime"})
                         .sort([("phone", ASCENDING), ("dateteime", ASCENDING)]))
         else :
-            return list(self.db.logpulsa.find({}, {"msisdn": "msisdn", "denom": "denom",
-                                                   "phone": "phone", "datetime": "datetime"})
-                        .sort([("phone", ASCENDING), ("dateteime", ASCENDING)]))
+            return list(self.db.logpulsa.find({}, {"msisdn": "msisdn", "denom": "denom","phone": "phone", "datetime": "datetime"})
+                        .sort([("phone", ASCENDING), ("dateteime", ASCENDING)]).limit(10))
 
     # def blast_pulsa_reminder_today
 

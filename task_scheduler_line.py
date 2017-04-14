@@ -260,46 +260,45 @@ def blast_reminder_weather_service():
             except:
                 pass
 
+
 def do_reminder_pulsa() :
 
+    sql = "select A.msisdn, C.phone, B.val_iteration from reminder A " \
+          "join reminder_ext B on A.id = B.id " \
+          "join phone C on B.phone_id = C.id " \
+          "where date_format(B.next_run_date, '%Y%m%d') = date_format(now(), '%Y%m%d');"
+    sqlout = request(sql)
     try:
-        sql = "select A.msisdn, C.phone, C.val_iteration from reminder A " \
-              "join reminder_ext B on A.id = B.id " \
-              "join phone C on B.phone_id = C.id " \
-              "where date_format(B.next_run_date, '%Y%m%d') = date_format(now(), '%Y%m%d');"
-        sqlout = request(sql)
-        try:
-            data = analytic_log.get_max_batchid_track_reminder()
-            batchid = int(data[0]['batchid'])
-        except:
-            batchid = 0
-        list_msisdn = []
-        for data in sqlout:
-            msisdn, phone, iteration = sqlout
-            if msisdn not in list_msisdn:
-                yes_action = {'type': 'message', 'label': 'Yes', 'text': "pulsa " + phone}
-                no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_pulsa&confirmation=no&phone="
-                                                                        + phone + "&batchid=" + str(batchid)}
-                list_msisdn.append(msisdn)
-                try:
-                    if iteration in range(1, 8):
-                        linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
-                                                      'Halo beberapa hari yang lalu pas banget lo '
-                                                      'terakhir beli pulsa sama gue ke no ini ' + phone +
-                                                      ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
-                                                      yes_action, no_action)
-                        mongo_log.log_track_reminder(batchid, data['msisdn'], 'pulsa', 'blast')
-                    else:
-                        linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
-                                                      'Udah lama nggak isi pulsa sama gue nih, '
-                                                      'terakhir beli pulsa sama gue ke no ini ' + phone +
-                                                      ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
-                                                      yes_action, no_action)
-                        mongo_log.log_track_reminder(batchid, data['msisdn'], 'pulsa', 'blast')
-                except:
-                    pass
+        data = analytic_log.get_max_batchid_track_reminder()
+        batchid = int(data[0]['batchid'])
     except:
-        pass
+        batchid = 0
+    list_msisdn = []
+    for data in sqlout:
+        msisdn, phone, iteration = data
+        if msisdn not in list_msisdn:
+            batchid += 1
+            yes_action = {'type': 'message', 'label': 'Yes', 'text': "pulsa " + phone}
+            no_action = {'type': 'postback', 'label': 'No', 'data': "evt=reminder_pulsa&confirmation=no&phone="
+                                                                    + phone + "&batchid=" + str(batchid)}
+            list_msisdn.append(msisdn)
+            try:
+                if iteration in range(1, 8):
+                    linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
+                                                  'Halo beberapa hari yang lalu pas banget lo '
+                                                  'terakhir beli pulsa sama gue ke no ini ' + phone +
+                                                  ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
+                                                  yes_action, no_action)
+                    mongo_log.log_track_reminder(batchid, msisdn, 'pulsa', 'blast')
+                else:
+                    linebot.send_composed_confirm(msisdn, 'Isi Pulsa',
+                                                  'Udah lama nggak isi pulsa sama gue nih, '
+                                                  'terakhir beli pulsa sama gue ke no ini ' + phone +
+                                                  ' . Emang masih ada pulsanya? Mau beli lagi nggak? :)',
+                                                  yes_action, no_action)
+                    mongo_log.log_track_reminder(batchid, msisdn, 'pulsa', 'blast')
+            except:
+                 pass
 
 
 
@@ -324,13 +323,13 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 
-
-    scheduler = BlockingScheduler()
-    #scheduler.add_job(tick, 'interval', minutes=1)
-    scheduler.add_job(get_city_weather, 'cron', hour=21)
-    scheduler.add_job(update_city_reminder, 'cron', hour=23)
-    scheduler.add_job(blast_reminder_weather_service, 'cron', hour=6)
-    scheduler.add_job(do_weather_today, 'cron', hour=6)
+    do_reminder_pulsa()
+    # scheduler = BlockingScheduler()
+    # #scheduler.add_job(tick, 'interval', minutes=1)
+    # scheduler.add_job(get_city_weather, 'cron', hour=21)
+    # scheduler.add_job(update_city_reminder, 'cron', hour=23)
+    # scheduler.add_job(blast_reminder_weather_service, 'cron', hour=6)
+    # scheduler.add_job(do_weather_today, 'cron', hour=6)
 
     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log
@@ -338,10 +337,10 @@ if __name__ == '__main__':
     # #print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'$
     # # linebot.send_message("uba6616c505479974378dadbd15aaeb77", "TEST")
 
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        pass
+    # try:
+    #     scheduler.start()
+    # except (KeyboardInterrupt, SystemExit):
+    #     pass
 
 
     # file = open('uniq_chatid.txt', 'r')

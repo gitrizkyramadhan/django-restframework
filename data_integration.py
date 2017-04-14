@@ -143,7 +143,7 @@ class DataIntegration(object):
                     #print sql
                     count = self.request(sql)
                     phone_id = self.request("select id from phone where msisdn = '%s' and phone = '%s' limit 1" % (msisdn, phone))
-                    curr_date = time_now + timedelta(seconds=1)
+                    curr_date = time_now + timedelta(seconds=idx)
                     next_run_date = date + timedelta(days=mean_days)
                     if count[0][0] == 0:
                         sql = "insert into reminder values ('%s', '%s', " \
@@ -156,9 +156,9 @@ class DataIntegration(object):
                               % (curr_date.strftime('%Y%m%d%H%M%S'), date, next_run_date, str(mean_days), str(phone_id[0][0]))
                         self.insert(sql)
                     else:
-                        sql = "update reminder, reminder_ext, phone " \
-                              "set reminder_ext.last_run_date = reminder_ext.next_run_date , reminder_ext.next_run_date = '%s' , reminder_ext.val_iteration = '%s'" \
-                              "where reminder.msisdn = '%s' and phone.phone = '%s';" % (next_run_date,str(mean_days),msisdn, phone)
+                        sql = "update reminder A join reminder_ext B on A.id = B.id join phone C on B.phone_id = C.id " \
+                              "set B.last_run_date = B.next_run_date , B.next_run_date = '%s' , B.val_iteration = '%s'" \
+                              "where A.description = 'pulsa' and A.msisdn = '%s' and C.phone = '%s' ;" % (next_run_date,str(mean_days),msisdn, phone)
                         self.insert(sql)
                     range_date = []
 
