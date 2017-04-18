@@ -1070,6 +1070,8 @@ class Nlp:
         if answer[:3] == "prf":
             if answer[:5] == "prf04":
                 incomingMsisdn[14] = mesg
+            elif answer[:5] == "prf01":  # nama
+                incomingMsisdn[14] = self.get_uservar(msisdn, "name")
             elif answer[:5] == "prf05":  # kota
                 incomingMsisdn[14] = self.get_uservar(msisdn, "city")
 

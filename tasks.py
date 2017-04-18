@@ -1082,7 +1082,7 @@ def do_profiling(msisdn, first_name, ask, answer, incomingMsisdn) :
         userpservice.update_profile(msisdn, full_name=first_name, display_name=first_name)
     elif answer[:5] == "prf01": #nama
         sendMessageT2(msisdn, answer[5:], 0)
-        userpservice.update_profile(msisdn, full_name=ask, display_name=first_name)
+        userpservice.update_profile(msisdn, full_name=incomingMsisdn[14], display_name=first_name)
     elif answer[:5] == "prf02": #dob
         sendMessageT2(msisdn, answer[5:], 0)
         idx = search_string(ask, when)
