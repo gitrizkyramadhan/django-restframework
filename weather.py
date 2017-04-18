@@ -18,9 +18,9 @@ class WeatherService() :
 
     def get_wheather(self, latitude, longitude, *hour):
         if hour:
-            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s&hour=%s" % (latitude, longitude, str(hour[0])))
+            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1_new.php?latlong=%s,%s&hour=%s" % (latitude, longitude, str(hour[0])))
         else:
-            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1.php?latlong=%s,%s" % (latitude, longitude))
+            respAPI = self.fetchHTML("http://128.199.139.105/weather/weather1_new.php?latlong=%s,%s" % (latitude, longitude))
         weather_forecast = ""
         sqlstart = respAPI.find("<weather>")
         sqlstop = respAPI.find("</weather>") - 1
@@ -34,12 +34,6 @@ class WeatherService() :
             kec_angin = weather_forecasts[3]
             humidity = weather_forecasts[4]
 
-            tom_cuaca = weather_forecasts[5].upper()
-            tom_suhu_min = weather_forecasts[6]
-            tom_suhu_max = weather_forecasts[7]
-            tom_sunrise = weather_forecasts[8]
-            tom_sunset = weather_forecasts[9]
-
             w_now = {}
             w_now['time_updated'] = time_updated
             w_now['suhu'] = suhu
@@ -48,13 +42,29 @@ class WeatherService() :
             w_now['humidity'] = humidity
             w_now['image'] = self.choose_image(cuaca)
 
-            w_tom = {}
-            w_tom['cuaca'] = tom_cuaca
-            w_tom['suhu_min'] = tom_suhu_min
-            w_tom['suhu_max'] = tom_suhu_max
-            w_tom['sunrise'] = tom_sunrise
-            w_tom['sunset'] = tom_sunset
-            w_tom['image'] = self.choose_image(tom_cuaca)
+            if hour:
+                tom_cuaca = weather_forecasts[5].upper()
+                tom_suhu = tom_suhu_min = weather_forecasts[6]
+
+                w_tom = {}
+                w_tom['cuaca'] = tom_cuaca
+                w_tom['suhu'] = tom_suhu
+                w_tom['image'] = self.choose_image(tom_cuaca)
+
+            else:
+                tom_cuaca = weather_forecasts[5].upper()
+                tom_suhu_min = weather_forecasts[6]
+                tom_suhu_max = weather_forecasts[7]
+                tom_sunrise = weather_forecasts[8]
+                tom_sunset = weather_forecasts[9]
+
+                w_tom = {}
+                w_tom['cuaca'] = tom_cuaca
+                w_tom['suhu_min'] = tom_suhu_min
+                w_tom['suhu_max'] = tom_suhu_max
+                w_tom['sunrise'] = tom_sunrise
+                w_tom['sunset'] = tom_sunset
+                w_tom['image'] = self.choose_image(tom_cuaca)
 
             return (w_now, w_tom)
 
@@ -63,3 +73,7 @@ class WeatherService() :
         cuaca = cuaca.lower().replace(' ', '_') + '.png'
         # return '' + cuaca.replace(' ', '').lower() + '.jpg'
         return 'https://bangjoni.com/weather_images/' + cuaca
+
+
+# ws = WeatherService()
+# print ws.get_wheather(-6.16972365718,106.804493777,6)

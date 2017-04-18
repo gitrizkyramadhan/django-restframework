@@ -3502,13 +3502,12 @@ def doworker(req):
                     sendMessageT2(msisdn, answer, 0)
                 elif day_type == 'reminder_today':
                     city = urlparse.parse_qs(parsed.query)['city'][0]
-                    suhu_min = urlparse.parse_qs(parsed.query)['suhu_min'][0]
+                    suhu = urlparse.parse_qs(parsed.query)['suhu'][0]
                     cuaca = urlparse.parse_qs(parsed.query)['cuaca'][0]
-                    suhu_max = urlparse.parse_qs(parsed.query)['suhu_max'][0]
                     batchid = urlparse.parse_qs(parsed.query)['batchid'][0]
 
 
-                    answer = "Hari ini perkiraan di %s akan %s, suhu antara %s Celcius - %s Celcius" % (city, cuaca, suhu_min, suhu_max)
+                    answer = "Saat ini perkiraan di %s akan %s, suhu rata - rata %s Celcius" % (city, cuaca, suhu)
                     sendMessageT2(msisdn, answer, 0)
                     mongolog.log_track_reminder(batchid, msisdn, 'cuaca', 'detailnya')
                 else:

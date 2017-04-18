@@ -71,7 +71,7 @@ class DataIntegration(object):
         ul = UnstructureLog()
         for data in ul.parse_celery_log('celery1.log'):
             ml.log_location(data[0], data[1][0], data[1][1])
-    
+
     def job_migrate_log_pulsa(self):
 
         ml = MongoLog()
@@ -107,10 +107,8 @@ class DataIntegration(object):
             msisdn = data['msisdn']
             phone = data['phone']
             count = self.request("select count(1) from phone where msisdn = '%s' and phone = '%s'" % (msisdn, phone))
-            if count[0][0] == 0 :
+            if count[0][0] == 0:
                 self.insert("insert into phone (data_date, msisdn, phone) values (now(), '%s', '%s')" % (msisdn, phone))
-
-
 
     def job_logpulsa_to_reminder(self):
 
@@ -165,5 +163,5 @@ class DataIntegration(object):
             except:
                 pass
 
-di = DataIntegration()
-di.job_logpulsa_to_reminder()
+# di = DataIntegration()
+# di.job_logpulsa_to_reminder()

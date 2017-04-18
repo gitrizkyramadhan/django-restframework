@@ -129,61 +129,66 @@ def tick():
 
 def do_weather_today():
     try:
-        batchid  = analytic_log.get_max_batchid_log_track_reminder()
+        data = analytic_log.get_max_batchid_track_reminder()
+        batchid = int(data[0]['batchid'])
     except:
         batchid = 0
     sql = "select msisdn, city from reminder where description = 'cuaca' and is_day = 'Everyday'"
     sqlout = request(sql)
-    hour = datetime.now().hour()
+    hour = datetime.now().hour
     for data in sqlout:
         msisdn, city = data
-        sql = "select B.cuaca, B.deskripsi, B.image_url " \
-              "from city A join city_weather B on A.id = B.id_city " \
-              "where lower(A.city_name) = '%s' and hours = %s" % (city, hour)
-        sqlout = request(sql)
-        cuaca, deskripsi, image_url = sqlout[0]
-        if cuaca.__contains__('HUJAN'):
-            columns = []
-            now_actions = []
-            column = {}
-            column['thumbnail_image_url'] = image_url
-            column['title'] = 'Cuaca hari ini'
-            column['text'] = "Hari ini perkiraan cuaca di %s akan %s" % (city, cuaca)
-            if (len(column['text']) > 60):
-                column['text'] = column['text'][:57] + '...'
-            now_actions.append(
-                {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city=" + city +
-                                                                   "&batchid=" + str(batchid)})
-            column['actions'] = now_actions
-            columns.append(column)
-            try:
-                linebot.send_composed_carousel(msisdn, "Info Cuaca", columns)
-            except:
-                pass
-            mongo_log.log_track_reminder(batchid, data['msisdn'], 'cuaca', 'daily blast')
-            batchid += 1
+        try:
+            sql = "select B.cuaca, B.deskripsi, B.image_url " \
+                  "from city A join city_weather B on A.id = B.id_city " \
+                  "where lower(A.city_name) = '%s' and hours = %s" % (city, str(hour))
+            sqlout = request(sql)
+            cuaca, deskripsi, image_url = sqlout[0]
+            if cuaca.__contains__('HUJAN'):
+                batchid += 1
+                columns = []
+                now_actions = []
+                column = {}
+                column['thumbnail_image_url'] = image_url
+                column['title'] = 'Cuaca hari ini'
+                column['text'] = "Hari ini perkiraan cuaca di %s akan %s" % (city, cuaca)
+                if (len(column['text']) > 60):
+                    column['text'] = column['text'][:57] + '...'
+                now_actions.append(
+                    {'type': 'postback', 'label': 'Detailnya', 'data': deskripsi + "&evt=weather&day_type=reminder_today&city=" + city +
+                                                                       "&batchid=" + str(batchid)})
+                column['actions'] = now_actions
+                columns.append(column)
+                try:
+                    linebot.send_composed_carousel(msisdn, "Info Cuaca", columns)
+                except:
+                    pass
+                mongo_log.log_track_reminder(batchid, data['msisdn'], 'cuaca', 'daily blast')
+
+        except:
+            pass
 
 
 def get_city_weather():
 
     hours = [6,16]
 
-    try:
-        sql = "select id, city_name from city"
-        sqlout = request(sql)
-        insert("truncate table city_weather")
-        for data in sqlout:
-            id, city_name = data
-            latlng = gmaps.getLatLng(city_name)
-            for data_hour in hours:
-                (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']), data_hour)
-                image = str(w_tom['image'])
-                w_tom.pop('image')
-                encoded_url = urllib.urlencode(w_tom, doseq=True)
-                insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url, hours) values ('%s', %s, '%s', "
-                       "'%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image), str(data_hour))
-    except:
-        pass
+    # try:
+    sql = "select id, city_name from city"
+    sqlout = request(sql)
+    insert("truncate table city_weather")
+    for data in sqlout:
+        id, city_name = data
+        latlng = gmaps.getLatLng(city_name)
+        for data_hour in hours:
+            (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']), data_hour)
+            image = str(w_tom['image'])
+            w_tom.pop('image')
+            encoded_url = urllib.urlencode(w_tom, doseq=True)
+            insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url, hours) values ('%s', %s, '%s', "
+                   "'%s', '%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image, str(data_hour)))
+    # except:
+    #     pass
 
 def update_city_reminder():
 
@@ -298,7 +303,7 @@ def do_reminder_pulsa() :
                                                   yes_action, no_action)
                     mongo_log.log_track_reminder(batchid, msisdn, 'pulsa', 'blast')
             except:
-                 pass
+                pass
 
 
 
@@ -323,13 +328,14 @@ if __name__ == '__main__':
     WEB_HOOK=content[8].split('=')[1]
     EMAIL_NOTIF=content[9].split('=')[1]
 
-    do_reminder_pulsa()
+    do_weather_today()
     # scheduler = BlockingScheduler()
     # #scheduler.add_job(tick, 'interval', minutes=1)
     # scheduler.add_job(get_city_weather, 'cron', hour=21)
     # scheduler.add_job(update_city_reminder, 'cron', hour=23)
     # scheduler.add_job(blast_reminder_weather_service, 'cron', hour=6)
-    # scheduler.add_job(do_weather_today, 'cron', hour=6)
+    # scheduler.add_job(do_weather_today, 'cron', hour=12)
+    # scheduler.add_job(do_reminder_pulsa, 'cron', hour=14)
 
     # scheduler.add_job(reminder_cuaca, trigger='cron', hour=6) #schedule to reminder weather every 6 am
     # scheduler.add_job(di.job_celerylog_to_locationlog(), trigger='cron', hour=1)  # schedule to get location user from celery log

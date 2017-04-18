@@ -101,5 +101,5 @@ class AnalyticLog(object):
 
     # def blast_pulsa_reminder_today
 
-al = AnalyticLog()
-print al.get_pulsa_data(msisdn='', phone='')
+# al = AnalyticLog()
+# print al.get_pulsa_data(msisdn='', phone='')
