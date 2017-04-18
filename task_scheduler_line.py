@@ -151,7 +151,7 @@ def do_weather_today():
                 column = {}
                 column['thumbnail_image_url'] = image_url
                 column['title'] = 'Cuaca hari ini'
-                column['text'] = "Hari ini perkiraan cuaca di %s akan %s" % (city, cuaca)
+                column['text'] = "Saat ini perkiraan cuaca di %s akan %s" % (city, cuaca)
                 if (len(column['text']) > 60):
                     column['text'] = column['text'][:57] + '...'
                 now_actions.append(
@@ -173,22 +173,22 @@ def get_city_weather():
 
     hours = [6,16]
 
-    # try:
-    sql = "select id, city_name from city"
-    sqlout = request(sql)
-    insert("truncate table city_weather")
-    for data in sqlout:
-        id, city_name = data
-        latlng = gmaps.getLatLng(city_name)
-        for data_hour in hours:
-            (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']), data_hour)
-            image = str(w_tom['image'])
-            w_tom.pop('image')
-            encoded_url = urllib.urlencode(w_tom, doseq=True)
-            insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url, hours) values ('%s', %s, '%s', "
-                   "'%s', '%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image, str(data_hour)))
-    # except:
-    #     pass
+    try:
+        sql = "select id, city_name from city"
+        sqlout = request(sql)
+        insert("truncate table city_weather")
+        for data in sqlout:
+            id, city_name = data
+            latlng = gmaps.getLatLng(city_name)
+            for data_hour in hours:
+                (w_now, w_tom) = weather_service.get_wheather(Decimal(latlng['latitude']), Decimal(latlng['longitude']), data_hour)
+                image = str(w_tom['image'])
+                w_tom.pop('image')
+                encoded_url = urllib.urlencode(w_tom, doseq=True)
+                insert("insert into city_weather (date_data, id_city, cuaca, deskripsi, image_url, hours) values ('%s', %s, '%s', "
+                       "'%s', '%s', '%s')" % (str(datetime.now()), str(id), str(w_tom['cuaca']), str(encoded_url), image, str(data_hour)))
+    except:
+        pass
 
 def update_city_reminder():
 
@@ -225,12 +225,13 @@ def blast_reminder_weather_service():
     except:
         batchid = 0
     for data in analytic_log.get_reminder_weather():
-        if (data['msisdn'] not in transform_msisdn[0]) or (data['msisdn'] not in msisdn_blast):
+        if (data['msisdn'] not in transform_msisdn[0]) and (data['msisdn'] not in msisdn_blast):
             batchid += 1
             position = data['value'].split(';')
             location_detail = gmaps.getLocationDetail(position[0], position[1])
-            city = location_detail['kota'].lower().replace('kota', '').strip()
+            #city = location_detail['kota'].lower().replace('kota', '').strip()
             try:
+                city = location_detail['kota'].lower().replace('kota', '').strip()
                 sql = "select B.cuaca, B.deskripsi, B.image_url " \
                       "from city A join city_weather B on A.id = B.id_city " \
                       "where lower(A.city_name) = '%s'" % (city)
