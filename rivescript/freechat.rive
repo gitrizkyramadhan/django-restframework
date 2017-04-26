@@ -1,6 +1,11 @@
 + [*] (@test) [*]
 - {@halo}
 
++ [*] (@minta|@nggak) [*] (@duit) [*]
+- co00 :( <br>
+^ Sama nih, gue juga nggak punya uang. <br>
+^ Tapi kalo tebak-tebakan gue punya, mau nggak? :D {topic=tebak_tebakan}
+
 + [*] (@nggak|@cari) [*] (@cowok|@cewek|@pacar) [*]
 - co00 Loh, nggak punya pacar toh? Kalo gitu mending travelling aja! <br>
 ^ Siapa tau berangkatnya sendiri, pulang udah ada gandengan :D <br>
@@ -42,7 +47,7 @@
 
 + [*] (@bosen) [*] {weight=10}
 - Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
-- fl00 Bosen? Lo butuh liburan tuh berarti! Coba cek-cek harga tiket pesawatnya nih.
+- fl00 Bosen? Lo butuh liburan tuh berarti! Coba cek-cek harga tiket pesawatnya nih. {topic=random}
 
 + [*] (@makian) [*] {weight=10}
 - Ish jangan gitu ah ngomongnya.. :/
@@ -59,7 +64,7 @@
 + [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
 - Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
 
-> topic lagiapaxtrans
+> topic lagiapaxtrans inherits random
 
   + [*] (@mau) [*]
   - xt01 Oke! Itu daftar pool keberangkatan Xtrans. <br>
@@ -71,18 +76,18 @@
 
 < topic
 
-> topic lagiapaflight
+> topic lagiapaflight inherits random
  
   + [*] (@mau) [*]
   - fl00 Oke, ini dia nih destinasi yang paling sering dicari. <br>
-  ^ Cobe cek aja :)
+  ^ Coba cek aja :)
 
   + [*] (@nggak) [*]
   - gr01 Oke deh, apa yang bisa gue bantu nih? {topic=random}
 
 < topic
 
-> topic lagiapazomato
+> topic lagiapazomato inherits random
 
   + [*] (@mau) [*]
   - zo00 Oke! Pake fitur share location lo ya untuk menentukan lokasi pencarian restoran (tombol + samping tombol emoticon)<br>
@@ -94,7 +99,7 @@
 
 < topic
 
-> topic lagiapabelipulsa
+> topic lagiapabelipulsa inherits random
 
   + [*] (@mau) [*]
   - Oke deh, nomor HP-nya berapa? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
@@ -104,7 +109,7 @@
 
 < topic
 
-> topic ngupil
+> topic ngupil inherits random
 
   + [*] (@jorok) [*]
   - gr01 Hahaha <br>
@@ -117,11 +122,11 @@
 
 < topic
 
-> topic jomblotravelling
+> topic jomblotravelling inherits random
 
   + [*] (@mau) [*]
   - fl00 Gitu dong move on! :D <br>
-  ^ Nih coba lo cari-cari dulu deh destinasinya.
+  ^ Nih coba lo cari-cari dulu deh destinasinya. 
 
   + [*] (@nggak) [*]
   - Hoo.. Lo nggak suka travelling ya? Terus sukanya apa dong? <br>
@@ -138,7 +143,7 @@
 
 < topic
 
-> topic jomblonggakmau
+> topic jomblonggakmau inherits random
 
   + [*] (@musik) [*]
   - Wih suka musik? Sama dong, gue juga! <br>
@@ -241,7 +246,7 @@
 
 < topic
 
-> topic ngupil
+> topic ngupil inherits random
 
     + [*] (@jorok) [*]
     - gr01 Hahaha <br>
@@ -254,7 +259,7 @@
 
 < topic
 
-> topic tebak_tebakan
+> topic tebak_tebakan inherits random
 
     + [*] (@nggak) [*] {weight=5}
     - Ih yakin nih nggak mau? Coba dulu dong.
@@ -263,10 +268,64 @@
     + [*] (@mau) [*]
     - Nih coba jawab ya! Kenapa bebek goreng rasanya enak? {topic=tebak_bebek_goreng}
     - Coba jawab nih! Ada satu payung kecil dipake sama 5 orang, tapi nggak ada satu pun yang keujanan, kok bisa? {topic=tebak_payung5orang}
+    - Nih coba sebutin 3 nama-nama ikan! Sebutin satu-satu coba, yang pertama ikan apa? :D {topic=tebak_nama_ikan1}
 
     + *
     - Kenapa gitu? <br>
     ^ jadi gak mau main nih? 
+
+< topic
+
+> topic tebak_nama_ikan1 inherits random
+
+    + [*] (@namaikan) [*]
+    - Iya betul ikan <star2>, terus yang kedua ikan apa lagi coba? {topic=tebak_nama_ikan2}
+
+    + *
+    - Ikan apa tuh? Ngarang ya? :D
+    - Ah, perasaan nggak ada nama ikan kayak gitu deh, ikan yang lain apa lagi coba?
+
+    + [*] (@hahaha) [*]
+    - Hahaha :D
+
+    + [*] (@wk) [*]
+    - Wkwkwk :D
+
+< topic
+
+> topic tebak_nama_ikan2 inherits random
+
+    + [*] (@namaikan) [*]
+    - Iya ikan <star2>, betul. Yang terakhir nih ikan apa lagi? {topic=tebak_nama_ikan3}
+
+    + *
+    - Ikan apa tuh? Ngarang ya? :D
+    - Ah, perasaan nggak ada nama ikan kayak gitu deh, ikan yang lain apa lagi coba?    
+
+    + [*] (@hahaha) [*]
+    - Hahaha :D
+
+    + [*] (@wk) [*]
+    - Wkwkwk :D
+
+< topic
+
+> topic tebak_nama_ikan3 inherits random
+
+    + [*] (@namaikan) [*]
+    - gr01 Pinteerr.. Dah tuh ambil sepedanya sana sama Pak Jokowi.. <br>
+    ^ Hahaha.. Nggak deng bercanda :D <br>
+    ^ Btw, apa yang bisa gue bantu nih <first_name>? {topic=random}
+
+    + *
+    - Ikan apa tuh? Ngarang ya? :D
+    - Ah, perasaan nggak ada nama ikan kayak gitu deh, ikan yang lain apa lagi coba?
+
+    + [*] (@hahaha) [*]
+    - Hahaha :D
+
+    + [*] (@wk) [*]
+    - Wkwkwk :D
 
 < topic
 

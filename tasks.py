@@ -2415,7 +2415,7 @@ def onMessage(msisdn, ask, first_name):
             sql = "insert into token_uber(msisdn, state, access_token, platform) values('" + msisdn + "','" + state + "','X','line')"
             insert(sql)
             # incomingMsisdn[1] = pickle.dumps(incomingMsisdn[1])
-            sendLinkMessageT2(msisdn, 'Uber', 'Belum terhubung dengan Uber, tap aja Ijin Uber', 'Ijin Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
+            sendLinkMessageT2(msisdn, 'Uber', 'Tap "Log In Uber" untuk menggunakan servis ini', 'Log In Uber', auth_url, 'https://bangjoni.com/v2/carousel/images/uber.png')
             incomingMsisdn = json.loads(lineNlp.redisconn.get("inc/%s" % (msisdn)))
         else:
             #answer = "Share lokasimu dengan cara click tombol PIN dan tap Location"
@@ -3499,8 +3499,8 @@ def doworker(req):
                     sendMessageT2(msisdn, failureAns, 0)
         elif event["type"] == "follow" or event["type"] == "unfollow": # request add friend and unblock
             displayname = get_line_username(msisdn)
-            reply = "Halo " + displayname + ", terima kasih telah add Bang Joni sebagai teman.\n\nBang Joni adalah teman virtual kamu yang bisa diandalkan kapan aja dan di mana aja.\nSekarang Bang Joni bisa bantu kamu pesen tiket pesawat, travel xtrans, uber, isi pulsa, isi token pln, infoin jalan tol dan cuaca, terjemahkan bahasa.\n\n"
-            reply = reply + "Untuk memulai ketik aja \"Halo bang\"\n\nOh iya, pake penulisan yang benar ya, jangan terlalu banyak singkatan, biar Bang Joni nggak bingung."
+            reply = "Halo, makasih udah add gue ya :) <br> Nggak usah bingung mau chat apa, lo bisa coba kaya gini nih:\n\n- Halo Bang Joni\n- Cariin tiket pesawat dong Bang\n- Pulsa abis nih Bang\n- Jemput dong Bang\n- Besok ujan nggak Bang?\n- Lagi apa Bang?\n- Bete nih Bang\n\nAtau biar lebih gampang, lo juga bisa langsung ketik MENU.<br>"
+            reply = reply + "Oh iya, perhatiin cara penulisannya ya, jangan terlalu banyak singkatan, biar gue nggak bingung ;)"
             sendMessageT2(msisdn, reply, 0)
             log_addfriends(logDtm, msisdn, displayname, "ADD FRIENDS")
 
