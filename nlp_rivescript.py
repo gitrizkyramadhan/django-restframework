@@ -855,20 +855,20 @@ class Nlp:
                 self.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
                 return "fl04 Sip. Semua data sudah benar dan lengkap, sekarang Bang Joni minta no Hp kamu buat maskapai kasih info penerbanganmu?"
 
-        if answer[:4] == "fl05":
-            flight_hp = self.get_uservar(msisdn,"flight_hp")
-            print "HP:",flight_hp
-            if flight_hp[:1] == "8":
-                flight_hp = "+62" + flight_hp
-            elif flight_hp[:1] == "0":
-                flight_hp = "+62" + flight_hp[1:]
-            elif flight_hp[:2] == "62":
-                flight_hp = "+" + flight_hp[1:]
-            print "HP:",flight_hp
-            bookingMsisdn['conPhone'] = urllib.quote_plus(flight_hp)
-            self.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-            self.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
-            return "fl05 Okay, sebelum Bang Joni booking, pilih pembayaran berikut:"
+        # if answer[:4] == "fl05":
+        #     flight_hp = self.get_uservar(msisdn,"flight_hp")
+        #     print "HP:",flight_hp
+        #     if flight_hp[:1] == "8":
+        #         flight_hp = "+62" + flight_hp
+        #     elif flight_hp[:1] == "0":
+        #         flight_hp = "+62" + flight_hp[1:]
+        #     elif flight_hp[:2] == "62":
+        #         flight_hp = "+" + flight_hp[1:]
+        #     print "HP:",flight_hp
+        #     bookingMsisdn['conPhone'] = urllib.quote_plus(flight_hp)
+        #     self.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
+        #     self.redisconn.set("book/%s" % (msisdn), json.dumps(bookingMsisdn))
+        #     return "fl05 Okay, sebelum Bang Joni booking, pilih pembayaran berikut:"
 
         if answer[:4] == "fl06":
             flight_payment = self.get_uservar(msisdn,"flight_payment")
@@ -884,7 +884,7 @@ class Nlp:
                 incomingMsisdn[16] = "CIMB Clicks"
 
             self.redisconn.set("inc/%s" % (msisdn), json.dumps(incomingMsisdn))
-            return "fl06 OK, Bang Joni booking sekarang, tungggu maksimal 5 menit..."
+            return answer
 
         print "ask :: "+mesg
         print "topic :: "+self.get_uservar(msisdn, "topic")
