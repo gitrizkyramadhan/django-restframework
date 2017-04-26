@@ -296,7 +296,7 @@
 > topic tebak_nama_ikan2 inherits random
 
     + [*] (@namaikan) [*]
-    - Iya ikan <star2>, betul. Yang terakhir nih ikan apa lagi? {topic=tebak_nama_ikan3}
+    - Iya ikan <star>, betul. Yang terakhir nih ikan apa lagi? {topic=tebak_nama_ikan3}
 
     + *
     - Ikan apa tuh? Ngarang ya? :D
