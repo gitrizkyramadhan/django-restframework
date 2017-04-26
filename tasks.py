@@ -71,6 +71,7 @@ from weather import WeatherService
 from log_mongo import MongoLog
 from user_profiling import UserProfileService
 from uber_module import UberService
+from flight_tiket import FlightTiket
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -143,6 +144,7 @@ mongolog = MongoLog()
 userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
+flight = FlightTiket()
 
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
@@ -317,7 +319,7 @@ def sendPhotoTX(msisdn, file_path, caption, keyboard):
     # file_path = file_path.split('/')[6]
     # img_url = "http://128.199.88.72/line_images/%s" % (file_path)
     # linebot.send_images(msisdn,"http://128.199.88.72/line_images/%s" % (file_path), "http://128.199.88.72/line_images/%s" % (file_path.split('/')[6]))
-    if file_path.find('') < 0:
+    if file_path.find('https://www.bangjoni.com') < 0:
         file_path = LINE_IMAGES_ROUTE+file_path
     linebot.send_image_message(msisdn, file_path)
 
@@ -1247,7 +1249,13 @@ def onMessage(msisdn, ask, first_name):
     ####################GREETINGS####################
     if answer[:4] == "co00":
         # linebot.send_text_message(msisdn, answer[4:])
-        linebot.send_composed_confirm(msisdn, 'Konfirmasi', answer[4:], {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
+        splitted_ans = answer[4:].split("<br>")
+        final_ans = ''
+        for ans in splitted_ans[:len(splitted_ans) - 1]:
+            final_ans = final_ans + ans + '<br>'
+        last_answer = splitted_ans[len(splitted_ans)-1]
+        sendMessageT2(msisdn, final_ans[:len(final_ans)-4])
+        linebot.send_composed_confirm(msisdn, 'Konfirmasi', last_answer, {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
 
     ####################KOMPLAIN####################
     if answer[:5] == "cmp01":
@@ -1415,7 +1423,7 @@ def onMessage(msisdn, ask, first_name):
                         try:
                             answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, msg.split('S/N ')[1].split(' ')[0], current_balance)
                         except:
-                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s dengan serial number %s udah masuk yaa..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
+                            answer = "Hei "+get_line_username(msisdn)+", pulsa yang lo beli seharga Rp. %s udah sukses yaa, coba cek hp lo deh udh masuk belom pulsanya..\nSisa saldo BJPAY lo sekarang ada Rp. %s <br> Ada lagi yang bisa gue bantu? ;)" % (debit, current_balance)
                         if incomingMsisdn[4] == 'SI':
                             log_paid(logDtm, msisdn, first_name, "PULSA_DATA", incomingMsisdn[1] + "-" + str(incomingMsisdn[5]) + "-" + str(biller_debit))
                         else :
@@ -2811,21 +2819,28 @@ def onMessage(msisdn, ask, first_name):
 
 
     elif answer[:4] == "fl06":
-        bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
+        sendMessageT2(msisdn, answer[4:], 0)
+        # bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
+        flight_complex_data = lineNlp.redisconn.get("flight_tiket_booking_data/%s" % (msisdn))
+        flight_data = flight_complex_data['flight_data']
+
         ask = "fl04aa"
         print "AAAAAAAAAAAAAAAAAAAA"
-        answer = lineNlp.doNlp(ask, msisdn, first_name)
+        # answer = lineNlp.doNlp(ask, msisdn, first_name)
         print "BBBBBBBBBBBBBBBBBBBB"
-        print bookingMsisdn
+        print "Fight Data : " + json.dumps(flight_complex_data)
         print incomingMsisdn
-        log_book(logDtm, msisdn, first_name, "FLIGHT", incomingMsisdn[2] + "-" + incomingMsisdn[3] + "-" + incomingMsisdn[4] + "-" + incomingMsisdn[19] + "-" + incomingMsisdn[20] + "-" + incomingMsisdn[16])
+        log_book(logDtm, msisdn, first_name, "FLIGHT", flight_data['request']['departure_date'] + "-" + flight_data['request']['origin'] + "-" + flight_data['request']['destination'] + "-" + flight_data['result']['departure']['original_result']['airlines_name'] + "-" + flight_data['result']['departure']['simple_departure_time'] + "-" + incomingMsisdn[16])
         incomingMsisdn[14] = 1
-        s = ""
+
+
+        # s = ""
         logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
-        for key in bookingMsisdn:
-            s = s + key + "=" + bookingMsisdn[key] + "&"
-        s = s + "paymentmethod=" + urllib.quote_plus(incomingMsisdn[16])
-        s = "http://128.199.139.105/flight/order_wh1.php?" + s
+        # for key in bookingMsisdn:
+        #     s = s + key + "=" + bookingMsisdn[key] + "&"
+        s = flight.add_order(msisdn, flight_complex_data['form_data'], flight_complex_data['flight_data'])
+        s = s + "&paymentmethod=" + urllib.quote_plus(incomingMsisdn[16])
+        s = "http://127.0.0.1/flight/order_wh1.php?" + s
         print s
         respAPI = fetchHTML(s)
         print ">>>>>>>>>>>>RESPONSE_ORDER_WH<<<<<<<<<<<<<"
@@ -2844,11 +2859,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/var/www/html/line_images2/%s_order.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "error pdfkit",e
-            if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
-                outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
+            if os.path.exists('/var/www/html/line_images2/%s_order.pdf' % (msisdn)):
+            # if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
+                outfile = '/var/www/html/line_images2/%s_order.pdf' % (msisdn)
+                # outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2858,7 +2876,7 @@ def onMessage(msisdn, ask, first_name):
                 #goHtml2Png(respAPI, msisdn)
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                sendPhotoT2(msisdn, '%s_%s.jpg' % (outfile.split('.')[0], randomDtm))
+                sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0], randomDtm))
 
                 sqlstart = respAPI.find("<TOKEN>")
                 sqlstop = respAPI.find("</TOKEN>")
@@ -2876,7 +2894,7 @@ def onMessage(msisdn, ask, first_name):
 
                 if incomingMsisdn[16] == "ATM Transfer":
                     #s = "http://128.199.139.105/bayar_wh.php?s=https://api.tiket.com/checkout/checkout_payment/35&token=" + incomingMsisdn[13]
-                    s = "http://128.199.139.105/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, incomingMsisdn[13])
+                    s = "http://127.0.0.1/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, incomingMsisdn[13])
                     print s
                     respAPI = fetchHTML(s)
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
@@ -3765,6 +3783,11 @@ def reversal_1pulsa(trxid, partner_trxid, bnumber):
             sql = "update 1pulsa_pulsa_token set reversal = '%s' where trxid = '%s' and partner_trxid = '%s'" % (logDtm, trxid, partner_trxid)
             print sql
             insert5(sql)
+
+@app.task(ignore_result=True)
+def handle_postback_tiketcom(msisdn, form_data, flight_data):
+    lineNlp.redisconn.set("flight_tiket_booking_data/%s" % (msisdn), {'form_data' : form_data , 'flight_data' : flight_data})
+    onMessage(msisdn, 'ft00', get_line_username(msisdn))
 
 
 #Second Initialization
