@@ -1234,7 +1234,7 @@ def onMessage(msisdn, ask, first_name):
 
 
     ####################GREETINGS####################
-    if answer[:4] == "gr01":
+    if answer[:4] == "gr01" and incomingMsisdn[1] != "TRANSLATOR_MODE":
         linebot.send_carousel(msisdn, 'greetings')
         linebot.send_text_message(msisdn, answer[4:])
     if answer[:4] == "gr02":
@@ -1247,7 +1247,7 @@ def onMessage(msisdn, ask, first_name):
     #################################################
 
     ####################GREETINGS####################
-    if answer[:4] == "co00":
+    if answer[:4] == "co00" and incomingMsisdn[1] != "TRANSLATOR_MODE":
         # linebot.send_text_message(msisdn, answer[4:])
         splitted_ans = answer[4:].split("<br>")
         final_ans = ''
@@ -1258,7 +1258,7 @@ def onMessage(msisdn, ask, first_name):
         linebot.send_composed_confirm(msisdn, 'Konfirmasi', last_answer, {'label' : 'Ya', 'type' : 'message', 'text' : 'ya'}, {'label' : 'Tidak', 'type' : 'message', 'text' : 'gak'})
 
     ####################KOMPLAIN####################
-    if answer[:5] == "cmp01":
+    if answer[:5] == "cmp01" and incomingMsisdn[1] != "TRANSLATOR_MODE":
         # linebot.send_rich_message_greeting_text(msisdn, 'https://www.bangjoni.com/line_images/halo1', 'RICH MESG', temp_answer.strip())
         answer = answer[5:]
         splitAns = answer.split('<br>')

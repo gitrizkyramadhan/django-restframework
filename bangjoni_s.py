@@ -238,7 +238,7 @@ if __name__==  "__main__":
         content = request.get_json()
         msisdn = content['msisdn']
         form_data = content['formdata']
-        flight_data = content['result']
+        flight_data = content['flight_data']
         handle_postback_tiketcom.delay(msisdn, form_data, flight_data)
         # print content
         # return redirect('https://line.me/R/ti/p/%40bangjoni', code=302)
