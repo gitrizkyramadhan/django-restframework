@@ -3696,7 +3696,7 @@ def depositNotification(trx_id):
         cust_id = content['cust_id']
 
         if va_no[:6] == "865010":
-            sql = "select msisdn,dtm from bjpay where va_no = '%s' limit 1" % (va_no)
+            sql = "select msisdn,dtm from bjpay where va_no = '%s' order by dtm desc limit 1" % (va_no)
         else:
             sql = "select msisdn,dtm from bjpay where amount = %s order by dtm desc limit 1" % (amount)
 
