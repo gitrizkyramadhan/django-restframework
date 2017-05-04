@@ -353,6 +353,10 @@
     - Yah payah deh nyerah. <br>
     ^ Jawabannya, karena Bebek Goreng ada huruf B-nya. Coba kalo nggak ada, nggak bakal ada yang mau makan! Hahaha :D {topic=random}
 
+    + (@nggak) {weight=10}
+    - Nggak tau? Payah ah.. <br>
+    ^ Jawabannya, karena emang nggak ujan, jadi nggak ada yang basah! Hahaha :D {topic=random}
+
 < topic
 
 > topic tebak_payung5orang
@@ -363,6 +367,10 @@
     + (*)
     - Salah! coba lagi ayok.
     - Bukan itu. Masa nggak tau sih?
+
+    + (@nggak) {weight=10}
+    - Nggak tau? Payah ah.. <br>
+    ^ Jawabannya, karena emang nggak ujan, jadi nggak ada yang basah! Hahaha :D {topic=random}
 
     + [*] (@nyerah) [*]
     - Yah payah deh nyerah. <br>
