@@ -56,7 +56,7 @@ import pickle
 
 import hashlib
 from operator import xor, concat
-
+from log_analytic import AnalyticLog
 # ---------- DWP MODULE START ----------
 from ticket_dwp import DWP
 # ---------- ECOMM MODULE START ----------
@@ -143,6 +143,7 @@ mongolog = MongoLog()
 userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
+analytic_log = AnalyticLog()
 
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
@@ -1323,6 +1324,21 @@ def onMessage(msisdn, ask, first_name):
 
 
         ####################PULSA START####################
+    if ask[:5] == "pu00":
+        phone = analytic_log.get_pulsa_recomend()
+        if phone:
+            list_phone = []
+            for data in phone:
+                detail_data = {'type': 'message'}
+                detail_data['label'] = data['_id']['phone']
+                detail_data['text'] = data['_id']['phone']
+                list_phone.append(detail_data)
+            linebot.send_composed_img_buttons(msisdn, "Info Traffic",
+                                              'https://bangjoni.com/v2/carousel/images/traffic1.png',
+                                              'Pulsa', 'Kalau tidak ada di list ketik aja ya ', list_phone)
+        else:
+            linebot.send_text_message(msisdn, 'Mau isi pulsa? Boleh minta nomer HP-nya?')
+
     if answer[:4] == "pu01":
         log_service(logDtm, msisdn, first_name, "PULSA")
         print incomingMsisdn[2]
