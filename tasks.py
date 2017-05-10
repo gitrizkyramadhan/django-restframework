@@ -1338,7 +1338,7 @@ def onMessage(msisdn, ask, first_name):
             for data in phone:
                 detail_data = {'type': 'message'}
                 detail_data['label'] = data['_id']['phone']
-                detail_data['text'] = data['_id']['phone']
+                detail_data['text'] = 'pulsa ' + data['_id']['phone']
                 list_phone.append(detail_data)
             linebot.send_composed_img_buttons(msisdn, "Info Traffic",
                                               'https://bangjoni.com/v2/carousel/images/traffic1.png',
