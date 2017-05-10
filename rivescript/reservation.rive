@@ -79,7 +79,7 @@
 - Tiket apa nih?
 
 + [*] (@pulsa) [*] {weight=11}
-- pu00
+- pu00 {topic=pulsa} <set c=pulsa> <set pulsa_data=0>
 //Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set c=pulsa> <set pulsa_data=0>
 
 + [*] [@hariini|@besok] (@ujan) [*] {weight=10}
