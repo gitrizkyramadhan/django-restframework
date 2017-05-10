@@ -144,12 +144,8 @@ mongolog = MongoLog()
 userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
-<<<<<<< HEAD
 analytic_log = AnalyticLog()
-=======
 flight = FlightTiket()
->>>>>>> 5b2f18d03580f2b067c63af1668e20723988b7f9
-
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
