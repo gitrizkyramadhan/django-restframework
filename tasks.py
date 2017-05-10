@@ -1332,7 +1332,7 @@ def onMessage(msisdn, ask, first_name):
 
         ####################PULSA START####################
     if answer[:4] == "pu00":
-        phone = analytic_log.get_pulsa_recomend()
+        phone = analytic_log.get_pulsa_recomend(msisdn)
         if phone:
             list_phone = []
             for data in phone:
