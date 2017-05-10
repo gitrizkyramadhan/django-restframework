@@ -14,6 +14,7 @@ from tasks import depositNotification
 from tasks import handlePostbackEcomm
 from tasks import handle_complaint
 from tasks import reversal_1pulsa
+from tasks import handle_postback_tiketcom
 
 #import logging
 import gevent.monkey
@@ -228,6 +229,19 @@ if __name__==  "__main__":
             result = request.args.get('result')
             msisdn = request.args.get('msisdn')
             reversal_1pulsa.delay(trxid, partner_trxid, msisdn)
+        return "OK"
+
+
+    @app.route('/postfltiket', methods=['POST'])
+    def post_flight_tiket():
+        print "================================POST FLIGHT TIKET.COM REQUEST============================================="
+        content = request.get_json()
+        msisdn = content['msisdn']
+        form_data = content['formdata']
+        flight_data = content['flight_data']
+        handle_postback_tiketcom.delay(msisdn, form_data, flight_data)
+        # print content
+        # return redirect('https://line.me/R/ti/p/%40bangjoni', code=302)
         return "OK"
 
     print "starting gevent wsgi..."

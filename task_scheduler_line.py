@@ -169,6 +169,7 @@ def do_weather_today():
             pass
 
 
+
 def get_city_weather():
 
     hours = [6,16]

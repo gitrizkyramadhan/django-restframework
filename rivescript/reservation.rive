@@ -549,7 +549,7 @@
 ^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain.<br>
 ^ Nanti gue kasih info restoran dengan review terbaik di Zomato berdasarkan lokasi yang lo pilih :9 {topic=zomato} <set mycontext=zomato>
 
-+ [*] (laper|lapar) [*]
++ [*] (laper|lapar) [*] {weight=10}
 - zo00 Sini gue kasih tau tempat makan yang enak.\n\n
 ^ Pake fitur share location lo ya untuk menentukan lokasi pencarian restoran (tombol + samping tombol emoticon)<br>
 ^ Lo bisa share lokasi lo sekarang ini atau bisa juga share lokasi lain<br>
@@ -638,3 +638,28 @@
 
 + [*] info lainnya [*]
 - gr03 Oke deh! Silakan pilih informasi lain di bawah ini yaa..
+
++ ft00
+- fl05 Udah Bang Joni catet ya<br>Sekarang silakan pilih metode pembayarannya. {topic=flighttiket} <set mycontext=flighttiket>
+
+> topic flighttiket inherits global
+
+    + [*] (atm) [*]
+    - fl06 Tunggu sebentar ya, tiket lo lagi diproses nih ;) <set flight_payment=<star>>
+
+    + [*] (kartu kredit) [*]
+    - Metode pembayaran dengan kartu kredit belum tersedia, coba lewat ATM ya :)
+
+    + [*] (cimb clicks) [*]
+    - Metode pembayaran dengan CIMB Clicks belum tersedia, coba lewat ATM ya :)
+
+    + [*] (mandiri ecash) [*]
+    - Metode pembayaran dengan Mandiri Ecash belum tersedia, coba lewat ATM ya :)
+
+    + [*] (mandiri clickpay) [*]
+    - Metode pembayaran dengan Mandiri Clickpay belum tersedia, coba lewat ATM ya :)
+
+    + [*] (bca klikpay) [*]
+    - Metode pembayaran dengan BCA Klikpay belum tersedia, coba lewat ATM ya :)
+
+< topic
