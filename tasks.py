@@ -72,6 +72,7 @@ from log_mongo import MongoLog
 from user_profiling import UserProfileService
 from uber_module import UberService
 from flight_tiket import FlightTiket
+from simisimi import SimiSimi
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -146,6 +147,7 @@ uber = UberService()
 gmaps = GMapsGeocoding()
 analytic_log = AnalyticLog()
 flight = FlightTiket()
+simi = SimiSimi()
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -1231,7 +1233,11 @@ def onMessage(msisdn, ask, first_name):
                 print "hola hola hola hola"
                 sendMessageT2(msisdn, answer, 0)
 
+    ##############SIMI ERROR HANDLING################
+    if answer[:4] == 'ee01':
 
+        reply_messgae = simi.response_message(ask.strip())
+        linebot.send_text_message(msisdn, reply_messgae)
 
     ####################GREETINGS####################
     if answer[:4] == "gr01" and incomingMsisdn[1] != "TRANSLATOR_MODE":
@@ -1341,7 +1347,7 @@ def onMessage(msisdn, ask, first_name):
                 detail_data['text'] = 'pulsa ' + data['_id']['phone']
                 list_phone.append(detail_data)
             linebot.send_composed_img_buttons(msisdn, "Info Traffic",
-                                              'https://bangjoni.com/v2/carousel/images/traffic1.png',
+                                              'https://bangjoni.com/v2/carousel/greetings/pulsa3.png',
                                               'Pulsa', 'Kalau tidak ada di list ketik aja ya ', list_phone)
         else:
             linebot.send_text_message(msisdn, 'Mau isi pulsa? Boleh minta nomer HP-nya?')
