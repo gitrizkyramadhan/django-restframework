@@ -2837,7 +2837,7 @@ def onMessage(msisdn, ask, first_name):
         sendMessageT2(msisdn, answer[4:], 0)
         # bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         flight_complex_data = lineNlp.redisconn.get("flight_tiket_booking_data/%s" % (msisdn))
-        flight_data = flight_complex_data['flight_data']
+        flight_data = json.loads(flight_complex_data['flight_data'])
 
         ask = "fl04aa"
         print "AAAAAAAAAAAAAAAAAAAA"
@@ -3801,7 +3801,7 @@ def reversal_1pulsa(trxid, partner_trxid, bnumber):
 
 @app.task(ignore_result=True)
 def handle_postback_tiketcom(msisdn, form_data, flight_data):
-    lineNlp.redisconn.set("flight_tiket_booking_data/%s" % (msisdn), {'form_data' : form_data , 'flight_data' : flight_data})
+    lineNlp.redisconn.set("flight_tiket_booking_data/%s" % (msisdn), json.dumps({'form_data' : form_data , 'flight_data' : flight_data}))
     onMessage(msisdn, 'ft00', get_line_username(msisdn))
 
 
