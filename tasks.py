@@ -73,6 +73,7 @@ from user_profiling import UserProfileService
 from uber_module import UberService
 from flight_tiket import FlightTiket
 from simisimi import SimiSimi
+from azure_translator import Translator
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -109,6 +110,7 @@ MYSQL_DB=""
 WEB_HOOK=""
 EMAIL_NOTIF=""
 LINE_TOKEN=""
+TRANSLATOR_TOKEN=""
 
 LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
 
@@ -129,6 +131,7 @@ MYSQL_DB=content[7].split('=')[1]
 WEB_HOOK=content[8].split('=')[1]
 EMAIL_NOTIF=content[9].split('=')[1]
 LINE_TOKEN=content[11].split('=')[1]
+TRANSLATOR_TOKEN=content[16].split('=')[1]
 
 linebot = Bot(LINE_TOKEN)
 lineNlp = Nlp()
@@ -148,6 +151,7 @@ gmaps = GMapsGeocoding()
 analytic_log = AnalyticLog()
 flight = FlightTiket()
 simi = SimiSimi()
+translator_service = Translator(TRANSLATOR_TOKEN)
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -1658,10 +1662,11 @@ def onMessage(msisdn, ask, first_name):
     if incomingMsisdn[1] == "TRANSLATOR_MODE":
         log_service(logDtm, msisdn, first_name, "TRANSLATOR", incomingMsisdn[2] + "-" + urllib.quote_plus(ask))
         #incomingMsisdn[1] = -1
-        print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
-        respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
-        print respAPI
-        sendMessageT2(msisdn, respAPI, 0)
+        translated = translator_service.translate(urllib.quote_plus(ask), to=incomingMsisdn[2])
+        # print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
+        # respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
+        # print respAPI
+        sendMessageT2(msisdn, translated, 0)
         #return
 
     if answer[:4] == "tr01":
