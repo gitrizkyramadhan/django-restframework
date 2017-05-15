@@ -2240,14 +2240,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2310,14 +2310,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2717,19 +2717,19 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
                 #answer = "Berikut 9 penerbangan termurah sesuai kriteriamu.\nJika ada yang cocok sebut saja no pilihannya untuk Bang Joni booking.\nJika tidak ada yang cocok, Bang Joni bisa carikan jadwal lainnya."
                 ask = "fl01aa"
                 answer = lineNlp.doNlp(ask, msisdn, first_name)
                 #sendMessageT2(msisdn, answer, 0)
 
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2843,7 +2843,8 @@ def onMessage(msisdn, ask, first_name):
         sendMessageT2(msisdn, answer[4:], 0)
         # bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         flight_complex_data = lineNlp.redisconn.get("flight_tiket_booking_data/%s" % (msisdn))
-        flight_data = json.loads(flight_complex_data['flight_data'])
+        flight_complex_data = json.loads(flight_complex_data)
+        flight_data = flight_complex_data['flight_data']
 
         ask = "fl04aa"
         print "AAAAAAAAAAAAAAAAAAAA"
@@ -2880,14 +2881,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/var/www/html/line_images2/%s_order.pdf' % (msisdn), options=options)
-                # pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/var/www/html/line_images2/%s_order.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "error pdfkit",e
-            if os.path.exists('/var/www/html/line_images2/%s_order.pdf' % (msisdn)):
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
-                outfile = '/var/www/html/line_images2/%s_order.pdf' % (msisdn)
-                # outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
+            # if os.path.exists('/var/www/html/line_images2/%s_order.pdf' % (msisdn)):
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
+                # outfile = '/var/www/html/line_images2/%s_order.pdf' % (msisdn)
+                outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
