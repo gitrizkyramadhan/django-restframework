@@ -112,7 +112,7 @@ EMAIL_NOTIF=""
 LINE_TOKEN=""
 TRANSLATOR_TOKEN=""
 
-LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
+LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images2"
 
 DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
 
