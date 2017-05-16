@@ -472,7 +472,7 @@ def onEmailReceived(filename, filetype):
                 pdffilename1 = pdffilename.replace("#","")
                 pdf2jpg.write("/usr/share/nginx/html/line_images/%sP%d.jpg" % (pdffilename1.split('.')[0], p))
                 print("%s send attachment %s page %d to %s" % (logDtm, filename, p, msisdn))
-                sendPhotoT2(msisdn, '/usr/share/nginx/html/line_images/%sP%d.jpg' % (pdffilename1.split('.')[0], p))
+                sendPhotoT2(msisdn, '%sP%d.jpg' % (pdffilename1.split('.')[0], p))
 
     elif filetype == "html":
         sql = "select * from booking_tickets where order_id = '%s'" % (filename.split('.')[0])
@@ -2547,7 +2547,7 @@ def onMessage(msisdn, ask, first_name):
                 #goHtml2Png(respAPI, msisdn)
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
+                sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[5]))
 
                 incomingMsisdn[13] = token
                 insert("delete from searching_train where msisdn = '%s'" % (msisdn))
@@ -2642,7 +2642,7 @@ def onMessage(msisdn, ask, first_name):
                     #goHtml2Png(respAPI, msisdn)
                     print "Done convert html to pdf to png"
                     #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                    sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
+                    sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[5]))
 
                     sqlstart = respAPI.find("<TOKEN>")
                     sqlstop = respAPI.find("</TOKEN>")
@@ -2903,7 +2903,7 @@ def onMessage(msisdn, ask, first_name):
                 #goHtml2Png(respAPI, msisdn)
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0], randomDtm))
+                sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm))
 
                 sqlstart = respAPI.find("<TOKEN>")
                 sqlstop = respAPI.find("</TOKEN>")
