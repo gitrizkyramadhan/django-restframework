@@ -1,6 +1,6 @@
 from bot import Bot #import class bot line
 from datetime import datetime, timedelta # import class datetime dengan method datetime dan timedelta
-# import MySQLdb
+import MySQLdb
 with open('BJCONFIG.txt') as f: #membuka file config BJCONFIG
     content = f.read().splitlines() #membaca file
 f.close() #menutup file
@@ -16,7 +16,7 @@ WEB_HOOK=content[8].split('=')[1]
 EMAIL_NOTIF=content[9].split('=')[1]
 LINE_TOKEN=content[11].split('=')[1]
 
-linebot = Bot(LINE_TOKEN) #inisialisasi class bot dan memasukan parameter toke line
+linebot = Bot(LINE_TOKEN) #inisialisasi class bot dan memasukan parameter toke linebot
 
 # def request(sql): #mmebuat fungsi request untuk mengambil data dari database
 #     try: #kalau tidak ada data maka akan masuk ke dalam exception
@@ -31,6 +31,10 @@ linebot = Bot(LINE_TOKEN) #inisialisasi class bot dan memasukan parameter toke l
     #     print e.args
     #     print "ERROR: %d: %s" % (e.args[0], e.args[1])
 
+def getfile_report():
+    file = open('report_20170516.txt','r')
+    print file
+
 def blast_report(): #membuat fungsi blast report , untuk memblast ke user tertentu
 
 
@@ -38,9 +42,11 @@ def blast_report(): #membuat fungsi blast report , untuk memblast ke user terten
     msisdn_data = ['U06ebb682542ad76886a4a202d9ac5094','U90a846efb4bc03eec9e66cbf61fea960']
     for msisdn in msisdn_data: #looping setiap user
 
-        linebot.send_text_message(msisdn,'hallo') #send message ke user
+        linebot.send_text_message(msisdn,'$report_daily') #send message ke user
 
 
 if __name__ == '__main__':
 
-    blast_report() #eksekusi method blast
+    # blast_report() #eksekusi method blast
+
+    getfile_report()
