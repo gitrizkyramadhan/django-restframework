@@ -44,12 +44,15 @@
 ^ Tuh coba cek deh.
 
 + *
-* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+* <get mycontext> != random => ee01 {topic=random}
+
+//+ *
+//* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+//- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 + [*] iseng [*] {weight=10}
 - Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
