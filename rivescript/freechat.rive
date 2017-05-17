@@ -44,7 +44,7 @@
 ^ Tuh coba cek deh.
 
 + *
-* <get mycontext> != random => ee01 {topic=random}
+* <get mycontext> != random => ee01 {topic=<get mycontext>}
 
 //+ *
 //* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
