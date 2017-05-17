@@ -2921,7 +2921,7 @@ def onMessage(msisdn, ask, first_name):
 
                 if incomingMsisdn[16] == "ATM Transfer":
                     #s = "http://128.199.139.105/bayar_wh.php?s=https://api.tiket.com/checkout/checkout_payment/35&token=" + incomingMsisdn[13]
-                    s = "http://127.0.0.1/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, incomingMsisdn[13])
+                    s = "http://127.0.0.1/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, token)
                     print s
                     respAPI = fetchHTML(s)
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
