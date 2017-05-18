@@ -557,8 +557,8 @@ def migrate(msisdn, user_phone):
             phone = payload.split('|')[2]
         except:
             balance = 0
-            va_no = 0
-            phone = 0
+            va_no = "865010" + user_phone[-10:].zfill(10)
+            phone = user_phone
 
         if str(user_phone) == str(phone) :
             bjp_service.register(msisdn, va_no, phone, balance)
