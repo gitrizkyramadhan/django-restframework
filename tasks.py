@@ -557,8 +557,8 @@ def migrate(msisdn, user_phone):
             phone = payload.split('|')[2]
         except:
             balance = 0
-            va_no = 0
-            phone = 0
+            va_no = "865010" + user_phone[-10:].zfill(10)
+            phone = user_phone
 
         if str(user_phone) == str(phone) :
             bjp_service.register(msisdn, va_no, phone, balance)
@@ -1662,7 +1662,26 @@ def onMessage(msisdn, ask, first_name):
     if incomingMsisdn[1] == "TRANSLATOR_MODE":
         log_service(logDtm, msisdn, first_name, "TRANSLATOR", incomingMsisdn[2] + "-" + urllib.quote_plus(ask))
         #incomingMsisdn[1] = -1
-        translated = translator_service.translate(urllib.quote_plus(ask), to=incomingMsisdn[2])
+        if incomingMsisdn[2] == 'inggris':
+            to_lang_code = 'en'
+        elif incomingMsisdn[2] == 'perancis':
+            to_lang_code = 'fr'
+        elif incomingMsisdn[2] == 'mandarin':
+            to_lang_code = 'zh-CHS'
+        elif incomingMsisdn[2] == 'arab':
+            to_lang_code = 'ar'
+        elif incomingMsisdn[2] == 'jepang':
+            to_lang_code = 'ja'
+        elif incomingMsisdn[2] == 'korea':
+            to_lang_code = 'ko'
+        elif incomingMsisdn[2] == 'jerman':
+            to_lang_code = 'de'
+        elif incomingMsisdn[2] == 'indonesia':
+            to_lang_code = 'id'
+        else:
+            to_lang_code = 'en'
+
+        translated = translator_service.translate(urllib.quote_plus(ask), to=to_lang_code)
         # print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
         # respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
         # print respAPI

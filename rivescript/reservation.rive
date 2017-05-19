@@ -10,10 +10,13 @@
 
 + [*] (@halo) [*]
 - gr01 Halo, <first_name>! <br>
-^ Apa yang bisa gue bantu nih? ;) {topic=random} <set mycontext=random>
-- gr01 Ya? Mau gue bantu apa nih, <first_name>? ;) {topic=random} <set mycontext=random>
+^ Apa yang bisa gue bantu nih?
+^ Atau lagi bosen aja mau ngobrol-ngobrol? ;) {topic=random} <set mycontext=random>
+- gr01 Ya? Mau gue bantu apa nih, <first_name>?
+^ Apa lagi gabut ya mau ngobrol-ngobrol sama gue? ;) {topic=random} <set mycontext=random>
 - gr01 Halo juga! <br>
-^ Ada yang bisa gue bantu, <first_name>? ;) {topic=random} <set mycontext=random>
+^ Ada yang bisa gue bantu, <first_name>?
+^ Atau lo lagi gak ada kerjaan ya mau ngobrol-ngobrol sama gue? ;) {topic=random} <set mycontext=random>
 
 + askafterservice
 - gr01 Oke deh, ada lagi yang bisa gue bantu? ;) {topic=random} <set mycontext=random>
@@ -50,7 +53,7 @@
 + [*] iseng [*] {weight=10}
 - Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 
-+ [*] (@bosen) [*] {weight=10}
++ [*] (@bosen|ngobrol) [*] {weight=10}
 - Hmm.. Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying <br>
@@ -59,6 +62,18 @@
 ^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing <br>
 ^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 - Bosen ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx <br>
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
+
++ [*] (@betul) [*] {weight=10}
+- Daripada bosen gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan}
+- Bosen ya gak ada kerjaan? Mending lo ke bioskop deh ajak temen-temen lo. <br>
+^ Banyak film seru loh! Coba cek deh di sini >> http://www.21cineplex.com/nowplaying <br>
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
+- Bosen ya, gabut ya? Mending lo ke bioskop deh ajak temen-temen lo. <br>
+^ Banyak film seru loh! Coba cek deh di sini >> https://www.cgv.id/en/movies/now_playing <br>
+^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
+- Bosen ya gak ada kerjaan? Mending lo ke bioskop deh ajak temen-temen lo. <br>
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx <br>
 ^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 
