@@ -56,7 +56,7 @@ import pickle
 
 import hashlib
 from operator import xor, concat
-
+from log_analytic import AnalyticLog
 # ---------- DWP MODULE START ----------
 from ticket_dwp import DWP
 # ---------- ECOMM MODULE START ----------
@@ -72,6 +72,8 @@ from log_mongo import MongoLog
 from user_profiling import UserProfileService
 from uber_module import UberService
 from flight_tiket import FlightTiket
+from simisimi import SimiSimi
+from azure_translator import Translator
 
 def init_qtgui(display=None, style=None, qtargs=None):
     """Initiates the QApplication environment using the given args."""
@@ -108,8 +110,9 @@ MYSQL_DB=""
 WEB_HOOK=""
 EMAIL_NOTIF=""
 LINE_TOKEN=""
+TRANSLATOR_TOKEN=""
 
-LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images"
+LINE_IMAGES_ROUTE = "https://bangjoni.com/line_images2"
 
 DEBUG_MODE = "D" #I=Info, D=Debug, V=Verbose, E=Error
 
@@ -128,6 +131,7 @@ MYSQL_DB=content[7].split('=')[1]
 WEB_HOOK=content[8].split('=')[1]
 EMAIL_NOTIF=content[9].split('=')[1]
 LINE_TOKEN=content[11].split('=')[1]
+TRANSLATOR_TOKEN=content[16].split('=')[1]
 
 linebot = Bot(LINE_TOKEN)
 lineNlp = Nlp()
@@ -144,8 +148,10 @@ mongolog = MongoLog()
 userpservice = UserProfileService()
 uber = UberService()
 gmaps = GMapsGeocoding()
+analytic_log = AnalyticLog()
 flight = FlightTiket()
-
+simi = SimiSimi()
+translator_service = Translator(TRANSLATOR_TOKEN)
 
 app = Celery('tasks', backend = 'amqp', broker = 'amqp://')
 
@@ -466,7 +472,7 @@ def onEmailReceived(filename, filetype):
                 pdffilename1 = pdffilename.replace("#","")
                 pdf2jpg.write("/usr/share/nginx/html/line_images/%sP%d.jpg" % (pdffilename1.split('.')[0], p))
                 print("%s send attachment %s page %d to %s" % (logDtm, filename, p, msisdn))
-                sendPhotoT2(msisdn, '/usr/share/nginx/html/line_images/%sP%d.jpg' % (pdffilename1.split('.')[0], p))
+                sendPhotoT2(msisdn, '%sP%d.jpg' % (pdffilename1.split('.')[0], p))
 
     elif filetype == "html":
         sql = "select * from booking_tickets where order_id = '%s'" % (filename.split('.')[0])
@@ -551,8 +557,8 @@ def migrate(msisdn, user_phone):
             phone = payload.split('|')[2]
         except:
             balance = 0
-            va_no = 0
-            phone = 0
+            va_no = "865010" + user_phone[-10:].zfill(10)
+            phone = user_phone
 
         if str(user_phone) == str(phone) :
             bjp_service.register(msisdn, va_no, phone, balance)
@@ -1231,7 +1237,11 @@ def onMessage(msisdn, ask, first_name):
                 print "hola hola hola hola"
                 sendMessageT2(msisdn, answer, 0)
 
+    ##############SIMI ERROR HANDLING################
+    if answer[:4] == 'ee01':
 
+        reply_messgae = simi.response_message(ask.strip())
+        linebot.send_text_message(msisdn, reply_messgae)
 
     ####################GREETINGS####################
     if answer[:4] == "gr01" and incomingMsisdn[1] != "TRANSLATOR_MODE":
@@ -1331,6 +1341,21 @@ def onMessage(msisdn, ask, first_name):
 
 
         ####################PULSA START####################
+    if answer[:4] == "pu00":
+        phone = analytic_log.get_pulsa_recomend(msisdn=msisdn)
+        if phone:
+            list_phone = []
+            for data in phone:
+                detail_data = {'type': 'message'}
+                detail_data['label'] = data['_id']['phone']
+                detail_data['text'] = 'pulsa ' + data['_id']['phone']
+                list_phone.append(detail_data)
+            linebot.send_composed_img_buttons(msisdn, "Info Traffic",
+                                              'https://bangjoni.com/v2/carousel/greetings/pulsa3.png',
+                                              'Pulsa', 'Kalau tidak ada di list ketik aja ya ', list_phone)
+        else:
+            linebot.send_text_message(msisdn, 'Mau isi pulsa? Boleh minta nomer HP-nya?')
+
     if answer[:4] == "pu01":
         log_service(logDtm, msisdn, first_name, "PULSA")
         print incomingMsisdn[2]
@@ -1637,10 +1662,30 @@ def onMessage(msisdn, ask, first_name):
     if incomingMsisdn[1] == "TRANSLATOR_MODE":
         log_service(logDtm, msisdn, first_name, "TRANSLATOR", incomingMsisdn[2] + "-" + urllib.quote_plus(ask))
         #incomingMsisdn[1] = -1
-        print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
-        respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
-        print respAPI
-        sendMessageT2(msisdn, respAPI, 0)
+        if incomingMsisdn[2] == 'inggris':
+            to_lang_code = 'en'
+        elif incomingMsisdn[2] == 'perancis':
+            to_lang_code = 'fr'
+        elif incomingMsisdn[2] == 'mandarin':
+            to_lang_code = 'zh-CHS'
+        elif incomingMsisdn[2] == 'arab':
+            to_lang_code = 'ar'
+        elif incomingMsisdn[2] == 'jepang':
+            to_lang_code = 'ja'
+        elif incomingMsisdn[2] == 'korea':
+            to_lang_code = 'ko'
+        elif incomingMsisdn[2] == 'jerman':
+            to_lang_code = 'de'
+        elif incomingMsisdn[2] == 'indonesia':
+            to_lang_code = 'id'
+        else:
+            to_lang_code = 'en'
+
+        translated = translator_service.translate(urllib.quote_plus(ask), to=to_lang_code)
+        # print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
+        # respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
+        # print respAPI
+        sendMessageT2(msisdn, translated, 0)
         #return
 
     if answer[:4] == "tr01":
@@ -2219,14 +2264,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2235,8 +2280,8 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
-                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
                 insert("delete from searching_jadwal_xtrans where msisdn = '%s'" % (msisdn))
                 list_airlines = list_airlines[:len(list_airlines)-1]
@@ -2289,14 +2334,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2305,8 +2350,8 @@ def onMessage(msisdn, ask, first_name):
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
-                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answertemp.replace("xt06 ",""))
+                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
     if answer[:4] == "xt09":
         log_book(logDtm, msisdn, first_name, "XTRANS", incomingMsisdn[4] + "-" + incomingMsisdn[2])
@@ -2521,7 +2566,7 @@ def onMessage(msisdn, ask, first_name):
                 #goHtml2Png(respAPI, msisdn)
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
+                sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[6]))
 
                 incomingMsisdn[13] = token
                 insert("delete from searching_train where msisdn = '%s'" % (msisdn))
@@ -2616,7 +2661,7 @@ def onMessage(msisdn, ask, first_name):
                     #goHtml2Png(respAPI, msisdn)
                     print "Done convert html to pdf to png"
                     #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                    sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
+                    sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[6]))
 
                     sqlstart = respAPI.find("<TOKEN>")
                     sqlstop = respAPI.find("</TOKEN>")
@@ -2696,19 +2741,19 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
-                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_cari.html' % (msisdn), '/var/www/html/line_images2/%s_cari.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "Error pdfkit",e
-            if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
+            # if os.path.exists('/var/www/html/line_images2/%s_cari.pdf' % (msisdn)):
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)):
                 #answer = "Berikut 9 penerbangan termurah sesuai kriteriamu.\nJika ada yang cocok sebut saja no pilihannya untuk Bang Joni booking.\nJika tidak ada yang cocok, Bang Joni bisa carikan jadwal lainnya."
                 ask = "fl01aa"
                 answer = lineNlp.doNlp(ask, msisdn, first_name)
                 #sendMessageT2(msisdn, answer, 0)
 
-                outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
-                # outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
+                # outfile = '/var/www/html/line_images2/%s_cari.pdf' % (msisdn)
+                outfile = '/usr/share/nginx/html/line_images/%s_cari.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2716,12 +2761,12 @@ def onMessage(msisdn, ask, first_name):
                 pdf2jpg.write("%s_%s.jpg" % (outfile.split('.')[0], randomDtm))
 
                 #goHtml2Png(respAPI, msisdn)
-                # print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[6], randomDtm)
-                print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[5], randomDtm)
+                print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[6], randomDtm)
+                # print "Done convert html to pdf to png %s_%s.jpg" % (outfile.split('.')[0].split('/')[5], randomDtm)
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
                 #sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0]))
-                # sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
-                sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
+                sendPhotoCaptionT2(msisdn, LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), LINE_IMAGES_ROUTE +'/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm), answer)
+                # sendPhotoCaptionT2(msisdn, 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), 'https://bangjoni.com/line_images2/%s_%s.jpg' % (outfile.split('.')[0].split('/')[5], randomDtm), answer)
 
                 incomingMsisdn[13] = token
                 insert("delete from searching_airlines where msisdn = '%s'" % (msisdn))
@@ -2822,6 +2867,7 @@ def onMessage(msisdn, ask, first_name):
         sendMessageT2(msisdn, answer[4:], 0)
         # bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         flight_complex_data = lineNlp.redisconn.get("flight_tiket_booking_data/%s" % (msisdn))
+        flight_complex_data = json.loads(flight_complex_data)
         flight_data = flight_complex_data['flight_data']
 
         ask = "fl04aa"
@@ -2859,14 +2905,14 @@ def onMessage(msisdn, ask, first_name):
                 'encoding': "UTF-8"
             }
             try:
-                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/var/www/html/line_images2/%s_order.pdf' % (msisdn), options=options)
-                # pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
+                # pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/var/www/html/line_images2/%s_order.pdf' % (msisdn), options=options)
+                pdfkit.from_file('/tmp/%s_order.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn), options=options)
             except Exception as e:
                 print "error pdfkit",e
-            if os.path.exists('/var/www/html/line_images2/%s_order.pdf' % (msisdn)):
-            # if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
-                outfile = '/var/www/html/line_images2/%s_order.pdf' % (msisdn)
-                # outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
+            # if os.path.exists('/var/www/html/line_images2/%s_order.pdf' % (msisdn)):
+            if os.path.exists('/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)):
+                # outfile = '/var/www/html/line_images2/%s_order.pdf' % (msisdn)
+                outfile = '/usr/share/nginx/html/line_images/%s_order.pdf' % (msisdn)
                 pdf2jpg = PythonMagick.Image()
                 pdf2jpg.density("200")
                 pdf2jpg.read(outfile)
@@ -2876,7 +2922,7 @@ def onMessage(msisdn, ask, first_name):
                 #goHtml2Png(respAPI, msisdn)
                 print "Done convert html to pdf to png"
                 #photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0], randomDtm))
+                sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm))
 
                 sqlstart = respAPI.find("<TOKEN>")
                 sqlstop = respAPI.find("</TOKEN>")
@@ -2894,7 +2940,7 @@ def onMessage(msisdn, ask, first_name):
 
                 if incomingMsisdn[16] == "ATM Transfer":
                     #s = "http://128.199.139.105/bayar_wh.php?s=https://api.tiket.com/checkout/checkout_payment/35&token=" + incomingMsisdn[13]
-                    s = "http://127.0.0.1/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, incomingMsisdn[13])
+                    s = "http://127.0.0.1/flight/bayar_wh.php?s=%s&token=%s" % (url_payment, token)
                     print s
                     respAPI = fetchHTML(s)
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
@@ -3786,7 +3832,7 @@ def reversal_1pulsa(trxid, partner_trxid, bnumber):
 
 @app.task(ignore_result=True)
 def handle_postback_tiketcom(msisdn, form_data, flight_data):
-    lineNlp.redisconn.set("flight_tiket_booking_data/%s" % (msisdn), {'form_data' : form_data , 'flight_data' : flight_data})
+    lineNlp.redisconn.set("flight_tiket_booking_data/%s" % (msisdn), json.dumps({'form_data' : form_data , 'flight_data' : flight_data}))
     onMessage(msisdn, 'ft00', get_line_username(msisdn))
 
 

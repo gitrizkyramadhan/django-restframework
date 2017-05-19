@@ -46,7 +46,7 @@ class UnstructureLog(object):
                         row_information[b], row_information[a] = row_information[a], row_information[b]
                     row_information[0] = clean(row_information[0])
                     row_information[1] = clean(row_information[1])
-                    # print row_information
+                    #print row_information
                     list_information.append(row_information)
 
         return list_information
@@ -68,7 +68,8 @@ class StructuredLog(object):
             split_data = data.split('=')
         if split_data[0] == file_name:
             return split_data[1].replace('\n', '')
-        return data[len(data)]
+        else:
+            return data[len(data)]
 
     def parse_log(self, file_name, contain):
 

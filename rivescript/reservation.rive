@@ -94,7 +94,8 @@
 - Tiket apa nih?
 
 + [*] (@pulsa) [*] {weight=11}
- - Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set c=pulsa> <set pulsa_data=0>
+- pu00 {topic=pulsa} <set c=pulsa> <set pulsa_data=0>
+//Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set c=pulsa> <set pulsa_data=0>
 
 + [*] [@hariini|@besok] (@ujan) [*] {weight=10}
 - we01 Nggak tau juga deh, coba gue cek ya!\n\n
@@ -321,7 +322,10 @@
 
 ///////////////////////////////////START PULSA HP
 + [*] (@pulsa) [*] {weight=10}
-- Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
+- pu00
+
++ [*] (@pulsa) [*] {weight=10}
+- pu04 Mau isi pulsa? Boleh minta nomer HP-nya? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
 
 
 ///////////////////////////////////REMINDER PULSA HP

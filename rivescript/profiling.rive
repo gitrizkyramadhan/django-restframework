@@ -5,7 +5,7 @@
     + [*] (@panggil) (*) [*] {weight=5}
     - prf01 Sip! Berarti gue manggilnya <star2> aja nih ya? {topic=jawaban_nama} <set given_name=-1> <set name=<star2>>
 
-    + [*] (@betul) [*] {weight=5}
+    + [*] (@betul|@ok) [*] {weight=5}
     * <get given_name> != -1 => prf01a Oke deh <first_name>! <br>
     ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D <set name=<get given_name>> {topic=cewekataucowok}
     - Oke deh <get name>! <br>
@@ -77,7 +77,7 @@
 < topic
 
 > topic jawaban_nama
-    + [*] (@betul) [*]
+    + [*] (@betul|@ok) [*]
     * <get given_name> != -1 => prf01a Oke deh <first_name>! <br>
     ^ Eh iya, ngomong-ngomong lo cewek apa cowok ya? Takut salah manggil nih :D {topic=cewekataucowok}
     - Oke deh <get name>! <br>

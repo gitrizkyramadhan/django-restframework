@@ -44,12 +44,15 @@
 ^ Tuh coba cek deh.
 
 + *
-* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+* <get mycontext> == random => ee01 {topic=<get mycontext>}
+
+//+ *
+//* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+//- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 + [*] iseng [*] {weight=10}
 - Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
@@ -73,7 +76,7 @@
 + [*] (bantuin ngerjain pr|bantuin ngerjain peer|bantuin kerjain pr|kerjain pr) [*] {weight=10}
 - Loh? Kerjain sendiri dong, masa gue yang kerjain? Ntar jawabannya bisa salah semua :p
 
-> topic lagiapaxtrans inherits random
+> topic lagiapaxtrans inherits global
 
   + [*] (@mau) [*]
   - xt01 Oke! Itu daftar pool keberangkatan Xtrans. <br>
@@ -85,7 +88,7 @@
 
 < topic
 
-> topic lagiapaflight inherits random
+> topic lagiapaflight inherits global
  
   + [*] (@mau) [*]
   - fl00 Oke, ini dia nih destinasi yang paling sering dicari. <br>
@@ -96,7 +99,7 @@
 
 < topic
 
-> topic lagiapazomato inherits random
+> topic lagiapazomato inherits global
 
   + [*] (@mau) [*]
   - zo00 Oke! Pake fitur share location lo ya untuk menentukan lokasi pencarian restoran (tombol + samping tombol emoticon)<br>
@@ -108,7 +111,7 @@
 
 < topic
 
-> topic lagiapabelipulsa inherits random
+> topic lagiapabelipulsa inherits global
 
   + [*] (@mau) [*]
   - Oke deh, nomor HP-nya berapa? {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
@@ -118,7 +121,7 @@
 
 < topic
 
-> topic ngupil inherits random
+> topic ngupil inherits global
 
   + [*] (@jorok) [*]
   - gr01 Hahaha <br>
@@ -131,7 +134,7 @@
 
 < topic
 
-> topic jomblotravelling inherits random
+> topic jomblotravelling inherits global
 
   + [*] (@mau) [*]
   - fl00 Gitu dong move on! :D <br>
@@ -154,7 +157,7 @@
 
 < topic
 
-> topic jomblonggakmau inherits random
+> topic jomblonggakmau inherits global
 
   + [*] (@musik) [*]
   - Wih suka musik? Sama dong, gue juga! <br>
@@ -175,7 +178,7 @@
 
 < topic
 
-> topic service inherits random
+> topic service inherits global
   
   + pulsa
   - Mau isi pulsa? Mana sini nomernya  {topic=pulsa} <set mycontext=pulsa> <set pulsa_data=0>
@@ -186,7 +189,7 @@
 
 < topic
 
-> topic bioskop inherits random
+> topic bioskop inherits global
     
     + [*] (@males) [*] {weight=5}
     - zo00 Hmm.. Yaudah kalo gitu jangan nonton deh.. Jajan-jajan aja gimana? <br>
@@ -205,16 +208,19 @@
     ^ Semoga membantu yaa.. ;) {topic=random}
 
     + *
-    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
-    ^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
-    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+    * <get mycontext> != random => ee01 {topic=<get mycontext>}
+
+//    + *
+//    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
+//    ^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
+//    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+//    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic
 
-> topic freechatservice inherits random
+> topic freechatservice inherits global
 
     + [*] (@beli) [di] (@bangjoni) [*]
     - co00 Kamu mau beli apa di Bang Joni? <set res_topic=general> {topic=askservice}
@@ -257,7 +263,7 @@
 
 < topic
 
-> topic ngupil inherits random
+> topic ngupil inherits global
 
     + [*] (@jorok) [*]
     - gr01 Hahaha <br>
@@ -270,7 +276,7 @@
 
 < topic
 
-> topic tebak_tebakan inherits random
+> topic tebak_tebakan inherits global
 
     + [*] (@nggak) [*] {weight=5}
     - Ih yakin nih nggak mau? Coba dulu dong.
@@ -287,7 +293,7 @@
 
 < topic
 
-> topic tebak_nama_ikan1 inherits random
+> topic tebak_nama_ikan1 inherits global
 
     + [*] (@namaikan) [*]
     - Iya betul ikan <star>, terus yang kedua ikan apa lagi coba? {topic=tebak_nama_ikan2}
@@ -304,7 +310,7 @@
 
 < topic
 
-> topic tebak_nama_ikan2 inherits random
+> topic tebak_nama_ikan2 inherits global
 
     + [*] (@namaikan) [*]
     - Iya ikan <star>, betul. Yang terakhir nih ikan apa lagi? {topic=tebak_nama_ikan3}
@@ -321,7 +327,7 @@
 
 < topic
 
-> topic tebak_nama_ikan3 inherits random
+> topic tebak_nama_ikan3 inherits global
 
     + [*] (@namaikan) [*]
     - gr01 Pinteerr.. Dah tuh ambil sepedanya sana sama Pak Jokowi.. <br>

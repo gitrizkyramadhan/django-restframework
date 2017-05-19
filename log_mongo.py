@@ -128,5 +128,12 @@ class MongoLog(object):
             "desc" : event_desc,
         })
 
+    def log_ads(self, msisdn, adscode):
+        result = self.db.logads.insert_one({
+            "data_date" : datetime.now(),
+            "msisdn" : msisdn,
+            "adscode" : adscode
+        })
+
 # ml = MongoLog()
 # ml.log_pulsa_migrate("U3b8faff6e0264b4d6e1dedf430d7ecf8", 5000, "2017-03-31 20:16:48", "083829570148")
