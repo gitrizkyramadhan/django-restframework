@@ -63,7 +63,7 @@
 ! array mau = mau|ok|ya|boleh|iya
 ! array hurufb = huruf B|huruf bnya|huruf b-nya
 ! array gaujan = nggak ujan|nggak hujan|ngga ujan|ngga hujan|enggak ujan|enggak hujan|engga ujan|engga hujan|gak ujan|gak hujan|ga ujan|ga hujan|gaujan
-! array nyerah = nyerah|nggak tau|gatau|enggak tau|gak tau|engga tau|ngga tau
+! array nyerah = nyerah|nggak tau|gatau|enggak tau|gak tau|engga tau|ngga tau|ga tau|au|auk|au
 ! array lagiapa = lagi apa|lagiapa|lg apa|lgi apa|lagi ngapain|lgi ngapain|lg ngapain|gi apa
 ! array makian = tai|babi|monyet|titit|memek|anjing|ngentot|kupret|kambing|peler|pler|kontol|goblok|goblog|suek|jing|njing|tolol|fak|fuck|kambing|tete|tetek|toket
 ! array pesawat = pesawat|pswt|psawat|pswat|psawt
@@ -136,7 +136,7 @@
 
 ! array gaujan = nggak ujan|nggak hujan|ngga ujan|ngga hujan|enggak ujan|enggak hujan|engga ujan|engga hujan|gak ujan|gak hujan|ga ujan|ga hujan|gaujan
 
-! array nyerah = nyerah|nggak tau|gatau|enggak tau|gak tau|engga tau|ngga tau
+! array nyerah = nyerah|nggak tau|gatau|enggak tau|gak tau|engga tau|ngga tau|ga tau
 
 ! array roda = roda|rodanya|ban|bannya|banya|rodany|banny|bany
 
