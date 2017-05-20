@@ -23,10 +23,13 @@ class SimiSimi():
         response = urllib2.urlopen(url)
         read_response = response.read()
         result = json.loads(read_response)
-        reply_message = result['response']
-        filter_message = reply_message.lower().replace('simi' , 'abang')
+        if result == 100:
+            reply_message = result['response']
+            filter_message = reply_message.lower().replace('simi' , 'abang')
+        else:
+            filter_message = 'apaan sih'
         return filter_message
 
 
 # sm = SimiSimi()
-# print sm.response_message('goblok')
+# print sm.response_message('kuontooolll')
