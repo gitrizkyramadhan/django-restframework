@@ -18,6 +18,7 @@ from tasks import handle_postback_tiketcom
 
 #import logging
 import gevent.monkey
+import json
 gevent.monkey.patch_all()
 
 if __name__==  "__main__":
@@ -240,9 +241,14 @@ if __name__==  "__main__":
         form_data = content['formdata']
         flight_data = content['flight_data']
         handle_postback_tiketcom.delay(msisdn, form_data, flight_data)
+        response = app.response_class(
+            response=json.dumps("OK"),
+            status=200,
+            mimetype='application/json'
+        )
         # print content
         # return redirect('https://line.me/R/ti/p/%40bangjoni', code=302)
-        return "OK"
+        return response
 
     print "starting gevent wsgi..."
     pywsgi.WSGIServer(('', 8001), app).serve_forever()
