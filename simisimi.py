@@ -5,7 +5,7 @@ class SimiSimi():
 
     def __init__(self):
 
-        self.key = 'de650f74-4eba-426d-a96f-e2d6f764d876'
+        self.key = '1d3f6082-d7c8-471a-977b-e0e5a31530ca'
         self.language = 'id'
         self.base_url = 'http://sandbox.api.simsimi.com/request.p'
         print "SimiSimi module added"
@@ -24,7 +24,9 @@ class SimiSimi():
         read_response = response.read()
         result = json.loads(read_response)
         reply_message = result['response']
+        filter_message = reply_message.lower().replace('simi' , 'abang')
+        return filter_message
 
-        return reply_message
 
-
+# sm = SimiSimi()
+# print sm.response_message('goblok')
