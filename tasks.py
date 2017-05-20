@@ -1681,7 +1681,7 @@ def onMessage(msisdn, ask, first_name):
         else:
             to_lang_code = 'en'
 
-        translated = translator_service.translate(urllib.quote_plus(ask), to=to_lang_code)
+        translated = translator_service.translate(ask, to=to_lang_code)
         # print "http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2])
         # respAPI = fetchHTML("http://127.0.0.1/translator/translate_bing.php?text=%s&lang=%s" % (urllib.quote_plus(ask), incomingMsisdn[2]))
         # print respAPI
@@ -2944,6 +2944,36 @@ def onMessage(msisdn, ask, first_name):
                     print s
                     respAPI = fetchHTML(s)
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
+
+                        fo = open('/tmp/%s_order.html' % (msisdn), "w")
+                        fo.write(respAPI)
+                        fo.close()
+                        options = {
+                            'page-size': 'A6',
+                            'margin-top': '0',
+                            'margin-right': '0',
+                            'margin-bottom': '0',
+                            'margin-left': '0',
+                            'encoding': "UTF-8"
+                        }
+                        try:
+                            pdfkit.from_file('/tmp/%s_order_flight.html' % (msisdn), '/tmp/%s_order.pdf' % (msisdn),
+                                             options=options)
+                        except Exception as e:
+                            print "error pdfkit", e
+
+                        if os.path.exists('/tmp/%s_order_flight.pdf' % (msisdn)):
+                            outfile = '/tmp/%s_order_flight.pdf' % (msisdn)
+                            pdf2jpg = PythonMagick.Image()
+                            pdf2jpg.density("200")
+                            pdf2jpg.read(outfile)
+                            pdf2jpg.write("%s.jpg" % (outfile.split('.')[0]))
+
+                            # goHtml2Png(respAPI, msisdn)
+                            print "Done convert html to pdf to png"
+                            # photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
+                            sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[6]))
+
                         #goHtml2Png(respAPI, msisdn + "_bayar")
                         #print "Done convert html to png"
                         incomingMsisdn = create_incoming_msisdn()
