@@ -2945,7 +2945,7 @@ def onMessage(msisdn, ask, first_name):
                     respAPI = fetchHTML(s)
                     if respAPI.find("Ringkasan Pembayaran") >= 0:
 
-                        fo = open('/tmp/%s_order.html' % (msisdn), "w")
+                        fo = open('/tmp/%s_order_flight.html' % (msisdn), "w")
                         fo.write(respAPI)
                         fo.close()
                         options = {
