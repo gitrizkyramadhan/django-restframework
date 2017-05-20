@@ -77,9 +77,9 @@
 ^ Banyak film seru loh! Coba cek deh di sini >> http://www.cinemaxxtheater.com/Movies.aspx <br>
 ^ Hehehe.. Ada lagi yang bisa gue bantu? {topic=bioskop}
 
-+ *
-* <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
-^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>} {topic=random}
+//+ *
+//* <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
+//^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>} {topic=random}
 
 + [*] (@gakada) [*]
 - Hmm.. Daripada gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? :D {topic=tebak_tebakan} 

@@ -43,16 +43,16 @@
 - gr01 Hmm.. Nggak cuma beli-beli aja sih sebenernya. Gue juga bisa kasih lo info-info lain juga. <br>
 ^ Tuh coba cek deh.
 
-//+ *
-//* <get mycontext> == random => ee01 {topic=<get mycontext>}
-
 + *
-* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
-- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+* <get mycontext> == random => ee01 {topic=<get mycontext>}
+
+//+ *
+//* <get mycontext> != random => ee01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=<get mycontext>}
+//- gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//- gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+//^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 + [*] iseng [*] {weight=10}
 - Hmm.. Daripada iseng gak ada kerjaan, mending kita main tebak-tebakan aja mau nggak? {topic=tebak_tebakan}
@@ -208,13 +208,13 @@
     ^ Semoga membantu yaa.. ;) {topic=random}
 
 
-    + *
-    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
-    ^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
-    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
-    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
-    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
-    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//    + *
+//    * <get mycontext> != random => gr01 Duh.. Maaf ya, gue belom bisa jawab pertanyaan lo nih, masih belajar soalnya :) <br>
+//    ^ Coba cek di atas deh.. Apa yang bisa gue bantu kira-kira? {topic=<get mycontext>}
+//    - gr01 Duh.. Maaf ya, gue masih belajar bahasa manusia nih.. Belom ngerti sama yang lo tanyain itu :( <br>
+//    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
+//    - gr01 Hmm.. Sorry ya, kayaknya di program gue belom diajarin bahasa itu deh. Gue nggak ngerti sama yang lo bilang itu :( <br>
+//    ^ Coba cek deh.. Apa yang bisa gue bantu kira-kira? :) {topic=random}
 
 < topic
 
