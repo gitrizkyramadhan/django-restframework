@@ -2864,7 +2864,7 @@ def onMessage(msisdn, ask, first_name):
 
 
     elif answer[:4] == "fl06":
-        sendMessageT2(msisdn, answer[4:], 0)
+        # sendMessageT2(msisdn, answer[4:], 0)
         # bookingMsisdn = json.loads(lineNlp.redisconn.get("book/%s" % (msisdn)))
         flight_complex_data = lineNlp.redisconn.get("flight_tiket_booking_data/%s" % (msisdn))
         flight_complex_data = json.loads(flight_complex_data)
@@ -2957,22 +2957,24 @@ def onMessage(msisdn, ask, first_name):
                             'encoding': "UTF-8"
                         }
                         try:
-                            pdfkit.from_file('/tmp/%s_order_flight.html' % (msisdn), '/tmp/%s_order.pdf' % (msisdn),
+                            pdfkit.from_file('/tmp/%s_order_flight.html' % (msisdn), '/usr/share/nginx/html/line_images/%s_order_flight.pdf' % (msisdn),
                                              options=options)
                         except Exception as e:
                             print "error pdfkit", e
 
-                        if os.path.exists('/tmp/%s_order_flight.pdf' % (msisdn)):
-                            outfile = '/tmp/%s_order_flight.pdf' % (msisdn)
+                        if os.path.exists('/usr/share/nginx/html/line_images/%s_order_flight.pdf' % (msisdn)):
+                            # outfile = '/tmp/%s_order_flight.pdf' % (msisdn)
+                            outfile = '/usr/share/nginx/html/line_images/%s_order_flight.pdf' % (msisdn)
                             pdf2jpg = PythonMagick.Image()
                             pdf2jpg.density("200")
                             pdf2jpg.read(outfile)
-                            pdf2jpg.write("%s.jpg" % (outfile.split('.')[0]))
+                            randomDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y%m%d%H%M%S')
+                            pdf2jpg.write("%s_%s.jpg" % (outfile.split('.')[0], randomDtm))
 
                             # goHtml2Png(respAPI, msisdn)
                             print "Done convert html to pdf to png"
                             # photo = open('%s.jpg' % (outfile.split('.')[0]), 'rb')
-                            sendPhotoT2(msisdn, '%s.jpg' % (outfile.split('.')[0].split('/')[6]))
+                            sendPhotoT2(msisdn, '/%s_%s.jpg' % (outfile.split('.')[0].split('/')[6], randomDtm))
 
                         #goHtml2Png(respAPI, msisdn + "_bayar")
                         #print "Done convert html to png"
