@@ -160,6 +160,7 @@ F_BOOK = None
 F_PAID = None
 F_NOREPLY = None
 F_ADDFRIENDS = None
+F_BLOCKFRIENDS = None
 
 when = ['hari ini|hr ini|siang ini|malam ini|pagi ini|sore ini','besok|bsok|bsk','lusa','januari|jan','februari|feb|pebruari','maret|mar','april|apr','mei','juni|jun','juli|jul','agustus|aug|agus','september|sept|sep','oktober|okt|october|oct','november|nov|nop','desember|des|december|dec']
 
@@ -398,6 +399,10 @@ def log_paid(logDtm, msisdn, first_name, service, desc = 'None'):
 def log_addfriends(logDtm, msisdn, first_name, service, desc = 'None'):
     sql = logDtm + "," + msisdn + "," + first_name + "," + service + "," + desc
     F_ADDFRIENDS.info(sql)
+
+def log_blockfriends(logDtm, msisdn, first_name, desc = 'None'):
+    sql = logDtm + "," + msisdn + "," + first_name + ","+ desc
+    F_BLOCKFRIENDS.info(sql)
 
 def get_line_username(msisdn):
     sql = "select full_name from user_profile where msisdn = '%s'" % (msisdn)
@@ -2884,7 +2889,8 @@ def onMessage(msisdn, ask, first_name):
         logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
         # for key in bookingMsisdn:
         #     s = s + key + "=" + bookingMsisdn[key] + "&"
-        s = flight.add_order(msisdn, flight_complex_data['form_data'], flight_complex_data['flight_data'])
+        roundtrip = int(flight_complex_data['form_data']['roundtrip']) == 1
+        s = flight.add_order(msisdn, flight_complex_data['form_data'], flight_complex_data['flight_data'], roundtrip=roundtrip)
         s = s + "&paymentmethod=" + urllib.quote_plus(incomingMsisdn[16])
         s = "http://127.0.0.1/flight/order_wh1.php?" + s
         print s
@@ -3575,12 +3581,14 @@ def doworker(req):
 
                     failureAns = lineNlp.doNlp("bjsysfail", msisdn, first_name)
                     sendMessageT2(msisdn, failureAns, 0)
-        elif event["type"] == "follow" or event["type"] == "unfollow": # request add friend and unblock
+        elif event["type"] == "follow" : # request add friend and unblock
             displayname = get_line_username(msisdn)
             reply = "Halo, makasih udah add gue ya :) <br> Nggak usah bingung mau chat apa, lo bisa coba kaya gini nih:\n\n- Halo Bang Joni\n- Cariin tiket pesawat dong Bang\n- Pulsa abis nih Bang\n- Jemput dong Bang\n- Besok ujan nggak Bang?\n- Lagi apa Bang?\n- Bete nih Bang\n\nAtau biar lebih gampang, lo juga bisa langsung ketik MENU.<br>"
             reply = reply + "Oh iya, perhatiin cara penulisannya ya, jangan terlalu banyak singkatan, biar gue nggak bingung ;)"
             sendMessageT2(msisdn, reply, 0)
             log_addfriends(logDtm, msisdn, displayname, "ADD FRIENDS")
+        elif event["type"] == "unfollow":
+            log_blockfriends(logDtm, msisdn, displayname, "BLOCK FRIENDS")
 
         elif event["type"] == "postback":
             msisdn = str(event["source"]["userId"])
@@ -3876,9 +3884,10 @@ setup_logger('F_BOOK', '/home/bambangs/LOGBJ/F_BOOK.log')
 setup_logger('F_PAID', '/home/bambangs/LOGBJ/F_PAID.log')
 setup_logger('F_NOREPLY', '/home/bambangs/LOGBJ/F_NOREPLY.log')
 setup_logger('F_ADDFRIENDS', '/home/bambangs/LOGBJ/F_ADDFRIENDS.log')
+setup_logger('F_BLOCKFRIENDS', '/home/bambangs/LOGBJ/F_BLOCKFRIENDS.log')
 F_SRVC = logging.getLogger('F_SRVC')
 F_BOOK = logging.getLogger('F_BOOK')
 F_PAID = logging.getLogger('F_PAID')
 F_NOREPLY = logging.getLogger('F_NOREPLY')
-F_ADDFRIENDS = logging.getLogger('F_ADDFRIENDS')  
+F_BLOCKFRIENDS = logging.getLogger('F_BLOCKFRIENDS')
 

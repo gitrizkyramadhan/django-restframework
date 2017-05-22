@@ -30,82 +30,62 @@ class FlightTiket():
         url_param = ''
         token = flight_data['request']['tiket_token']
 
-        salutation = ""
-        firstName = ""
-        lastName = ""
-        emailAddress = ""
-        phone = ""
+        if params.get('roundtrip') == False:
+            for form in form_data:
+                if form['name'] == 'conFirstName':
+                    firstName = urllib.quote_plus(form['value'])
+                elif form['name'] == 'conPhone':
+                    phone = urllib.quote_plus(form['value'])
+                elif form['name'] == 'conEmailAddress':
+                    emailAddress = urllib.quote_plus(form['value'])
 
-        for form in form_data:
-            if form['name'] == 'conFirstName':
-                firstName = urllib.quote_plus(form['value'])
-            elif form['name'] == 'conPhone':
-                phone = urllib.quote_plus(form['value'])
-            elif form['name'] == 'conEmailAddress':
-                emailAddress = urllib.quote_plus(form['value'])
+                if form['name'] == 'conSalutation' :
+                    if form['value'] == 'TUAN':
+                        title = "Mr"
+                    elif form['value'] == 'NYONYA':
+                        title = "Mrs"
+                    url_add_flight = url_add_flight + form['name'] + "=" + title + "&"
+                    url_param = url_param + form['name'] + "=" + title + "&"
+                    salutation = title
+                else:
+                    url_add_flight = url_add_flight + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
+                    url_param = url_param + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
+            departure_flight_id = flight_data['result']['departure']['id']
+            # airline_name = flight_data['result']['departure']['original_result']['airlines_name']
+            url_add_flight = url_add_flight + "token=" + token + "&flight_id=" + departure_flight_id + "&output=json"
+            url_param = url_param + "token=" + token + "&flight_id=" + departure_flight_id + "&output=json"
+            # print url_add_flight
+            # print url_param
+            return url_param
+        else :
+            departure_flight_id = flight_data['result']['departure']['departure']['id']
+            ret_flight_id = flight_data['result']['return']['return']['id']
 
-            if form['name'] == 'conSalutation' :
-                if form['value'] == 'TUAN':
-                    title = "Mr"
-                elif form['value'] == 'NYONYA':
-                    title = "Mrs"
-                url_add_flight = url_add_flight + form['name'] + "=" + title + "&"
-                url_param = url_param + form['name'] + "=" + title + "&"
-                salutation = title
-            else:
-                url_add_flight = url_add_flight + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
-                url_param = url_param + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
-        departure_flight_id = flight_data['result']['departure']['id']
-        # airline_name = flight_data['result']['departure']['original_result']['airlines_name']
-        url_add_flight = url_add_flight + "token=" + token + "&flight_id=" + departure_flight_id + "&output=json"
-        url_param = url_param + "token=" + token + "&flight_id=" + departure_flight_id + "&output=json"
-        # print url_add_flight
-        # print url_param
-        return url_param
-        # headers = {
-        #     'User-Agent': 'twh:[21060440];[kenzie_tiket];'
-        # }
-        # r = requests.get(url_add_flight, headers=headers)
-        # # print r.headers
-        # # print r.
-        # print json.dumps(r.json())
-        # decodedJson = json.loads(json.dumps(r.json()))
-        # token = decodedJson['token']
-        #
-        # if decodedJson['diagnostic']['status'] != 200:
-        #     raise Exception(decodedJson['diagnostic']['error_msgs'])
-        #
-        # #GET ORDER
-        # url_order = self._get_url()+'/order?token='+token+'&output=json'
-        # print url_order
-        # r = requests.get(url_order, headers=headers)
-        # print json.dumps(r.json())
-        # orderJson = json.loads(json.dumps(r.json()))
-        # if orderJson['diagnostic']['status'] != 200:
-        #     raise Exception(orderJson['diagnostic']['error_msgs'])
-        #
-        # #CHECKOUT PAGE
-        # url_checkout = orderJson['checkout'] + '?token='+token+'&output=json'
-        # print url_checkout
-        # r = requests.get(url_checkout, headers=headers)
-        # print json.dumps(r.json())
-        # checkout_page_json = json.loads(json.dumps(r.json()))
-        # if checkout_page_json['diagnostic']['status'] != 200:
-        #     raise Exception(checkout_page_json['diagnostic']['error_msgs'])
-        #
-        # #CHECKOUT CUSTOMER
-        # url_checkout_customer = self._get_url()+'/checkout/checkout_customer?token='+token+'&firstName='+firstName+'&lastName='+lastName+'&salutation='+salutation+'&phone='+phone+'&emailAddress='+emailAddress+'&saveContinue=2&output=json'
-        # print url_checkout_customer
-        # r = requests.get(url_checkout_customer, headers=headers)
-        # print json.dumps(r.json())
-        # checkout_customer_json = json.loads(json.dumps(r.json()))
-        # if checkout_customer_json['diagnostic']['status'] != 200:
-        #     raise Exception(checkout_customer_json['diagnostic']['error_msgs'])
+            for form in form_data:
+                if form['name'] == 'conFirstName':
+                    firstName = urllib.quote_plus(form['value'])
+                elif form['name'] == 'conPhone':
+                    phone = urllib.quote_plus(form['value'])
+                elif form['name'] == 'conEmailAddress':
+                    emailAddress = urllib.quote_plus(form['value'])
 
-        #SAVE TO DB / LOG
+                if form['name'] == 'conSalutation':
+                    if form['value'] == 'TUAN':
+                        title = "Mr"
+                    elif form['value'] == 'NYONYA':
+                        title = "Mrs"
+                    url_add_flight = url_add_flight + form['name'] + "=" + title + "&"
+                    url_param = url_param + form['name'] + "=" + title + "&"
+                    salutation = title
+                else:
+                    url_add_flight = url_add_flight + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
+                    url_param = url_param + form['name'] + "=" + urllib.quote_plus(form['value']) + "&"
 
+            url_param = url_param + "token=" + token + "&flight_id=" + departure_flight_id + "&ret_flight_id=" + ret_flight_id + "&output=json"
+            # print url_add_flight
+            # print url_param
+            return url_param
 
-        # print token, params
 
     def get_url_payment(self, msisdn, order_id, type):
         token = '88f7fc398a2a6ef6590d441ef70e25764ab3174f'
