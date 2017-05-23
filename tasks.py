@@ -2881,7 +2881,21 @@ def onMessage(msisdn, ask, first_name):
         print "BBBBBBBBBBBBBBBBBBBB"
         print "Fight Data : " + json.dumps(flight_complex_data)
         print incomingMsisdn
-        log_book(logDtm, msisdn, first_name, "FLIGHT", flight_data['request']['departure_date'] + "-" + flight_data['request']['origin'] + "-" + flight_data['request']['destination'] + "-" + flight_data['result']['departure']['original_result']['airlines_name'] + "-" + flight_data['result']['departure']['simple_departure_time'] + "-" + incomingMsisdn[16])
+        roundtrip = str(flight_complex_data['flight_data']['pp']) == 'true'
+        if not roundtrip : #one way
+            log_book(logDtm, msisdn, first_name, "FLIGHT",
+                     flight_data['request']['departure_date'] + "-" + flight_data['request']['origin'] + "-" +
+                     flight_data['request']['destination'] + "-" +
+                     flight_data['result']['departure']['original_result']['airlines_name'] + "-" +
+                     flight_data['result']['departure']['simple_departure_time'] + "-" + incomingMsisdn[16])
+        else : #roundtrip
+            log_book(logDtm, msisdn, first_name, "FLIGHT",
+                     flight_data['request']['departure_date'] + "-" + flight_data['request']['origin'] + "-" +
+                     flight_data['request']['destination'] + "-" +
+                     flight_data['result']['departure']['departure']['original_result']['airlines_name'] + "-" +
+                     flight_data['result']['departure']['departure']['simple_departure_time'] +
+                     flight_data['result']['return']['return']['original_result']['airlines_name'] + "-" +
+                     flight_data['result']['return']['return']['simple_departure_time'] + "-" + incomingMsisdn[16])
         incomingMsisdn[14] = 1
 
 
@@ -2889,7 +2903,6 @@ def onMessage(msisdn, ask, first_name):
         logDtm = (datetime.now() + timedelta(hours=0)).strftime('%Y-%m-%d %H:%M:%S')
         # for key in bookingMsisdn:
         #     s = s + key + "=" + bookingMsisdn[key] + "&"
-        roundtrip = int(flight_complex_data['form_data']['roundtrip']) == 1
         s = flight.add_order(msisdn, flight_complex_data['form_data'], flight_complex_data['flight_data'], roundtrip=roundtrip)
         s = s + "&paymentmethod=" + urllib.quote_plus(incomingMsisdn[16])
         s = "http://127.0.0.1/flight/order_wh1.php?" + s
